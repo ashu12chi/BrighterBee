@@ -1,3 +1,7 @@
+import 'package:brighter_bee/app_screens/commuinites.dart';
+import 'package:brighter_bee/app_screens/extra.dart';
+import 'package:brighter_bee/app_screens/home.dart';
+import 'package:brighter_bee/app_screens/notifications.dart';
 import 'package:flutter/material.dart';
 
 class Feed extends StatefulWidget {
@@ -37,10 +41,10 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       ),
       body: TabBarView(
         children: <Widget>[
-          Text('Home'),
-          Text('Communities'),
-          Text('Notifications'),
-          Text('Extra')
+          Home(),
+          Communities(),
+          Notifications(),
+          Extra()
         ],
         controller: _controller,
       ),
