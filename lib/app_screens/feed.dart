@@ -28,14 +28,14 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
           ),
         ]  ,
         bottom: TabBar(
+          controller: _controller,
           indicator: UnderlineTabIndicator(borderSide: BorderSide(width: 3,color: Colors.blue)),
           tabs: <Widget>[
-            new Tab(icon: Icon(Icons.home,color: Colors.black54,),),
+            new Tab(icon: Icon(Icons.home,color:  Colors.black54,),),
             new Tab(icon: Icon(Icons.people,color: Colors.black54),),
             new Tab(icon: Icon(Icons.notifications,color: Colors.black54),),
             new Tab(icon: Icon(Icons.view_headline,color: Colors.black54),)
           ],
-          controller: _controller,
         ),
         title: Text('BrighterBee',style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold,color: Colors.blue),),
       ),
