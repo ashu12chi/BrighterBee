@@ -67,12 +67,14 @@ class _PostState extends State<Post> {
                 IconButton(icon:Icon(Icons.arrow_upward),),
                 Text('11',style: TextStyle(color: Colors.black,fontSize: 15),),
                 IconButton(icon:Icon(Icons.arrow_downward),),
+                Text('53',style: TextStyle(color: Colors.black,fontSize: 15),),
+                IconButton(icon:Icon(Icons.remove_red_eye),),
                 Padding(
-                  padding: const EdgeInsets.only(left:20.0,right: 8),
+                  padding: const EdgeInsets.only(left:8.0,right: 8),
                   child: Text('6',style: TextStyle(color: Colors.black,fontSize: 15),),
                 ),
                 FlatButton(
-                  child: Text('   Comments  ',style: TextStyle(color: Colors.grey,fontSize: 15),),
+                  child: Text('  Comments  ',style: TextStyle(color: Colors.grey,fontSize: 15),),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                     side: BorderSide(color: Colors.black)
