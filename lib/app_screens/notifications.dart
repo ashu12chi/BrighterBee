@@ -9,8 +9,16 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Notifications'),
+      appBar: AppBar(
+        title: Text('Notifications',style: TextStyle(color: Colors.black),),
+        backgroundColor: Colors.white,
+        shadowColor: Colors.white,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            iconSize: 30.0,
+          ),
+        ],
       ),
     );
   }
