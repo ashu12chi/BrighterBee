@@ -1,5 +1,6 @@
-import 'package:brighter_bee/app_screens/feed.dart';
 import 'package:flutter/material.dart';
+
+import 'app_screens/post.dart';
 
 main() => runApp(MyApp());
 
@@ -13,7 +14,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp (
       debugShowCheckedModeBanner: false,
-      home: Container(),
+      home: Post(),
     );
   }
 }
