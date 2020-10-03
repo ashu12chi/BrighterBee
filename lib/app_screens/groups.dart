@@ -10,7 +10,7 @@ class _CommunitiesState extends State<Communities> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Communities',style: TextStyle(color: Colors.black),),
+        title: Text('Groups',style: TextStyle(color: Colors.black),),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         actions: <Widget>[

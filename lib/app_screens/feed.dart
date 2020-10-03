@@ -1,4 +1,4 @@
-import 'package:brighter_bee/app_screens/commuinites.dart';
+import 'package:brighter_bee/app_screens/groups.dart';
 import 'package:brighter_bee/app_screens/extra.dart';
 import 'package:brighter_bee/app_screens/home.dart';
 import 'package:brighter_bee/app_screens/notifications.dart';
