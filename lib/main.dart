@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'app_screens/post.dart';
+import 'app_screens/profile.dart';
 
 main() => runApp(MyApp());
 
@@ -14,7 +14,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp (
       debugShowCheckedModeBanner: false,
-      home: Post(),
+      home: Profile(),
     );
   }
 }
