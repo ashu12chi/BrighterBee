@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
@@ -15,7 +16,8 @@ class CreatePost extends StatefulWidget {
 class _CreatePostState extends State<CreatePost> {
   ZefyrController _controller;
   FocusNode _focusNode;
-  String username = 'Nishchal Siddharth';
+  String displayName = 'Nishchal Siddharth';
+  String username = 'nisiddharth';
   QuerySnapshot result;
   List<CheckBoxData> checkboxDataList = [];
   Set selected;
@@ -30,13 +32,12 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   initializeList() async {
-    result =
-        await FirebaseFirestore.instance.collection('communities').getDocuments();
-    final List<DocumentSnapshot> documents = result.documents;
+    result = await FirebaseFirestore.instance.collection('communities').get();
+    final List<DocumentSnapshot> documents = result.docs;
     int i = 0;
     documents.forEach((element) {
       checkboxDataList.add(new CheckBoxData(
-          id: i.toString(), displayId: element.documentID, checked: false));
+          id: i.toString(), displayId: element.id, checked: false));
       ++i;
     });
     selected = new Set();
@@ -44,14 +45,21 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
-    final editor = new ZefyrEditor(
+    final editor = new ZefyrField(
       focusNode: _focusNode,
       controller: _controller,
       imageDelegate: MyAppZefyrImageDelegate(),
+      autofocus: false,
+      decoration: InputDecoration(
+        hintText: 'Enter text Here...',
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).accentColor),
+        ),
+      ),
     );
 
     Firebase.initializeApp();
-    // initializeList();
 
     return Scaffold(
       key: _scaffoldKey,
@@ -65,27 +73,9 @@ class _CreatePostState extends State<CreatePost> {
               'Post',
               style: TextStyle(fontSize: 18),
             ),
-            onPressed: checkPostable,
-          )
+            onPressed: checkPostableAndPost,
+          ),
         ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: <Widget>[
-            FlatButton(
-              child: Text(
-                'Add to your post',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.image),
-            ),
-            IconButton(
-              icon: Icon(Icons.video_call),
-            )
-          ],
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -102,7 +92,7 @@ class _CreatePostState extends State<CreatePost> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        username,
+                        displayName,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18.0),
                       ),
@@ -125,11 +115,44 @@ class _CreatePostState extends State<CreatePost> {
                 )
               ],
             ),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: 'Title',
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
             Expanded(
               child: ZefyrScaffold(
                 child: editor,
               ),
-            )
+            ),
+            Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  'Add to your post',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey),
+                ),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.image),
+                  onPressed: selectImage,
+                ),
+                IconButton(
+                  icon: Icon(Icons.video_call),
+                  onPressed: selectVideo,
+                )
+              ],
+            ),
           ],
         ),
       ),
@@ -207,15 +230,13 @@ class _CreatePostState extends State<CreatePost> {
     }
   }
 
-  communityChecked(int n) {}
-
   NotusDocument _loadDocument() {
-    final Delta delta = Delta()..insert("What's on your mind?\n");
+    final Delta delta = Delta()..insert("\n");
     return NotusDocument.fromDelta(delta);
   }
 
-  checkPostable() {
-    if (selected.length == 0) {
+  checkPostableAndPost() {
+    if (selected == null || selected.length == 0) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -232,9 +253,51 @@ class _CreatePostState extends State<CreatePost> {
       ));
       return false;
     }
+    addToDatabase();
+    return true;
   }
 
-  addToDatabase() {}
+  addToDatabase() {
+    String key = DateTime.now().millisecondsSinceEpoch.toString();
+    final instance = FirebaseFirestore.instance;
+    instance.collection('posts').doc(key).set({
+      "creator": username,
+      "mediaUrl": null,
+      "title": "DemoTitle",
+      "content": jsonEncode(_controller.document),
+      "upvote": 0,
+      "downvote": 0,
+      "views": 0,
+      "time": key
+    }).then((action) {
+      print("success 1!");
+
+      String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+
+      instance
+          .collection("users/" + username + "/posts")
+          .doc(key)
+          .set({}).then((value) {
+        print("success 3!");
+        viewPost();
+      });
+
+      selected.forEach((element) {
+        instance
+            .collection("communities/" + element + "/" + date)
+            .doc(key)
+            .set({}).then((value) {
+          print("success 2!");
+        });
+      });
+    });
+  }
+
+  viewPost() {}
+
+  selectImage() {}
+
+  selectVideo() {}
 }
 
 class CheckBoxData {
