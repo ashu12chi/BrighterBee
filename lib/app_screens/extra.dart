@@ -11,7 +11,10 @@ class _ExtraState extends State<Extra> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menu',style: TextStyle(color: Colors.black),),
+        title: Text(
+          'Menu',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         actions: <Widget>[
@@ -27,24 +30,36 @@ class _ExtraState extends State<Extra> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                CircleAvatar(radius: 30.0,backgroundColor: Colors.grey,),
+                CircleAvatar(
+                  radius: 30.0,
+                  backgroundColor: Colors.grey,
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(left:8.0),
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: Column(
                     children: <Widget>[
-                      Text('Ashutosh Chitranshi',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 18.0),),
-                      Text('See your profile\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t',style: TextStyle(color: Colors.grey,fontSize: 15.0),)
+                      Text(
+                        'Ashutosh Chitranshi',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0),
+                      ),
+                      Text(
+                        'See your profile\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t',
+                        style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                      )
                     ],
                   ),
                 )
               ],
             ),
             Padding(
-              padding:EdgeInsets.only(top:4.0,bottom: 4.0),
-              child:Container(
-                height:1.0,
-                width:double.infinity,
-                color:Colors.black12,
+              padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
+              child: Container(
+                height: 1.0,
+                width: double.infinity,
+                color: Colors.black12,
               ),
             ),
             Row(
@@ -52,7 +67,7 @@ class _ExtraState extends State<Extra> {
               children: <Widget>[
                 SizedBox(
                   height: 100,
-                  width: MediaQuery.of(context).size.width / 2-10,
+                  width: MediaQuery.of(context).size.width / 2 - 10,
                   child: Card(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -83,14 +98,13 @@ class _ExtraState extends State<Extra> {
                   ),
                 )
               ],
-
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 SizedBox(
                   height: 100,
-                  width: MediaQuery.of(context).size.width / 2-10,
+                  width: MediaQuery.of(context).size.width / 2 - 10,
                   child: Card(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -123,17 +137,20 @@ class _ExtraState extends State<Extra> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top:4.0),
+              padding: const EdgeInsets.only(top: 4.0),
               child: SizedBox(
                 width: double.infinity,
                 height: 67,
-                child: Card (
+                child: Card(
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.help),
                       Padding(
-                        padding: const EdgeInsets.only(left:4.0),
-                        child: Text('Help & Support',style: TextStyle(color: Colors.black,fontSize: 18.0),),
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Text(
+                          'Help & Support',
+                          style: TextStyle(color: Colors.black, fontSize: 18.0),
+                        ),
                       )
                     ],
                   ),
@@ -146,13 +163,16 @@ class _ExtraState extends State<Extra> {
             SizedBox(
               width: double.infinity,
               height: 67,
-              child: Card (
+              child: Card(
                 child: Row(
                   children: <Widget>[
                     Icon(Icons.settings),
                     Padding(
-                      padding: const EdgeInsets.only(left:4.0),
-                      child: Text('Settings and Privacy',style: TextStyle(color: Colors.black,fontSize: 18.0),),
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text(
+                        'Settings and Privacy',
+                        style: TextStyle(color: Colors.black, fontSize: 18.0),
+                      ),
                     )
                   ],
                 ),
@@ -164,13 +184,16 @@ class _ExtraState extends State<Extra> {
             SizedBox(
               width: double.infinity,
               height: 67,
-              child: Card (
+              child: Card(
                 child: Row(
                   children: <Widget>[
                     Icon(Icons.exit_to_app),
                     Padding(
-                      padding: const EdgeInsets.only(left:4.0),
-                      child: Text('Logout',style: TextStyle(color: Colors.black,fontSize: 18.0),),
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(color: Colors.black, fontSize: 18.0),
+                      ),
                     )
                   ],
                 ),

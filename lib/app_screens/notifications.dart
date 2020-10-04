@@ -10,7 +10,10 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications',style: TextStyle(color: Colors.black),),
+        title: Text(
+          'Notifications',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         actions: <Widget>[

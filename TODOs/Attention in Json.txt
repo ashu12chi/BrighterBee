@@ -1,0 +1,14 @@
+[{"insert":"Attention","attributes":{"b":true}},{"insert":"\n","attributes":{"heading":1}},{"insert":"You've been runnin' round, runnin' round, runnin' round throwin' that dirt all on my name\n'Cause you knew that I, knew that I, knew that I'd call you up\nYou've been going round, going round, going round every party in L.A.\n'Cause you knew that I, knew that I, knew that I'd be at one, oh\nI know that dress is karma, perfume regret"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"You got me thinking 'bout when you were mine, oh\nAnd now I'm all up on ya, what you expect?\nBut you're not coming home with me tonight\nYou just want attention, you don't want my heart\nMaybe you just hate the thought of me with someone new\nYeah, you just want attention, I knew from the start\nYou're just making sure I'm never gettin' over you\n\n-"},{"insert":" Charlie Puth","attributes":{"i":true}},{"insert":"\n"}]
+
+
+
+
+
+
+
+
+
+
+
+
+[{\"insert\":\"Attention\",\"attributes\":{\"b\":true}},{\"insert\":\"\\n\",\"attributes\":{\"heading\":1}},{\"insert\":\"You've been runnin' round, runnin' round, runnin' round throwin' that dirt all on my name\\n'Cause you knew that I, knew that I, knew that I'd call you up\\nYou've been going round, going round, going round every party in L.A.\\n'Cause you knew that I, knew that I, knew that I'd be at one, oh\\nI know that dress is karma, perfume regret\"},{\"insert\":\"\\n\",\"attributes\":{\"block\":\"quote\"}},{\"insert\":\"You got me thinking 'bout when you were mine, oh\\nAnd now I'm all up on ya, what you expect?\\nBut you're not coming home with me tonight\\nYou just want attention, you don't want my heart\\nMaybe you just hate the thought of me with someone new\\nYeah, you just want attention, I knew from the start\\nYou're just making sure I'm never gettin' over you\\n\\n-\"},{\"insert\":\" Charlie Puth\",\"attributes\":{\"i\":true}},{\"insert\":\"\\n\"}]

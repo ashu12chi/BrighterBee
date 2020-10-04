@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -212,13 +214,21 @@ class _CreatePostState extends State<CreatePost> {
     return NotusDocument.fromDelta(delta);
   }
 
-
   checkPostable() {
-    if(selected.length == 0) {
+    if (selected.length == 0) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('No groups selected.'),
+      ));
+      return false;
+    }
+    String content = jsonEncode(_controller.document);
+    if (content.length == 0) {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('No text written.'),
       ));
       return false;
     }

@@ -1,8 +1,6 @@
 import 'package:brighter_bee/app_screens/create_post.dart';
 import 'package:flutter/material.dart';
 
-import 'app_screens/profile.dart';
-
 main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {

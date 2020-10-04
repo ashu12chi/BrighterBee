@@ -10,7 +10,10 @@ class _CommunitiesState extends State<Communities> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Groups',style: TextStyle(color: Colors.black),),
+        title: Text(
+          'Groups',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         actions: <Widget>[
@@ -28,43 +31,57 @@ class _CommunitiesState extends State<Communities> {
               FlatButton(
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.people,color: Colors.black,),
-                    Text('Added',style: TextStyle(color: Colors.black),)
-                  ],
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(color: Colors.grey)
-                ),
-              ),
-              FlatButton(
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.explore,color: Colors.black,),
-                    Text('Discover',style: TextStyle(color: Colors.black),)
+                    Icon(
+                      Icons.people,
+                      color: Colors.black,
+                    ),
+                    Text(
+                      'Added',
+                      style: TextStyle(color: Colors.black),
+                    )
                   ],
                 ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(color: Colors.grey)
-                ),
+                    side: BorderSide(color: Colors.grey)),
               ),
               FlatButton(
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.add_circle,color: Colors.black,),
-                    Text('Create',style: TextStyle(color: Colors.black),)
+                    Icon(
+                      Icons.explore,
+                      color: Colors.black,
+                    ),
+                    Text(
+                      'Discover',
+                      style: TextStyle(color: Colors.black),
+                    )
                   ],
                 ),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(color: Colors.grey)
+                    side: BorderSide(color: Colors.grey)),
+              ),
+              FlatButton(
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.add_circle,
+                      color: Colors.black,
+                    ),
+                    Text(
+                      'Create',
+                      style: TextStyle(color: Colors.black),
+                    )
+                  ],
                 ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(color: Colors.grey)),
               )
             ],
           )
-         // TODO : Future builder here for displaying communities
-
+          // TODO : Future builder here for displaying communities
         ],
       ),
     );

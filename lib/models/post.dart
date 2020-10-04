@@ -16,14 +16,14 @@ class Post {
 
   factory Post.fromDocument(DocumentSnapshot doc) {
     return Post(
-        creator: doc['creator'],
-        mediaUrl: doc['mediaUrl'],
-        title: doc['title'],
-        content: doc['content'],
-        upvote: doc['upvote'],
-        downvote: doc['downvote'],
-        views: doc['views'],
-        time: doc['time'],
+      creator: doc['creator'],
+      mediaUrl: doc['mediaUrl'],
+      title: doc['title'],
+      content: doc['content'],
+      upvote: doc['upvote'],
+      downvote: doc['downvote'],
+      views: doc['views'],
+      time: doc['time'],
     );
   }
 }
