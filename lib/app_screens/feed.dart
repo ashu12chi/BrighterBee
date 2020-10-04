@@ -1,5 +1,5 @@
 import 'package:brighter_bee/app_screens/extra.dart';
-import 'package:brighter_bee/app_screens/groups.dart';
+import 'package:brighter_bee/app_screens/communities.dart';
 import 'package:brighter_bee/app_screens/home.dart';
 import 'package:brighter_bee/app_screens/notifications.dart';
 import 'package:flutter/material.dart';

@@ -31,7 +31,7 @@ class _CreatePostState extends State<CreatePost> {
 
   initializeList() async {
     result =
-        await FirebaseFirestore.instance.collection('groups').getDocuments();
+        await FirebaseFirestore.instance.collection('communities').getDocuments();
     final List<DocumentSnapshot> documents = result.documents;
     int i = 0;
     documents.forEach((element) {
@@ -110,7 +110,7 @@ class _CreatePostState extends State<CreatePost> {
                         child: Row(
                           children: <Widget>[
                             Icon(Icons.people),
-                            Text('Groups'),
+                            Text('Communities'),
                             Icon(Icons.arrow_drop_down)
                           ],
                         ),
@@ -118,7 +118,7 @@ class _CreatePostState extends State<CreatePost> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                             side: BorderSide(color: Colors.grey)),
-                        onPressed: showGroups,
+                        onPressed: showCommunities,
                       ),
                     ],
                   ),
@@ -136,7 +136,7 @@ class _CreatePostState extends State<CreatePost> {
     );
   }
 
-  showGroups() {
+  showCommunities() {
     if (checkboxDataList.length == 0) {
       _scaffoldKey.currentState.showSnackBar(new SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -152,7 +152,7 @@ class _CreatePostState extends State<CreatePost> {
           ],
         ),
       ));
-      initializeList().whenComplete(() => showGroups());
+      initializeList().whenComplete(() => showCommunities());
     } else {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       showModalBottomSheet<void>(
@@ -219,7 +219,7 @@ class _CreatePostState extends State<CreatePost> {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
-        content: Text('No groups selected.'),
+        content: Text('No communities selected.'),
       ));
       return false;
     }
