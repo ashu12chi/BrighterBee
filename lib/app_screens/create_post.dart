@@ -1,13 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
+import 'package:image/image.dart' as Im;
 
 class CreatePost extends StatefulWidget {
   @override
@@ -20,6 +24,10 @@ class _CreatePostState extends State<CreatePost> {
   FocusNode _focusNode;
   String displayName = 'Nishchal Siddharth';
   String username = 'nisiddharth';
+  String noticeText = "Add media to your post";
+  String photoURI;
+  String mediaURL;
+  File image;
   QuerySnapshot result;
   List<CheckBoxData> checkboxDataList = [];
   Set selected;
@@ -139,7 +147,7 @@ class _CreatePostState extends State<CreatePost> {
                   width: 15,
                 ),
                 Text(
-                  'Add to your post',
+                  '$noticeText',
                   style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
@@ -168,6 +176,7 @@ class _CreatePostState extends State<CreatePost> {
     if (checkboxDataList.length == 0) {
       _scaffoldKey.currentState.showSnackBar(new SnackBar(
         behavior: SnackBarBehavior.floating,
+        duration: Duration(hours: 1),
         content: new Row(
           children: <Widget>[
             new CircularProgressIndicator(
@@ -267,17 +276,35 @@ class _CreatePostState extends State<CreatePost> {
       ));
       return false;
     }
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      behavior: SnackBarBehavior.floating,
+      duration: Duration(hours: 1),
+      content: new Row(
+        children: <Widget>[
+          new CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          new Text("Uploading...")
+        ],
+      ),
+    ));
     addToDatabase();
     return true;
   }
 
-  addToDatabase() {
+  addToDatabase() async {
     var time = DateTime.now().millisecondsSinceEpoch;
     String key = time.toString();
+    bool mediaPresent = (image != null);
     final instance = FirebaseFirestore.instance;
+    if (mediaPresent) await uploadImage(key);
     instance.collection('posts').doc(key).set({
       "creator": username,
-      "mediaUrl": null,
+      "mediaPresent": mediaPresent,
+      "mediaUrl": mediaURL,
       "title": titleController.text,
       "content": jsonEncode(_controller.document),
       "upvote": 0,
@@ -303,59 +330,100 @@ class _CreatePostState extends State<CreatePost> {
             .doc(key)
             .set({}).then((value) {
           debugPrint("success 2!");
+          _scaffoldKey.currentState.hideCurrentSnackBar();
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text('Upload complete!'),
+          ));
         });
       });
     });
   }
 
-  viewPost() {}
+  uploadImage(String key) async {
+    // await compressImage(key);
+    StorageUploadTask uploadTask =
+        FirebaseStorage.instance.ref().child('post_$key.jpg').putFile(image);
+    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+    mediaURL = await storageSnap.ref.getDownloadURL();
+    return mediaURL;
+  }
 
   _showImagePicker(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
-            child: Container(
-              child: Wrap(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.photo_library),
-                    title: Text('From Gallery'),
-                    onTap: () {
-                      _imageFromGallery();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.photo_camera),
-                    title: Text('Camera'),
-                    onTap: () {
-                      _imageFromCamera();
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              )
-            )
-          );
-        }
-    );
+              child: Container(
+                  child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('From Gallery'),
+                onTap: () {
+                  _imageFromGallery();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Camera'),
+                onTap: () {
+                  _imageFromCamera();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          )));
+        });
   }
 
   _imageFromGallery() async {
-    final file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    final file = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 600,
+        maxWidth: 600,
+        imageQuality: 85);
     if (file == null) return null;
+    photoURI = file.uri.toString();
+    image = file;
+    debugPrint(photoURI);
+    setState(() {
+      noticeText = "Image selected for upload!";
+    });
     return file.uri.toString();
   }
 
   _imageFromCamera() async {
-    final file = await ImagePicker.pickImage(source: ImageSource.camera);
+    final file = await ImagePicker.pickImage(
+        source: ImageSource.camera,
+        maxHeight: 600,
+        maxWidth: 600,
+        imageQuality: 85);
     if (file == null) return null;
+    photoURI = file.uri.toString();
+    image = file;
+    debugPrint(photoURI);
+    setState(() {
+      noticeText = "Image selected for upload!";
+    });
     return file.uri.toString();
   }
 
-  selectVideo() async {
-  }
+  selectVideo() async {}
+
+  viewPost() {}
+
+  // compressImage(String key) async {
+  //   final tempDir = await getTemporaryDirectory();
+  //   final path = tempDir.path;
+  //   Im.Image imageFile = Im.decodeImage(image.readAsBytesSync());
+  //   final compressedImageFile = File('$path/img_$key.jpg')
+  //     ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
+  //   setState(() {
+  //     image = compressedImageFile;
+  //   });
+  // }
 }
 
 class CheckBoxData {
