@@ -25,9 +25,9 @@ class _CreatePostState extends State<CreatePost> {
   String displayName = 'Nishchal Siddharth';
   String username = 'nisiddharth';
   String noticeText = "Add media to your post";
-  String photoURI;
   String mediaURL;
-  File image;
+  int mediaType = 0; // 0 for none, 1 for image, 2 for video
+  File media;
   QuerySnapshot result;
   List<CheckBoxData> checkboxDataList = [];
   Set selected;
@@ -141,35 +141,70 @@ class _CreatePostState extends State<CreatePost> {
                 child: editor,
               ),
             ),
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  '$noticeText',
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey),
-                ),
-                Spacer(),
-                IconButton(
-                  icon: Icon(Icons.image),
-                  onPressed: () {
-                    _showImagePicker(context);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.video_call),
-                  onPressed: selectVideo,
-                )
-              ],
-            ),
+            createBottomBar(),
           ],
         ),
       ),
     );
+  }
+
+  createBottomBar() {
+    if (mediaType == 0) {
+      return Row(
+        children: <Widget>[
+          SizedBox(
+            width: 15,
+          ),
+          Text(
+            '$noticeText',
+            style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey),
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(Icons.image),
+            onPressed: () {
+              _showImagePicker(context);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.video_call),
+            onPressed: () {
+              _showVideoPicker(context);
+            },
+          )
+        ],
+      );
+    } else {
+      return Row(
+        children: <Widget>[
+          SizedBox(
+            width: 15,
+          ),
+          Text(
+            '$noticeText',
+            style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey),
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: () {
+              setState(() {
+                noticeText = "Add media to your post";
+                mediaType = 0;
+                mediaURL = null;
+                media = null;
+              });
+            },
+          )
+        ],
+      );
+    }
   }
 
   showCommunities() {
@@ -298,13 +333,14 @@ class _CreatePostState extends State<CreatePost> {
   addToDatabase() async {
     var time = DateTime.now().millisecondsSinceEpoch;
     String key = time.toString();
-    bool mediaPresent = (image != null);
     final instance = FirebaseFirestore.instance;
-    if (mediaPresent) await uploadImage(key);
+    mediaURL = null;
+    if (mediaType != 0) await uploadMedia(key);
     instance.collection('posts').doc(key).set({
       "creator": username,
-      "mediaPresent": mediaPresent,
+      "mediaType": mediaType,
       "mediaUrl": mediaURL,
+      "key": key,
       "title": titleController.text,
       "content": jsonEncode(_controller.document),
       "upvote": 0,
@@ -313,14 +349,13 @@ class _CreatePostState extends State<CreatePost> {
       "time": time
     }).then((action) {
       debugPrint("success 1!");
-
       String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
 
       instance
           .collection("users/" + username + "/posts")
           .doc(key)
           .set({}).then((value) {
-        debugPrint("success 3!");
+        debugPrint("success 2!");
         viewPost();
       });
 
@@ -329,7 +364,7 @@ class _CreatePostState extends State<CreatePost> {
             .collection("communities/" + element + "/" + date)
             .doc(key)
             .set({}).then((value) {
-          debugPrint("success 2!");
+          debugPrint("success 3!");
           _scaffoldKey.currentState.hideCurrentSnackBar();
           _scaffoldKey.currentState.showSnackBar(SnackBar(
             behavior: SnackBarBehavior.floating,
@@ -340,12 +375,17 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
-  uploadImage(String key) async {
-    // await compressImage(key);
-    StorageUploadTask uploadTask =
-        FirebaseStorage.instance.ref().child('post_$key.jpg').putFile(image);
+  uploadMedia(String key) async {
+    StorageUploadTask uploadTask;
+    if (mediaType == 1)
+      uploadTask =
+          FirebaseStorage.instance.ref().child('IMG_$key.jpg').putFile(media);
+    else if (mediaType == 2)
+      uploadTask =
+          FirebaseStorage.instance.ref().child('VID_$key.mp4').putFile(media);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     mediaURL = await storageSnap.ref.getDownloadURL();
+    debugPrint("success 4!");
     return mediaURL;
   }
 
@@ -379,51 +419,89 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   _imageFromGallery() async {
-    final file = await ImagePicker.pickImage(
+    final file = await ImagePicker().getImage(
         source: ImageSource.gallery,
         maxHeight: 600,
         maxWidth: 600,
         imageQuality: 85);
     if (file == null) return null;
-    photoURI = file.uri.toString();
-    image = file;
-    debugPrint(photoURI);
+    media = new File(file.path);
     setState(() {
       noticeText = "Image selected for upload!";
+      mediaType = 1;
     });
-    return file.uri.toString();
   }
 
   _imageFromCamera() async {
-    final file = await ImagePicker.pickImage(
+    final file = await ImagePicker().getImage(
         source: ImageSource.camera,
         maxHeight: 600,
         maxWidth: 600,
         imageQuality: 85);
     if (file == null) return null;
-    photoURI = file.uri.toString();
-    image = file;
-    debugPrint(photoURI);
+    media = new File(file.path);
     setState(() {
       noticeText = "Image selected for upload!";
+      mediaType = 1;
     });
-    return file.uri.toString();
   }
 
-  selectVideo() async {}
+  _showVideoPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+              child: Container(
+                  child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.video_library),
+                title: Text('From Gallery'),
+                onTap: () {
+                  _videoFromGallery();
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.videocam),
+                title: Text('Camera'),
+                onTap: () {
+                  _videoFromCamera();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          )));
+        });
+  }
+
+  _videoFromGallery() async {
+    final file = await ImagePicker().getVideo(
+      source: ImageSource.gallery,
+      maxDuration: Duration(seconds: 30),
+    );
+    if (file == null) return null;
+    media = new File(file.path);
+    setState(() {
+      noticeText = "Video selected for upload!";
+      mediaType = 2;
+    });
+  }
+
+  _videoFromCamera() async {
+    final file = await ImagePicker().getVideo(
+      source: ImageSource.camera,
+      maxDuration: Duration(seconds: 30),
+    );
+    if (file == null) return null;
+    media = new File(file.path);
+    setState(() {
+      noticeText = "Video selected for upload!";
+      mediaType = 2;
+    });
+  }
 
   viewPost() {}
-
-  // compressImage(String key) async {
-  //   final tempDir = await getTemporaryDirectory();
-  //   final path = tempDir.path;
-  //   Im.Image imageFile = Im.decodeImage(image.readAsBytesSync());
-  //   final compressedImageFile = File('$path/img_$key.jpg')
-  //     ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
-  //   setState(() {
-  //     image = compressedImageFile;
-  //   });
-  // }
 }
 
 class CheckBoxData {
