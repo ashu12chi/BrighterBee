@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 
@@ -15,6 +16,7 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   ZefyrController _controller;
+  TextEditingController titleController = TextEditingController();
   FocusNode _focusNode;
   String displayName = 'Nishchal Siddharth';
   String username = 'nisiddharth';
@@ -116,8 +118,9 @@ class _CreatePostState extends State<CreatePost> {
               ],
             ),
             TextFormField(
+              controller: titleController,
               decoration: InputDecoration(
-                hintText: 'Title',
+                hintText: 'Enter title here',
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Theme.of(context).accentColor),
@@ -145,7 +148,9 @@ class _CreatePostState extends State<CreatePost> {
                 Spacer(),
                 IconButton(
                   icon: Icon(Icons.image),
-                  onPressed: selectImage,
+                  onPressed: () {
+                    _showImagePicker(context);
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.video_call),
@@ -244,6 +249,15 @@ class _CreatePostState extends State<CreatePost> {
       ));
       return false;
     }
+    String title = titleController.text;
+    if (title.length == 0) {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('Title in empty.'),
+      ));
+      return false;
+    }
     String content = jsonEncode(_controller.document);
     if (content.length == 0) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
@@ -258,19 +272,20 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   addToDatabase() {
-    String key = DateTime.now().millisecondsSinceEpoch.toString();
+    var time = DateTime.now().millisecondsSinceEpoch;
+    String key = time.toString();
     final instance = FirebaseFirestore.instance;
     instance.collection('posts').doc(key).set({
       "creator": username,
       "mediaUrl": null,
-      "title": "DemoTitle",
+      "title": titleController.text,
       "content": jsonEncode(_controller.document),
       "upvote": 0,
       "downvote": 0,
       "views": 0,
-      "time": key
+      "time": time
     }).then((action) {
-      print("success 1!");
+      debugPrint("success 1!");
 
       String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
 
@@ -278,7 +293,7 @@ class _CreatePostState extends State<CreatePost> {
           .collection("users/" + username + "/posts")
           .doc(key)
           .set({}).then((value) {
-        print("success 3!");
+        debugPrint("success 3!");
         viewPost();
       });
 
@@ -287,7 +302,7 @@ class _CreatePostState extends State<CreatePost> {
             .collection("communities/" + element + "/" + date)
             .doc(key)
             .set({}).then((value) {
-          print("success 2!");
+          debugPrint("success 2!");
         });
       });
     });
@@ -295,9 +310,52 @@ class _CreatePostState extends State<CreatePost> {
 
   viewPost() {}
 
-  selectImage() {}
+  _showImagePicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.photo_library),
+                    title: Text('From Gallery'),
+                    onTap: () {
+                      _imageFromGallery();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.photo_camera),
+                    title: Text('Camera'),
+                    onTap: () {
+                      _imageFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            )
+          );
+        }
+    );
+  }
 
-  selectVideo() {}
+  _imageFromGallery() async {
+    final file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (file == null) return null;
+    return file.uri.toString();
+  }
+
+  _imageFromCamera() async {
+    final file = await ImagePicker.pickImage(source: ImageSource.camera);
+    if (file == null) return null;
+    return file.uri.toString();
+  }
+
+  selectVideo() async {
+  }
 }
 
 class CheckBoxData {
