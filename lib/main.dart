@@ -1,9 +1,8 @@
-import 'package:brighter_bee/Authentication/firebaseAuthDemo.dart';
 import 'package:brighter_bee/app_screens/create_post.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-Future<void> main()async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -23,7 +22,10 @@ class _MyAppState extends State<MyApp> {
           accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
                 color: Colors.white,
               ),
-          accentColor: Colors.black,
+          textSelectionColor: Colors.blue,
+          textSelectionHandleColor: Colors.blue,
+          buttonColor: Colors.black,
+          accentColor: Colors.blue,
           primaryColor: Colors.white,
           primaryTextTheme: Theme.of(context)
               .primaryTextTheme
@@ -32,12 +34,16 @@ class _MyAppState extends State<MyApp> {
           accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
                 color: Colors.white,
               ),
-          accentColor: Colors.white,
+          textSelectionColor: Colors.blue,
+          textSelectionHandleColor: Colors.blue,
+          buttonColor: Colors.white,
+          accentColor: Colors.blue,
           primaryColor: Colors.black,
           primaryTextTheme: Theme.of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.white)),
-      home: FirebaseAuthDemo(),
+      // home: FirebaseAuthDemo(),
+      home: CreatePost(),
     );
   }
 }

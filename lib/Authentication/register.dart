@@ -17,6 +17,7 @@ class _RegisterState extends State<Register> {
 
   bool _isSuccess;
   String _userEmail;
+
   @override
   void dispose() {
     _emailController.dispose();

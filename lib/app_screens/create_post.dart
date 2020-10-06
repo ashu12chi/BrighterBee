@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:brighter_bee/app_screens/full_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
@@ -64,7 +65,7 @@ class _CreatePostState extends State<CreatePost> {
         hintText: 'Enter text Here...',
         border: OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).accentColor),
+          borderSide: BorderSide(color: Theme.of(context).buttonColor),
         ),
       ),
     );
@@ -131,7 +132,7 @@ class _CreatePostState extends State<CreatePost> {
                 hintText: 'Enter title here',
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                  borderSide: BorderSide(color: Theme.of(context).buttonColor),
                 ),
               ),
             ),
@@ -141,10 +142,10 @@ class _CreatePostState extends State<CreatePost> {
                 child: editor,
               ),
             ),
-            createBottomBar(),
           ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(child: createBottomBar()),
     );
   }
 
@@ -261,7 +262,7 @@ class _CreatePostState extends State<CreatePost> {
                                     data.checked = !data.checked;
                                   });
                                 },
-                                activeColor: Theme.of(context).accentColor,
+                                activeColor: Theme.of(context).buttonColor,
                                 checkColor: Theme.of(context).primaryColor,
                               ),
                             ],
@@ -356,7 +357,6 @@ class _CreatePostState extends State<CreatePost> {
           .doc(key)
           .set({}).then((value) {
         debugPrint("success 2!");
-        viewPost();
       });
 
       selected.forEach((element) {
@@ -370,6 +370,7 @@ class _CreatePostState extends State<CreatePost> {
             behavior: SnackBarBehavior.floating,
             content: Text('Upload complete!'),
           ));
+          viewPost();
         });
       });
     });
@@ -501,7 +502,12 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
-  viewPost() {}
+  viewPost() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FullPost()),
+    );
+  }
 }
 
 class CheckBoxData {

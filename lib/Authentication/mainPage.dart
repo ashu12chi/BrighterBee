@@ -7,6 +7,7 @@ class MainPage extends StatefulWidget {
   final User user;
 
   const MainPage({Key key, this.user}) : super(key: key);
+
   @override
   _MainPageState createState() => _MainPageState();
 }
