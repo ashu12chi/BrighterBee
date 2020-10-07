@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Post {
   final String creator, mediaUrl, title, content, key;
   final int upvote, downvote, views, time, mediaType;
+  final Set communities;
 
   Post(
       {this.creator,
@@ -14,7 +15,8 @@ class Post {
       this.views,
       this.time,
       this.key,
-      this.mediaType});
+      this.mediaType,
+      this.communities});
 
   factory Post.fromDocument(DocumentSnapshot doc) {
     return Post(
@@ -28,6 +30,7 @@ class Post {
       time: doc['time'],
       key: doc['key'],
       mediaType: doc['mediaType'],
+      communities: doc['communities'],
     );
   }
 }

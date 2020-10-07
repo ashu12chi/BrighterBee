@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:brighter_bee/app_screens/full_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
@@ -30,7 +31,7 @@ class _CreatePostState extends State<CreatePost> {
   File media;
   QuerySnapshot result;
   List<CheckBoxData> checkboxDataList = [];
-  Set selected;
+  List selected;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -50,7 +51,7 @@ class _CreatePostState extends State<CreatePost> {
           id: i.toString(), displayId: element.id, checked: false));
       ++i;
     });
-    selected = new Set();
+    selected = List();
   }
 
   @override
@@ -64,7 +65,7 @@ class _CreatePostState extends State<CreatePost> {
         hintText: 'Enter text Here...',
         border: OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).accentColor),
+          borderSide: BorderSide(color: Theme.of(context).buttonColor),
         ),
       ),
     );
@@ -131,7 +132,7 @@ class _CreatePostState extends State<CreatePost> {
                 hintText: 'Enter title here',
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                  borderSide: BorderSide(color: Theme.of(context).buttonColor),
                 ),
               ),
             ),
@@ -141,10 +142,10 @@ class _CreatePostState extends State<CreatePost> {
                 child: editor,
               ),
             ),
-            createBottomBar(),
           ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(child: createBottomBar()),
     );
   }
 
@@ -261,7 +262,7 @@ class _CreatePostState extends State<CreatePost> {
                                     data.checked = !data.checked;
                                   });
                                 },
-                                activeColor: Theme.of(context).accentColor,
+                                activeColor: Theme.of(context).buttonColor,
                                 checkColor: Theme.of(context).primaryColor,
                               ),
                             ],
@@ -346,31 +347,51 @@ class _CreatePostState extends State<CreatePost> {
       "upvote": 0,
       "downvote": 0,
       "views": 0,
-      "time": time
+      "time": time,
+      "communities": selected
     }).then((action) {
       debugPrint("success 1!");
       String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
 
-      instance
-          .collection("users/" + username + "/posts")
-          .doc(key)
-          .set({}).then((value) {
+      instance.collection("users").doc(username).update({
+        "posts": FieldValue.arrayUnion([key])
+      }).then((value) {
         debugPrint("success 2!");
-        viewPost();
-      });
 
-      selected.forEach((element) {
-        instance
-            .collection("communities/" + element + "/" + date)
-            .doc(key)
-            .set({}).then((value) {
-          debugPrint("success 3!");
-          _scaffoldKey.currentState.hideCurrentSnackBar();
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text('Upload complete!'),
-          ));
+        selected.forEach((element) async {
+          var doc = await instance
+              .collection("communities/" + element + "/" + date)
+              .doc('posts')
+              .get();
+          if (doc.exists) {
+            instance
+                .collection("communities/" + element + "/" + date)
+                .doc('posts')
+                .update({
+              "posts": FieldValue.arrayUnion([key])
+            }).then((value) {
+              debugPrint("success 3!");
+              _scaffoldKey.currentState.hideCurrentSnackBar();
+              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text('Upload complete!'),
+              ));
+            });
+          } else {
+            instance
+                .collection("communities/" + element + "/" + date)
+                .doc('posts')
+                .set({"posts": [key]}).then((value) {
+              debugPrint("success 3!");
+              _scaffoldKey.currentState.hideCurrentSnackBar();
+              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text('Upload complete!'),
+              ));
+            });
+          }
         });
+        // viewPost();
       });
     });
   }
@@ -501,7 +522,12 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
-  viewPost() {}
+  viewPost() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FullPost()),
+    );
+  }
 }
 
 class CheckBoxData {
