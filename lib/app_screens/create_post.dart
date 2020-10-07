@@ -334,64 +334,40 @@ class _CreatePostState extends State<CreatePost> {
   addToDatabase() async {
     var time = DateTime.now().millisecondsSinceEpoch;
     String key = time.toString();
+    String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
     final instance = FirebaseFirestore.instance;
     mediaURL = null;
     if (mediaType != 0) await uploadMedia(key);
-    instance.collection('posts').doc(key).set({
-      "creator": username,
-      "mediaType": mediaType,
-      "mediaUrl": mediaURL,
-      "key": key,
-      "title": titleController.text,
-      "content": jsonEncode(_controller.document),
-      "upvote": 0,
-      "downvote": 0,
-      "views": 0,
-      "time": time,
-      "communities": selected
-    }).then((action) {
-      debugPrint("success 1!");
-      String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
 
-      instance.collection("users").doc(username).update({
-        "posts": FieldValue.arrayUnion([key])
-      }).then((value) {
-        debugPrint("success 2!");
+    selected.forEach((community) {
+      instance
+          .collection('communities/$community/posts/posted/$date')
+          .doc(key)
+          .set({
+        "creator": username,
+        "mediaType": mediaType,
+        "mediaUrl": mediaURL,
+        "key": key,
+        "title": titleController.text,
+        "content": jsonEncode(_controller.document),
+        "upvotes": 0,
+        "views": 0,
+        "time": time,
+        "upvoters": [],
+        "downvoters": [],
+      }).then((action) {
+        debugPrint("successful posting in community!");
 
-        selected.forEach((element) async {
-          var doc = await instance
-              .collection("communities/" + element + "/" + date)
-              .doc('posts')
-              .get();
-          if (doc.exists) {
-            instance
-                .collection("communities/" + element + "/" + date)
-                .doc('posts')
-                .update({
-              "posts": FieldValue.arrayUnion([key])
-            }).then((value) {
-              debugPrint("success 3!");
-              _scaffoldKey.currentState.hideCurrentSnackBar();
-              _scaffoldKey.currentState.showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text('Upload complete!'),
-              ));
-            });
-          } else {
-            instance
-                .collection("communities/" + element + "/" + date)
-                .doc('posts')
-                .set({"posts": [key]}).then((value) {
-              debugPrint("success 3!");
-              _scaffoldKey.currentState.hideCurrentSnackBar();
-              _scaffoldKey.currentState.showSnackBar(SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text('Upload complete!'),
-              ));
-            });
-          }
+        instance.collection('users/$username/posts').doc('posted').update({
+          community: FieldValue.arrayUnion([key])
+        }).then((value) {
+          debugPrint('successful posting in user');
+          _scaffoldKey.currentState.hideCurrentSnackBar();
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text('Upload complete!'),
+          ));
         });
-        // viewPost();
       });
     });
   }
@@ -406,7 +382,7 @@ class _CreatePostState extends State<CreatePost> {
           FirebaseStorage.instance.ref().child('VID_$key.mp4').putFile(media);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     mediaURL = await storageSnap.ref.getDownloadURL();
-    debugPrint("success 4!");
+    debugPrint("successful media upload!");
     return mediaURL;
   }
 
