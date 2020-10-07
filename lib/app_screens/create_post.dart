@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:brighter_bee/app_screens/full_post.dart';
+import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
@@ -9,10 +9,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
-import 'package:image/image.dart' as Im;
 
 class CreatePost extends StatefulWidget {
   @override
@@ -32,7 +30,7 @@ class _CreatePostState extends State<CreatePost> {
   QuerySnapshot result;
   List<CheckBoxData> checkboxDataList = [];
   List selected;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Future<void> initState() {
@@ -47,7 +45,7 @@ class _CreatePostState extends State<CreatePost> {
     final List<DocumentSnapshot> documents = result.docs;
     int i = 0;
     documents.forEach((element) {
-      checkboxDataList.add(new CheckBoxData(
+      checkboxDataList.add(CheckBoxData(
           id: i.toString(), displayId: element.id, checked: false));
       ++i;
     });
@@ -56,7 +54,7 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
-    final editor = new ZefyrField(
+    final editor = ZefyrField(
       focusNode: _focusNode,
       controller: _controller,
       imageDelegate: MyAppZefyrImageDelegate(),
@@ -210,18 +208,18 @@ class _CreatePostState extends State<CreatePost> {
 
   showCommunities() {
     if (checkboxDataList.length == 0) {
-      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
         duration: Duration(hours: 1),
-        content: new Row(
+        content: Row(
           children: <Widget>[
-            new CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
             ),
             SizedBox(
               width: 15,
             ),
-            new Text("Populating List...")
+            Text("Populating List...")
           ],
         ),
       ));
@@ -312,18 +310,18 @@ class _CreatePostState extends State<CreatePost> {
       ));
       return false;
     }
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
       behavior: SnackBarBehavior.floating,
       duration: Duration(hours: 1),
-      content: new Row(
+      content: Row(
         children: <Widget>[
-          new CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
           ),
           SizedBox(
             width: 15,
           ),
-          new Text("Uploading...")
+          Text("Uploading...")
         ],
       ),
     ));
@@ -351,6 +349,7 @@ class _CreatePostState extends State<CreatePost> {
         "title": titleController.text,
         "content": jsonEncode(_controller.document),
         "upvotes": 0,
+        "downvotes": 0,
         "views": 0,
         "time": time,
         "upvoters": [],
@@ -422,7 +421,7 @@ class _CreatePostState extends State<CreatePost> {
         maxWidth: 600,
         imageQuality: 85);
     if (file == null) return null;
-    media = new File(file.path);
+    media = File(file.path);
     setState(() {
       noticeText = "Image selected for upload!";
       mediaType = 1;
@@ -436,7 +435,7 @@ class _CreatePostState extends State<CreatePost> {
         maxWidth: 600,
         imageQuality: 85);
     if (file == null) return null;
-    media = new File(file.path);
+    media = File(file.path);
     setState(() {
       noticeText = "Image selected for upload!";
       mediaType = 1;
@@ -478,7 +477,7 @@ class _CreatePostState extends State<CreatePost> {
       maxDuration: Duration(seconds: 30),
     );
     if (file == null) return null;
-    media = new File(file.path);
+    media = File(file.path);
     setState(() {
       noticeText = "Video selected for upload!";
       mediaType = 2;
@@ -491,7 +490,7 @@ class _CreatePostState extends State<CreatePost> {
       maxDuration: Duration(seconds: 30),
     );
     if (file == null) return null;
-    media = new File(file.path);
+    media = File(file.path);
     setState(() {
       noticeText = "Video selected for upload!";
       mediaType = 2;
@@ -501,7 +500,7 @@ class _CreatePostState extends State<CreatePost> {
   viewPost() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FullPost()),
+      MaterialPageRoute(builder: (context) => PostUI()),
     );
   }
 }
