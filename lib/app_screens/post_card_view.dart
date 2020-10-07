@@ -6,8 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quill_delta/quill_delta.dart';
-import 'package:thumbnails/thumbnails.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostUI extends StatefulWidget {
@@ -218,17 +216,6 @@ class _PostState extends State<PostUI> {
   NotusDocument _loadDocument() {
     final Delta delta = Delta()..insert("ashu12_chi\nThis is a sample post\n");
     return NotusDocument.fromDelta(delta);
-  }
-
-  _getImage(videoPathUrl) async {
-    var appDocDir = await getApplicationDocumentsDirectory();
-    final folderPath = appDocDir.path;
-    String thumb = await Thumbnails.getThumbnail(
-        thumbnailFolder: folderPath,
-        videoFile: videoPathUrl,
-        imageType: ThumbFormat.PNG,//this image will store in created folderpath
-        quality: 30);
-    return thumb;
   }
 
 }
