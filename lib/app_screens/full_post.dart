@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
@@ -13,44 +14,37 @@ class FullPost extends StatefulWidget {
 }
 
 class _FullPost extends State<FullPost> {
-  ZefyrController _controller;
   TextEditingController titleController = TextEditingController();
-  FocusNode _focusNode;
   String displayName = 'Nishchal Siddharth';
   String username = 'nisiddharth';
-  String noticeText = "Add media to your post";
   String mediaURL;
   int mediaType = 0; // 0 for none, 1 for image, 2 for video
   File media;
+  String key = "1601924732454";
   QuerySnapshot result;
   Set selected;
+  NotusDocument document;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Future<void> initState() {
     super.initState();
-    final document = _loadDocument();
-    _controller = ZefyrController(document);
-    _focusNode = FocusNode();
+    _loadDocument().then((doc) {
+      setState(() {
+        document = doc;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final editor = new ZefyrField(
-      focusNode: _focusNode,
-      controller: _controller,
-      imageDelegate: MyAppZefyrImageDelegate(),
-      autofocus: false,
-      decoration: InputDecoration(
-        hintText: 'Enter text Here...',
-        border: OutlineInputBorder(),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).accentColor),
-        ),
-      ),
-    );
-
     Firebase.initializeApp();
+
+    final view = new ZefyrView(
+      imageDelegate: MyAppZefyrImageDelegate(),
+      document: document,
+
+    );
 
     return Scaffold(
       key: _scaffoldKey,
@@ -74,7 +68,7 @@ class _FullPost extends State<FullPost> {
             Row(
               children: <Widget>[
                 CircleAvatar(
-                  radius: 30.0,
+                  radius: 15.0,
                   backgroundColor: Colors.grey,
                 ),
                 Padding(
@@ -86,37 +80,18 @@ class _FullPost extends State<FullPost> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18.0),
                       ),
-                      MaterialButton(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.people),
-                              Text('Communities'),
-                              Icon(Icons.arrow_drop_down)
-                            ],
-                          ),
-                          textColor: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              side: BorderSide(color: Colors.grey))),
                     ],
                   ),
                 )
               ],
             ),
-            TextFormField(
-              controller: titleController,
-              decoration: InputDecoration(
-                hintText: 'Enter title here',
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).accentColor),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
+            Text('Enter title here',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             Expanded(
-              child: ZefyrScaffold(
-                child: editor,
+              child: (document == null)
+              ? Center(child: CircularProgressIndicator())
+              : ZefyrScaffold(
+                child: view,
               ),
             ),
           ],
@@ -125,8 +100,10 @@ class _FullPost extends State<FullPost> {
     );
   }
 
-  NotusDocument _loadDocument() {
-    final Delta delta = Delta()..insert("\n");
-    return NotusDocument.fromDelta(delta);
+  Future<NotusDocument> _loadDocument() async {
+    String s = "[{\"insert\":\"Attention\",\"attributes\":{\"b\":true}},{\"insert\":\"\\n\",\"attributes\":{\"heading\":1}},{\"insert\":\"You've been runnin' round, runnin' round, runnin' round throwin' that dirt all on my name\\n'Cause you knew that I, knew that I, knew that I'd call you up\\nYou've been going round, going round, going round every party in L.A.\\n'Cause you knew that I, knew that I, knew that I'd be at one, oh\\nI know that dress is karma, perfume regret\"},{\"insert\":\"\\n\",\"attributes\":{\"block\":\"quote\"}},{\"insert\":\"You got me thinking 'bout when you were mine, oh\\nAnd now I'm all up on ya, what you expect?\\nBut you're not coming home with me tonight\\nYou just want attention, you don't want my heart\\nMaybe you just hate the thought of me with someone new\\nYeah, you just want attention, I knew from the start\\nYou're just making sure I'm never gettin' over you\\n\\n-\"},{\"insert\":\" Charlie Puth\",\"attributes\":{\"i\":true}},{\"insert\":\"\\n\"}]";
+    // final Delta delta = Delta()..insert("\n");
+    // return document = NotusDocument.fromDelta(delta);
+    return NotusDocument.fromJson(jsonDecode(s));
   }
 }
