@@ -53,10 +53,22 @@ class _PostState extends State<PostUI> {
             if (mediaType > 0) mediaUrl = snapshot.data['mediaUrl'];
             print(mediaUrl);
             String content = snapshot.data['content'];
-            final document1 = NotusDocument.fromJson(jsonDecode(content));
+            NotusDocument document =
+                NotusDocument.fromJson(jsonDecode(content));
             String date = formatDate(DateTime.fromMillisecondsSinceEpoch(time),
                 [yyyy, '-', mm, '-', dd]);
             debugPrint(date);
+
+            // ZefyrController _controller = ZefyrController(document);
+            // FocusNode _focusNode = FocusNode();
+            // ZefyrField editor = ZefyrField(
+            //   focusNode: _focusNode,
+            //   controller: _controller,
+            //   imageDelegate: MyAppZefyrImageDelegate(),
+            //   autofocus: false,
+            //   mode: ZefyrMode.view,
+            //   physics: NeverScrollableScrollPhysics(),
+            // );
 
             return StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -142,25 +154,31 @@ class _PostState extends State<PostUI> {
                                   right: 15, left: 15, bottom: 15),
                               child: Column(children: <Widget>[
                                 ZefyrView(
-                                  document: document1,
+                                  document: document,
                                   imageDelegate: MyAppZefyrImageDelegate(),
                                 ),
+                                // Container(
+                                //   height: 700,
+                                //   child: ZefyrScaffold(
+                                //     child: editor,
+                                //   ),
+                                // ),
                                 mediaType == 0
                                     ? Container(
-                                        child: Row(
-                                        children: <Widget>[
-                                          CircularProgressIndicator(
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.grey),
-                                          ),
-                                          SizedBox(
-                                            width: 15,
-                                          ),
-                                          Text(
-                                              'Loading media... Please Wait...')
-                                        ],
-                                      ))
+                                    child: Row(
+                                      children: <Widget>[
+                                        CircularProgressIndicator(
+                                          valueColor:
+                                          new AlwaysStoppedAnimation<
+                                              Color>(Colors.grey),
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Text(
+                                            'Loading media... Please Wait...')
+                                      ],
+                                    ))
                                     : Image.network(
                                         mediaUrl,
                                         width: double.infinity,
