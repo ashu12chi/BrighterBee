@@ -39,7 +39,6 @@ class _PostState extends State<PostUI> {
                   Text('Loading data... Please Wait...')
                 ],
               );
-            ;
             print(snapshot.data['creator']);
             String community = 'Computing';
             String name = snapshot.data['creator'];
@@ -165,20 +164,32 @@ class _PostState extends State<PostUI> {
                                 // ),
                                 mediaType == 0
                                     ? Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        CircularProgressIndicator(
-                                          valueColor:
-                                          new AlwaysStoppedAnimation<
-                                              Color>(Colors.grey),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                            'Loading media... Please Wait...')
-                                      ],
-                                    ))
+                                        child: Row(
+                                        children: <Widget>[
+                                          CircularProgressIndicator(
+                                            valueColor:
+                                                new AlwaysStoppedAnimation<
+                                                    Color>(Colors.grey),
+                                          ),
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              CircularProgressIndicator(
+                                                valueColor:
+                                                    new AlwaysStoppedAnimation<
+                                                        Color>(Colors.grey),
+                                              ),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Text(
+                                                  'Loading data... Please Wait...')
+                                            ],
+                                          ),
+                                        ],
+                                      ))
                                     : Image.network(
                                         mediaUrl,
                                         width: double.infinity,
@@ -194,6 +205,7 @@ class _PostState extends State<PostUI> {
                                 style: TextStyle(fontSize: 15),
                               ),
                               IconButton(
+                                onPressed: upvote,
                                 icon: Icon(Icons.arrow_upward),
                               ),
                               Text(
@@ -201,6 +213,7 @@ class _PostState extends State<PostUI> {
                                 style: TextStyle(fontSize: 15),
                               ),
                               IconButton(
+                                onPressed: downvote,
                                 icon: Icon(Icons.arrow_downward),
                               ),
                               Text(
@@ -228,14 +241,22 @@ class _PostState extends State<PostUI> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5),
                                     side: BorderSide(
-                                        color: Theme.of(context).buttonColor)),
+                                        color: Theme
+                                            .of(context)
+                                            .buttonColor)),
                               ),
                             ],
                           ))
                     ],
-                  ));
+                      ));
                 });
           }),
     );
   }
+
+  upvote() {
+    debugPrint('Upvoted!');
+  }
+
+  downvote() {}
 }

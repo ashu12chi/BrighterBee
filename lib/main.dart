@@ -1,6 +1,7 @@
-import 'package:brighter_bee/app_screens/post_card_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'app_screens/post_ui.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
