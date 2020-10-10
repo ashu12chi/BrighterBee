@@ -336,7 +336,12 @@ class _CreatePostState extends State<CreatePost> {
     final instance = FirebaseFirestore.instance;
     mediaURL = null;
     if (mediaType != 0) await uploadMedia(key);
-
+    List<String> titleSearchList = List();
+    String temp = "";
+    for (int i = 0; i < titleController.text.length; i++) {
+      temp = temp + titleController.text[i];
+      titleSearchList.add(temp);
+    }
     selected.forEach((community) {
       instance
           .collection('communities/$community/posts/posted/$date')
@@ -352,6 +357,7 @@ class _CreatePostState extends State<CreatePost> {
         "time": time,
         "upvoters": [],
         "downvoters": [],
+        "titleSearch":titleSearchList
       }).then((action) {
         debugPrint("successful posting in community!");
 
