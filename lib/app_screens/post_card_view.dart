@@ -53,9 +53,11 @@ class _PostState extends State<PostCardView> {
             print(snapshot.data);
             String name = snapshot.data['creator'];
             int mediaType = snapshot.data['mediaType'];
-            int views = snapshot.data['views'];
-            int downvotes = snapshot.data['downvotes'];
-            int upvotes = snapshot.data['upvotes'];
+            int views = snapshot.data['viewers'].length;
+            int downvotes = snapshot.data['downvoters'].length;
+            int upvotes = snapshot.data['upvoters'].length;
+            bool upvoted = snapshot.data['upvoters'].contains(username);
+            bool downvoted = snapshot.data['downvoters'].contains(username);
             String title = snapshot.data['title'];
             String mediaUrl =
                 'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
@@ -64,17 +66,7 @@ class _PostState extends State<PostCardView> {
             String dateLong = formatDate(
                 DateTime.fromMillisecondsSinceEpoch(time),
                 [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn]);
-            print(name);
-            print(mediaType);
-            print(dateLong);
-            print(views);
-            print(mediaType);
-            print(mediaUrl);
-            print(title);
-            print(upvotes);
-            print(downvotes);
             String content = snapshot.data['content'];
-            print(jsonDecode(content));
             final document1 = NotusDocument.fromJson(jsonDecode(content));
             print(document1);
             final editor = new ZefyrEditor(
@@ -96,7 +88,7 @@ class _PostState extends State<PostCardView> {
                       children: <Widget>[
                         CircularProgressIndicator(
                           valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.grey),
+                              new AlwaysStoppedAnimation<Color>(Colors.grey),
                         ),
                         SizedBox(
                           width: 15,
@@ -210,27 +202,64 @@ class _PostState extends State<PostCardView> {
                                       children: <Widget>[
                                         Text(
                                           upvotes.toString(),
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: (upvoted
+                                                ? Theme
+                                                .of(context)
+                                                .accentColor
+                                                : Theme
+                                                .of(context)
+                                                .buttonColor),
+                                          ),
                                         ),
                                         IconButton(
+                                          onPressed: () {
+                                            upvote(community, date, key,
+                                                username, upvoted, downvoted);
+                                          },
                                           icon: Icon(Icons.arrow_upward),
-                                          onPressed: upvote,
+                                          color: (upvoted
+                                              ? Theme
+                                              .of(context)
+                                              .accentColor
+                                              : Theme
+                                              .of(context)
+                                              .buttonColor),
                                         ),
                                         Text(
                                           downvotes.toString(),
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: (downvoted
+                                                ? Theme
+                                                .of(context)
+                                                .accentColor
+                                                : Theme
+                                                .of(context)
+                                                .buttonColor),
+                                          ),
                                         ),
                                         IconButton(
+                                          onPressed: () {
+                                            downvote(community, date, key,
+                                                username, upvoted, downvoted);
+                                          },
                                           icon: Icon(Icons.arrow_downward),
-                                          onPressed: downvote,
+                                          color: (downvoted
+                                              ? Theme
+                                              .of(context)
+                                              .accentColor
+                                              : Theme
+                                              .of(context)
+                                              .buttonColor),
                                         ),
                                         Text(
                                           views.toString(),
                                           style: TextStyle(fontSize: 15),
                                         ),
-                                        IconButton(
-                                          icon: Icon(Icons.remove_red_eye),
-                                        ),
+                                        SizedBox(width: 10),
+                                        Icon(Icons.remove_red_eye),
                                         Spacer(),
                                         Padding(
                                           padding: const EdgeInsets.only(
@@ -273,12 +302,114 @@ class _PostState extends State<PostCardView> {
     return NotusDocument.fromDelta(delta);
   }
 
-  upvote() {
+  upvote(String community, String date, String key, String username,
+      bool upvoted, bool downvoted) async {
+    if (upvoted) {
+      await undoUpvote(community, date, key, username, upvoted, downvoted);
+      return;
+    }
+    if (downvoted) {
+      await undoDownvote(community, date, key, username, upvoted, downvoted);
+      // return;
+    }
+    FirebaseFirestore instance = FirebaseFirestore.instance;
+    await instance.runTransaction((transaction) async {
+      DocumentReference postRef = instance
+          .collection('communities/$community/posts/posted/$date')
+          .doc(key);
+      DocumentSnapshot snapshot = await transaction.get(postRef);
+      // int upvotesCount = snapshot.data()['upvotes'];
+      await transaction.update(postRef, {
+        // 'upvotes': upvotesCount + 1,
+        'upvoters': FieldValue.arrayUnion([username])
+      });
+
+      await instance.collection('users/$username/posts').doc('upvoted').update({
+        community: FieldValue.arrayUnion([key])
+      });
+    });
+
     debugPrint('Upvoted!');
   }
 
-  downvote() {
+  downvote(String community, String date, String key, String username,
+      bool upvoted, bool downvoted) async {
+    if (downvoted) {
+      undoDownvote(community, date, key, username, upvoted, downvoted);
+      return;
+    }
+    if (upvoted) {
+      await undoUpvote(community, date, key, username, upvoted, downvoted);
+      // return;
+    }
+    FirebaseFirestore instance = FirebaseFirestore.instance;
+    await instance.runTransaction((transaction) async {
+      DocumentReference postRef = instance
+          .collection('communities/$community/posts/posted/$date')
+          .doc(key);
+      DocumentSnapshot snapshot = await transaction.get(postRef);
+      // int downvotesCount = snapshot.data()['downvotes'];
+      await transaction.update(postRef, {
+        // 'downvotes': downvotesCount + 1,
+        'downvoters': FieldValue.arrayUnion([username])
+      });
+
+      await instance
+          .collection('users/$username/posts')
+          .doc('downvoted')
+          .update({
+        community: FieldValue.arrayUnion([key])
+      });
+    });
+
     debugPrint('Downvoted!');
+  }
+
+  undoUpvote(String community, String date, String key, String username,
+      bool upvoted, bool downvoted) async {
+    FirebaseFirestore instance = FirebaseFirestore.instance;
+    await instance.runTransaction((transaction) async {
+      DocumentReference postRef = instance
+          .collection('communities/$community/posts/posted/$date')
+          .doc(key);
+      DocumentSnapshot snapshot = await transaction.get(postRef);
+      // int upvotesCount = snapshot.data()['upvotes'];
+      await transaction.update(postRef, {
+        // 'upvotes': upvotesCount - 1,
+        'upvoters': FieldValue.arrayRemove([username])
+      });
+
+      await instance.collection('users/$username/posts').doc('upvoted').update({
+        community: FieldValue.arrayRemove([key])
+      });
+    });
+
+    debugPrint('Upvote undone!');
+  }
+
+  undoDownvote(String community, String date, String key, String username,
+      bool upvoted, bool downvoted) async {
+    FirebaseFirestore instance = FirebaseFirestore.instance;
+    await instance.runTransaction((transaction) async {
+      DocumentReference postRef = instance
+          .collection('communities/$community/posts/posted/$date')
+          .doc(key);
+      DocumentSnapshot snapshot = await transaction.get(postRef);
+      // int downvotesCount = snapshot.data()['downvotes'];
+      await transaction.update(postRef, {
+        // 'downvotes': downvotesCount - 1,
+        'downvoters': FieldValue.arrayRemove([username])
+      });
+
+      await instance
+          .collection('users/$username/posts')
+          .doc('downvoted')
+          .update({
+        community: FieldValue.arrayRemove([key])
+      });
+    });
+
+    debugPrint('Downvote undone!');
   }
 
   openPost() {

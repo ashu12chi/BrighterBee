@@ -1,7 +1,6 @@
+import 'package:brighter_bee/app_screens/post_card_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'app_screens/post_ui.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,24 +25,28 @@ class _MyAppState extends State<MyApp> {
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
           buttonColor: Colors.black,
-          accentColor: Colors.blue,
+          accentColor: Colors.deepOrange,
           primaryColor: Colors.white,
           primaryTextTheme: Theme.of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.black)),
       darkTheme: ThemeData.dark().copyWith(
-          accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Colors.white,
-              ),
+          accentIconTheme: Theme
+              .of(context)
+              .accentIconTheme
+              .copyWith(
+            color: Colors.white,
+          ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
           buttonColor: Colors.white,
-          accentColor: Colors.blue,
+          accentColor: Colors.deepOrange,
           primaryColor: Colors.black,
-          primaryTextTheme: Theme.of(context)
+          primaryTextTheme: Theme
+              .of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.white)),
-      home: PostUI(),
+      home: PostCardView(),
     );
   }
 }
