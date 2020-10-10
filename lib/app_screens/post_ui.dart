@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:brighter_bee/helpers/upvote_downvote.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
@@ -44,7 +45,6 @@ class _PostState extends State<PostUI> {
                   Text('Loading data... Please Wait...')
                 ],
               );
-            print(snapshot.data['creator']);
             String name = snapshot.data['creator'];
             var time = snapshot.data['time'];
             int upvotes = snapshot.data['upvoters'].length;
@@ -56,14 +56,12 @@ class _PostState extends State<PostUI> {
             bool downvoted = snapshot.data['downvoters'].contains(username);
             String mediaUrl;
             if (mediaType > 0) mediaUrl = snapshot.data['mediaUrl'];
-            print(mediaUrl);
             String content = snapshot.data['content'];
             NotusDocument document =
                 NotusDocument.fromJson(jsonDecode(content));
             String dateLong = formatDate(
                 DateTime.fromMillisecondsSinceEpoch(time),
                 [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn]);
-            debugPrint(date);
 
             // ZefyrController _controller = ZefyrController(document);
             // FocusNode _focusNode = FocusNode();
@@ -297,116 +295,6 @@ class _PostState extends State<PostUI> {
                 });
           }),
     );
-  }
-
-  upvote(String community, String date, String key, String username,
-      bool upvoted, bool downvoted) async {
-    if (upvoted) {
-      await undoUpvote(community, date, key, username, upvoted, downvoted);
-      return;
-    }
-    if (downvoted) {
-      await undoDownvote(community, date, key, username, upvoted, downvoted);
-      // return;
-    }
-    FirebaseFirestore instance = FirebaseFirestore.instance;
-    await instance.runTransaction((transaction) async {
-      DocumentReference postRef = instance
-          .collection('communities/$community/posts/posted/$date')
-          .doc(key);
-      DocumentSnapshot snapshot = await transaction.get(postRef);
-      // int upvotesCount = snapshot.data()['upvotes'];
-      await transaction.update(postRef, {
-        // 'upvotes': upvotesCount + 1,
-        'upvoters': FieldValue.arrayUnion([username])
-      });
-
-      await instance.collection('users/$username/posts').doc('upvoted').update({
-        community: FieldValue.arrayUnion([key])
-      });
-    });
-
-    debugPrint('Upvoted!');
-  }
-
-  downvote(String community, String date, String key, String username,
-      bool upvoted, bool downvoted) async {
-    if (downvoted) {
-      undoDownvote(community, date, key, username, upvoted, downvoted);
-      return;
-    }
-    if (upvoted) {
-      await undoUpvote(community, date, key, username, upvoted, downvoted);
-      // return;
-    }
-    FirebaseFirestore instance = FirebaseFirestore.instance;
-    await instance.runTransaction((transaction) async {
-      DocumentReference postRef = instance
-          .collection('communities/$community/posts/posted/$date')
-          .doc(key);
-      DocumentSnapshot snapshot = await transaction.get(postRef);
-      // int downvotesCount = snapshot.data()['downvotes'];
-      await transaction.update(postRef, {
-        // 'downvotes': downvotesCount + 1,
-        'downvoters': FieldValue.arrayUnion([username])
-      });
-
-      await instance
-          .collection('users/$username/posts')
-          .doc('downvoted')
-          .update({
-        community: FieldValue.arrayUnion([key])
-      });
-    });
-
-    debugPrint('Downvoted!');
-  }
-
-  undoUpvote(String community, String date, String key, String username,
-      bool upvoted, bool downvoted) async {
-    FirebaseFirestore instance = FirebaseFirestore.instance;
-    await instance.runTransaction((transaction) async {
-      DocumentReference postRef = instance
-          .collection('communities/$community/posts/posted/$date')
-          .doc(key);
-      DocumentSnapshot snapshot = await transaction.get(postRef);
-      // int upvotesCount = snapshot.data()['upvotes'];
-      await transaction.update(postRef, {
-        // 'upvotes': upvotesCount - 1,
-        'upvoters': FieldValue.arrayRemove([username])
-      });
-
-      await instance.collection('users/$username/posts').doc('upvoted').update({
-        community: FieldValue.arrayRemove([key])
-      });
-    });
-
-    debugPrint('Upvote undone!');
-  }
-
-  undoDownvote(String community, String date, String key, String username,
-      bool upvoted, bool downvoted) async {
-    FirebaseFirestore instance = FirebaseFirestore.instance;
-    await instance.runTransaction((transaction) async {
-      DocumentReference postRef = instance
-          .collection('communities/$community/posts/posted/$date')
-          .doc(key);
-      DocumentSnapshot snapshot = await transaction.get(postRef);
-      // int downvotesCount = snapshot.data()['downvotes'];
-      await transaction.update(postRef, {
-        // 'downvotes': downvotesCount - 1,
-        'downvoters': FieldValue.arrayRemove([username])
-      });
-
-      await instance
-          .collection('users/$username/posts')
-          .doc('downvoted')
-          .update({
-        community: FieldValue.arrayRemove([key])
-      });
-    });
-
-    debugPrint('Downvote undone!');
   }
 
   comment() {
