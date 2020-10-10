@@ -1,4 +1,4 @@
-# brighter_bee
+# BrighterBee
 
 A new Flutter application.
 
