@@ -43,7 +43,6 @@ class _MyAppState extends State<MyApp> {
           primaryTextTheme: Theme.of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.white)),
-      // home: FirebaseAuthDemo(),
       home: PostUI(),
     );
   }

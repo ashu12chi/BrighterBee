@@ -13,6 +13,11 @@ class PostCardView extends StatefulWidget {
 }
 
 class _PostState extends State<PostCardView> {
+  String community = 'Computing';
+  String key = '1602068390865';
+  String username = 'ashu12_chi';
+  String date = '2020-10-07';
+
   ZefyrController _controller;
   FocusNode _focusNode;
 
@@ -29,8 +34,8 @@ class _PostState extends State<PostCardView> {
     return Scaffold(
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('communities/Computing/posts/posted/2020-10-07')
-              .doc('1602068390865')
+              .collection('communities/$community/posts/posted/$date')
+              .doc(key)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
@@ -52,16 +57,16 @@ class _PostState extends State<PostCardView> {
             int downvotes = snapshot.data['downvotes'];
             int upvotes = snapshot.data['upvotes'];
             String title = snapshot.data['title'];
-            String community = 'Computing';
             String mediaUrl =
                 'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
             if (mediaType == 1) mediaUrl = snapshot.data['mediaUrl'];
             var time = snapshot.data['time'];
-            String date = formatDate(DateTime.fromMillisecondsSinceEpoch(time),
-                [yyyy, '-', mm, '-', dd]);
+            String dateLong = formatDate(
+                DateTime.fromMillisecondsSinceEpoch(time),
+                [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn]);
             print(name);
             print(mediaType);
-            print(date);
+            print(dateLong);
             print(views);
             print(mediaType);
             print(mediaUrl);
@@ -91,7 +96,7 @@ class _PostState extends State<PostCardView> {
                       children: <Widget>[
                         CircularProgressIndicator(
                           valueColor:
-                              new AlwaysStoppedAnimation<Color>(Colors.grey),
+                          new AlwaysStoppedAnimation<Color>(Colors.grey),
                         ),
                         SizedBox(
                           width: 15,
@@ -114,141 +119,146 @@ class _PostState extends State<PostCardView> {
                   //return Text('Loading data.. Please Wait..');
                   return Padding(
                     padding:
-                        const EdgeInsets.only(top: 30.0, left: 8.0, right: 8.0),
+                    const EdgeInsets.only(top: 30.0, left: 8.0, right: 8.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
+                            elevation: 8,
+                            child: InkWell(
+                              onTap: openPost,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
                                   children: <Widget>[
-                                    CircleAvatar(
-                                      radius: 18.0,
-                                      backgroundColor: Colors.grey,
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          radius: 18.0,
+                                          backgroundColor: Colors.grey,
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5.0),
+                                            child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  children: [
+                                                    Text(name1,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16.0)),
+                                                    Icon(Icons.arrow_right),
+                                                    Text(community,
+                                                        style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold))
+                                                  ],
+                                                ),
+                                                Text(
+                                                  dateLong,
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                )
+                                              ],
+                                            )),
+                                        Expanded(
+                                          child: IconButton(
+                                            icon: Icon(Icons.more_horiz),
+                                            alignment: Alignment.topRight,
+                                          ),
+                                        )
+                                      ],
                                     ),
                                     Padding(
-                                        padding:
-                                        const EdgeInsets.only(left: 5.0),
-                                        child: Column(
-                                          children: <Widget>[
-                                            Row(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
+                                      child: Text(
+                                        title,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 105,
+                                      child: ZefyrScaffold(
+                                        child: editor,
+                                      ),
+                                    ),
+                                    mediaType == 0
+                                        ? Container()
+                                        : Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
                                               children: [
-                                                Text(name1,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.bold,
-                                                        fontSize: 16.0)),
-                                                Icon(Icons.arrow_right),
-                                                Text(community,
-                                                    style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        fontWeight:
-                                                        FontWeight.bold))
+                                                Image.network(
+                                                  mediaUrl,
+                                                  fit: BoxFit.fill,
+                                                  height: 200,
+                                                ),
                                               ],
                                             ),
-                                            Text(
-                                              date,
-                                              style:
-                                              TextStyle(color: Colors.grey),
-                                            )
-                                          ],
-                                        )),
-                                    Expanded(
-                                      child: IconButton(
-                                        icon: Icon(Icons.more_horiz),
-                                        alignment: Alignment.topRight,
-                                      ),
+                                          ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          upvotes.toString(),
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.arrow_upward),
+                                          onPressed: upvote,
+                                        ),
+                                        Text(
+                                          downvotes.toString(),
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.arrow_downward),
+                                          onPressed: downvote,
+                                        ),
+                                        Text(
+                                          views.toString(),
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.remove_red_eye),
+                                        ),
+                                        Spacer(),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8),
+                                          child: Text(
+                                            '108',
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                        FlatButton(
+                                          onPressed: openPost,
+                                          child: Text(
+                                            'Comments',
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              side: BorderSide(
+                                                  color: Theme.of(context)
+                                                      .buttonColor)),
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8.0, bottom: 8.0),
-                                  child: Text(
-                                    title,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 105,
-                                  child: ZefyrScaffold(
-                                    child: editor,
-                                  ),
-                                ),
-                                mediaType == 0
-                                    ? Container()
-                                    : Padding(
-                                  padding:
-                                  const EdgeInsets.only(top: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.stretch,
-                                    children: [
-                                      Image.network(
-                                        mediaUrl,
-                                        fit: BoxFit.fill,
-                                        height: 200,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      upvotes.toString(),
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.arrow_upward),
-                                    ),
-                                    Text(
-                                      downvotes.toString(),
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.arrow_downward),
-                                    ),
-                                    Text(
-                                      views.toString(),
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.remove_red_eye),
-                                    ),
-                                    Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 8),
-                                      child: Text(
-                                        '108',
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ),
-                                    FlatButton(
-                                      child: Text(
-                                        'Comments',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 15),
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5),
-                                          side: BorderSide(
-                                              color: Theme
-                                                  .of(context)
-                                                  .buttonColor)),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                              ),
+                            )),
                       ],
                     ),
                   );
@@ -261,5 +271,17 @@ class _PostState extends State<PostCardView> {
     final Delta delta = Delta()
       ..insert("Loading...\n");
     return NotusDocument.fromDelta(delta);
+  }
+
+  upvote() {
+    debugPrint('Upvoted!');
+  }
+
+  downvote() {
+    debugPrint('Downvoted!');
+  }
+
+  openPost() {
+    debugPrint('Post opened!');
   }
 }
