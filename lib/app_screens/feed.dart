@@ -2,6 +2,7 @@ import 'package:brighter_bee/app_screens/communities.dart';
 import 'package:brighter_bee/app_screens/extra.dart';
 import 'package:brighter_bee/app_screens/home.dart';
 import 'package:brighter_bee/app_screens/notifications.dart';
+import 'package:brighter_bee/app_screens/post_search.dart';
 import 'package:flutter/material.dart';
 
 class Feed extends StatefulWidget {
@@ -25,8 +26,14 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search,color: Colors.grey,),
             iconSize: 30.0,
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PostSearch())
+              );
+            },
           ),
         ],
         bottom: TabBar(

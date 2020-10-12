@@ -1,4 +1,6 @@
 import 'package:brighter_bee/app_screens/create_post.dart';
+import 'package:brighter_bee/app_screens/feed.dart';
+import 'package:brighter_bee/app_screens/home.dart';
 import 'package:brighter_bee/app_screens/post_card_view.dart';
 import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -48,7 +50,7 @@ class _MyAppState extends State<MyApp> {
               .of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.white)),
-      home: CreatePost(),
+      home: Feed(),
     );
   }
 }
