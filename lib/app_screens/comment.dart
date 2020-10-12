@@ -68,11 +68,11 @@ class _Comment extends State<Comment> {
               children: [
                 Text(creator,
                     style:
-                    TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                 Icon(Icons.arrow_right),
                 Text(community,
                     style:
-                    TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold))
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold))
               ],
             ),
             Align(

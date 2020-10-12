@@ -11,9 +11,11 @@ import 'package:zefyr/zefyr.dart';
 class PostCardView extends StatefulWidget {
   String community;
   String key1;
-  PostCardView(this.community,this.key1);
+
+  PostCardView(this.community, this.key1);
+
   @override
-  _PostState createState() => _PostState(community,key1);
+  _PostState createState() => _PostState(community, key1);
 }
 
 class _PostState extends State<PostCardView> {
@@ -24,7 +26,7 @@ class _PostState extends State<PostCardView> {
 
   FocusNode _focusNode;
 
-  _PostState(this.community,this.key);
+  _PostState(this.community, this.key);
 
   @override
   void initState() {
@@ -92,7 +94,7 @@ class _PostState extends State<PostCardView> {
                       children: <Widget>[
                         CircularProgressIndicator(
                           valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.grey),
+                              new AlwaysStoppedAnimation<Color>(Colors.grey),
                         ),
                         SizedBox(
                           width: 15,
@@ -171,14 +173,19 @@ class _PostState extends State<PostCardView> {
                                         )
                                       ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8.0),
-                                      child: Text(
-                                        title,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8, bottom: 8),
+                                          child: Text(
+                                            title,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -205,15 +212,19 @@ class _PostState extends State<PostCardView> {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
                                         Text(
                                           upvotes.toString(),
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (upvoted
-                                                ? Theme.of(context).accentColor
-                                                : Theme.of(context)
+                                                ? Theme
+                                                .of(context)
+                                                .accentColor
+                                                : Theme
+                                                .of(context)
                                                 .buttonColor),
                                           ),
                                         ),
@@ -235,8 +246,11 @@ class _PostState extends State<PostCardView> {
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (downvoted
-                                                ? Theme.of(context).accentColor
-                                                : Theme.of(context)
+                                                ? Theme
+                                                .of(context)
+                                                .accentColor
+                                                : Theme
+                                                .of(context)
                                                 .buttonColor),
                                           ),
                                         ),
