@@ -242,12 +242,8 @@ class _PostState extends State<PostUI> {
                                 },
                                 icon: Icon(Icons.arrow_upward),
                                 color: (upvoted
-                                    ? Theme
-                                    .of(context)
-                                    .accentColor
-                                    : Theme
-                                    .of(context)
-                                    .buttonColor),
+                                    ? Theme.of(context).accentColor
+                                    : Theme.of(context).buttonColor),
                               ),
                               Text(
                                 downvotes.toString(),

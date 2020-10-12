@@ -28,7 +28,7 @@ class _Comment extends State<Comment> {
   String title;
   String creator;
   bool isComment;
-  TextEditingController textInputController;
+  TextEditingController textInputController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _Comment(this.community, this.dateLong, this.key, this.parentPostKey,
@@ -39,6 +39,14 @@ class _Comment extends State<Comment> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          color: Theme.of(context).buttonColor,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text(
           isComment ? 'Reply to comment' : 'Add comment',
         ),
@@ -152,8 +160,8 @@ class _Comment extends State<Comment> {
       });
     } else {
       await instance
-          .collection('collections/$community/posts')
-          .doc(key)
+          .collection('communities/$community/posts')
+          .doc(parentPostKey)
           .update({
         'comments': FieldValue.arrayUnion([commKey]),
       });
@@ -161,7 +169,7 @@ class _Comment extends State<Comment> {
     await instance.collection('users').doc(username).update({
       'comments': FieldValue.arrayUnion([commKey]),
     });
-    Navigator.pop(context);
     _scaffoldKey.currentState.hideCurrentSnackBar();
+    Navigator.pop(context);
   }
 }
