@@ -9,17 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostCardView extends StatefulWidget {
+  String community;
+  String key1;
+  PostCardView(this.community,this.key1);
   @override
-  _PostState createState() => _PostState();
+  _PostState createState() => _PostState(community,key1);
 }
 
 class _PostState extends State<PostCardView> {
-  String community = 'Computing';
-  String key = '1602488875571';
+  String community;
+  String key;
   String username = 'ashu12_chi';
   bool processing;
 
   FocusNode _focusNode;
+
+  _PostState(this.community,this.key);
 
   @override
   void initState() {

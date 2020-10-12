@@ -108,7 +108,8 @@ class _CommunityHomeState extends State<CommunityHome> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot documentSnapshot =
                     snapshot.data.docs[index];
-                    print(documentSnapshot['title']);
+                    print(documentSnapshot.id);
+                    print('112');
                       return Column(
                         children: [
                           Padding(
@@ -124,7 +125,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                                 left: 8.0, right: 8.0, top: 8.0),
                             child: SizedBox(
                               height: 530,
-                              child: PostCardView()
+                              child: PostCardView('Mathematics',documentSnapshot.id)
                             ),
                           ),
                         ],
