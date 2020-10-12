@@ -9,17 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostCardView extends StatefulWidget {
+  String community;
+  String key1;
+  PostCardView(this.community,this.key1);
   @override
-  _PostState createState() => _PostState();
+  _PostState createState() => _PostState(community,key1);
 }
 
 class _PostState extends State<PostCardView> {
-  String community = 'Computing';
-  String key = '1602488875571';
+  String community;
+  String key;
   String username = 'ashu12_chi';
   bool processing;
 
   FocusNode _focusNode;
+
+  _PostState(this.community,this.key);
 
   @override
   void initState() {
@@ -87,7 +92,7 @@ class _PostState extends State<PostCardView> {
                       children: <Widget>[
                         CircularProgressIndicator(
                           valueColor:
-                              new AlwaysStoppedAnimation<Color>(Colors.grey),
+                          new AlwaysStoppedAnimation<Color>(Colors.grey),
                         ),
                         SizedBox(
                           width: 15,
@@ -200,19 +205,15 @@ class _PostState extends State<PostCardView> {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
                                         Text(
                                           upvotes.toString(),
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (upvoted
-                                                ? Theme
-                                                .of(context)
-                                                .accentColor
-                                                : Theme
-                                                .of(context)
+                                                ? Theme.of(context).accentColor
+                                                : Theme.of(context)
                                                 .buttonColor),
                                           ),
                                         ),
@@ -234,11 +235,8 @@ class _PostState extends State<PostCardView> {
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (downvoted
-                                                ? Theme
-                                                .of(context)
-                                                .accentColor
-                                                : Theme
-                                                .of(context)
+                                                ? Theme.of(context).accentColor
+                                                : Theme.of(context)
                                                 .buttonColor),
                                           ),
                                         ),
