@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -332,7 +331,6 @@ class _CreatePostState extends State<CreatePost> {
   addToDatabase() async {
     var time = DateTime.now().millisecondsSinceEpoch;
     String key = time.toString();
-    String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
     final instance = FirebaseFirestore.instance;
     mediaURL = null;
     if (mediaType != 0) await uploadMedia(key);
@@ -343,10 +341,7 @@ class _CreatePostState extends State<CreatePost> {
       titleSearchList.add(temp);
     }
     selected.forEach((community) {
-      instance
-          .collection('communities/$community/posts/posted/$date')
-          .doc(key)
-          .set({
+      instance.collection('communities/$community/posts').doc(key).set({
         "creator": username,
         "mediaType": mediaType,
         "mediaUrl": mediaURL,
@@ -357,7 +352,7 @@ class _CreatePostState extends State<CreatePost> {
         "time": time,
         "upvoters": [],
         "downvoters": [],
-        "titleSearch":titleSearchList
+        "titleSearch": titleSearchList
       }).then((action) {
         debugPrint("successful posting in community!");
 
@@ -421,9 +416,9 @@ class _CreatePostState extends State<CreatePost> {
   _imageFromGallery() async {
     final file = await ImagePicker().getImage(
         source: ImageSource.gallery,
-        maxHeight: 600,
-        maxWidth: 600,
-        imageQuality: 85);
+        maxHeight: 1024,
+        maxWidth: 1024,
+        imageQuality: 90);
     if (file == null) return null;
     media = File(file.path);
     setState(() {
@@ -435,9 +430,9 @@ class _CreatePostState extends State<CreatePost> {
   _imageFromCamera() async {
     final file = await ImagePicker().getImage(
         source: ImageSource.camera,
-        maxHeight: 600,
-        maxWidth: 600,
-        imageQuality: 85);
+        maxHeight: 1024,
+        maxWidth: 1024,
+        imageQuality: 90);
     if (file == null) return null;
     media = File(file.path);
     setState(() {

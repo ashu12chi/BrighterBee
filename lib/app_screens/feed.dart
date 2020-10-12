@@ -26,13 +26,14 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search,color: Colors.grey,),
+            icon: Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
             iconSize: 30.0,
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PostSearch())
-              );
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => PostSearch()));
             },
           ),
         ],

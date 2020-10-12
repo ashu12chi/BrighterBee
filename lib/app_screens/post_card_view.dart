@@ -5,7 +5,6 @@ import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostCardView extends StatefulWidget {
@@ -15,18 +14,14 @@ class PostCardView extends StatefulWidget {
 
 class _PostState extends State<PostCardView> {
   String community = 'Computing';
-  String key = '1602068390865';
+  String key = '1602488875571';
   String username = 'ashu12_chi';
-  String date = '2020-10-07';
 
-  ZefyrController _controller;
   FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
-    final document = _loadDocument();
-    _controller = ZefyrController(document);
     _focusNode = FocusNode();
   }
 
@@ -35,7 +30,7 @@ class _PostState extends State<PostCardView> {
     return Scaffold(
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('communities/$community/posts/posted/$date')
+              .collection('communities/$community/posts')
               .doc(key)
               .snapshots(),
           builder: (context, snapshot) {
@@ -66,7 +61,7 @@ class _PostState extends State<PostCardView> {
             var time = snapshot.data['time'];
             String dateLong = formatDate(
                 DateTime.fromMillisecondsSinceEpoch(time),
-                [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn]);
+                [yyyy, ' ', MM, ' ', dd, ', ', hh, ':', nn, ' ', am]);
             String content = snapshot.data['content'];
             final document1 = NotusDocument.fromJson(jsonDecode(content));
             final editor = new ZefyrEditor(
@@ -111,7 +106,7 @@ class _PostState extends State<PostCardView> {
                   //return Text('Loading data.. Please Wait..');
                   return Padding(
                     padding:
-                    const EdgeInsets.only(top: 30.0, left: 8.0, right: 8.0),
+                        const EdgeInsets.only(top: 30.0, left: 8.0, right: 8.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -136,7 +131,9 @@ class _PostState extends State<PostCardView> {
                                               children: <Widget>[
                                                 Row(
                                                   children: [
-                                                    Text(name1,
+                                                    Text(
+                                                        name1.substring(0,
+                                                            name1.indexOf(' ')),
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -205,54 +202,40 @@ class _PostState extends State<PostCardView> {
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (upvoted
-                                                ? Theme
-                                                .of(context)
-                                                .accentColor
-                                                : Theme
-                                                .of(context)
-                                                .buttonColor),
+                                                ? Theme.of(context).accentColor
+                                                : Theme.of(context)
+                                                    .buttonColor),
                                           ),
                                         ),
                                         IconButton(
                                           onPressed: () {
-                                            upvote(community, date, key,
-                                                username, upvoted, downvoted);
+                                            upvote(community, key, username,
+                                                upvoted, downvoted);
                                           },
                                           icon: Icon(Icons.arrow_upward),
                                           color: (upvoted
-                                              ? Theme
-                                              .of(context)
-                                              .accentColor
-                                              : Theme
-                                              .of(context)
-                                              .buttonColor),
+                                              ? Theme.of(context).accentColor
+                                              : Theme.of(context).buttonColor),
                                         ),
                                         Text(
                                           downvotes.toString(),
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (downvoted
-                                                ? Theme
-                                                .of(context)
-                                                .accentColor
-                                                : Theme
-                                                .of(context)
-                                                .buttonColor),
+                                                ? Theme.of(context).accentColor
+                                                : Theme.of(context)
+                                                    .buttonColor),
                                           ),
                                         ),
                                         IconButton(
                                           onPressed: () {
-                                            downvote(community, date, key,
-                                                username, upvoted, downvoted);
+                                            downvote(community, key, username,
+                                                upvoted, downvoted);
                                           },
                                           icon: Icon(Icons.arrow_downward),
                                           color: (downvoted
-                                              ? Theme
-                                              .of(context)
-                                              .accentColor
-                                              : Theme
-                                              .of(context)
-                                              .buttonColor),
+                                              ? Theme.of(context).accentColor
+                                              : Theme.of(context).buttonColor),
                                         ),
                                         Text(
                                           views.toString(),
@@ -294,12 +277,6 @@ class _PostState extends State<PostCardView> {
                 });
           }),
     );
-  }
-
-  NotusDocument _loadDocument() {
-    final Delta delta = Delta()
-      ..insert("Loading...\n");
-    return NotusDocument.fromDelta(delta);
   }
 
   openPost() {
