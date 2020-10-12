@@ -110,7 +110,7 @@ class _PostState extends State<PostCardView> {
                   //return Text('Loading data.. Please Wait..');
                   return Padding(
                     padding:
-                    const EdgeInsets.only(top: 30.0, left: 8.0, right: 8.0),
+                    const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
