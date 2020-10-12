@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/helpers/upvote_downvote.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +17,7 @@ class _PostState extends State<PostCardView> {
   String community = 'Computing';
   String key = '1602488875571';
   String username = 'ashu12_chi';
+  bool processing;
 
   FocusNode _focusNode;
 
@@ -23,6 +25,7 @@ class _PostState extends State<PostCardView> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    processing = false;
   }
 
   @override
@@ -54,6 +57,7 @@ class _PostState extends State<PostCardView> {
             int upvotes = snapshot.data['upvoters'].length;
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
+            int commentCount = snapshot.data['comments'].length;
             String title = snapshot.data['title'];
             String mediaUrl =
                 'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
@@ -83,7 +87,7 @@ class _PostState extends State<PostCardView> {
                       children: <Widget>[
                         CircularProgressIndicator(
                           valueColor:
-                              new AlwaysStoppedAnimation<Color>(Colors.grey),
+                          new AlwaysStoppedAnimation<Color>(Colors.grey),
                         ),
                         SizedBox(
                           width: 15,
@@ -106,7 +110,7 @@ class _PostState extends State<PostCardView> {
                   //return Text('Loading data.. Please Wait..');
                   return Padding(
                     padding:
-                        const EdgeInsets.only(top: 4.0, left: 4.0, right: 4.0),
+                    const EdgeInsets.only(top: 30.0, left: 8.0, right: 8.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -136,15 +140,15 @@ class _PostState extends State<PostCardView> {
                                                             name1.indexOf(' ')),
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight.bold,
+                                                            FontWeight.bold,
                                                             fontSize: 16.0)),
                                                     Icon(Icons.arrow_right),
                                                     Text(community,
                                                         style: TextStyle(
                                                             fontSize: 16.0,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold))
+                                                            FontWeight
+                                                                .bold))
                                                   ],
                                                 ),
                                                 Text(
@@ -181,20 +185,20 @@ class _PostState extends State<PostCardView> {
                                     mediaType == 0
                                         ? Container()
                                         : Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              children: [
-                                                Image.network(
-                                                  mediaUrl,
-                                                  fit: BoxFit.fill,
-                                                  height: 200,
-                                                ),
-                                              ],
-                                            ),
+                                      padding:
+                                      const EdgeInsets.only(top: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                        children: [
+                                          Image.network(
+                                            mediaUrl,
+                                            fit: BoxFit.fill,
+                                            height: 200,
                                           ),
+                                        ],
+                                      ),
+                                    ),
                                     Row(
                                       children: <Widget>[
                                         Text(
@@ -204,13 +208,16 @@ class _PostState extends State<PostCardView> {
                                             color: (upvoted
                                                 ? Theme.of(context).accentColor
                                                 : Theme.of(context)
-                                                    .buttonColor),
+                                                .buttonColor),
                                           ),
                                         ),
                                         IconButton(
-                                          onPressed: () {
-                                            upvote(community, key, username,
-                                                upvoted, downvoted);
+                                          onPressed: () async {
+                                            if (processing) return;
+                                            processing = true;
+                                            await upvote(community, key,
+                                                username, upvoted, downvoted);
+                                            processing = false;
                                           },
                                           icon: Icon(Icons.arrow_upward),
                                           color: (upvoted
@@ -224,18 +231,25 @@ class _PostState extends State<PostCardView> {
                                             color: (downvoted
                                                 ? Theme.of(context).accentColor
                                                 : Theme.of(context)
-                                                    .buttonColor),
+                                                .buttonColor),
                                           ),
                                         ),
                                         IconButton(
-                                          onPressed: () {
-                                            downvote(community, key, username,
-                                                upvoted, downvoted);
+                                          onPressed: () async {
+                                            if (processing) return;
+                                            processing = true;
+                                            await downvote(community, key,
+                                                username, upvoted, downvoted);
+                                            processing = false;
                                           },
                                           icon: Icon(Icons.arrow_downward),
                                           color: (downvoted
-                                              ? Theme.of(context).accentColor
-                                              : Theme.of(context).buttonColor),
+                                              ? Theme
+                                              .of(context)
+                                              .accentColor
+                                              : Theme
+                                              .of(context)
+                                              .buttonColor),
                                         ),
                                         Text(
                                           views.toString(),
@@ -243,28 +257,13 @@ class _PostState extends State<PostCardView> {
                                         ),
                                         SizedBox(width: 10),
                                         Icon(Icons.remove_red_eye),
-                                        Spacer(),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 6),
-                                          child: Text(
-                                            '108',
-                                            style: TextStyle(fontSize: 15),
-                                          ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          commentCount.toString(),
+                                          style: TextStyle(fontSize: 15),
                                         ),
-                                        FlatButton(
-                                          onPressed: openPost,
-                                          child: Text(
-                                            'Comments',
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              side: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .buttonColor)),
-                                        ),
+                                        SizedBox(width: 10),
+                                        Icon(Icons.comment),
                                       ],
                                     )
                                   ],
@@ -280,6 +279,11 @@ class _PostState extends State<PostCardView> {
   }
 
   openPost() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                PostUI(community, key, username)));
     debugPrint('Post opened!');
   }
 }
