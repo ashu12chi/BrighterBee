@@ -2,6 +2,8 @@ import 'package:brighter_bee/app_screens/post_card_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'app_screens/community_home.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -46,7 +48,8 @@ class _MyAppState extends State<MyApp> {
               .apply(bodyColor: Colors.white)),
       // home: CreatePost(),
       // home: PostUI.test(),
-      home: PostCardView(),
+      //home: PostCardView(),
+      home: CommunityHome()
       // home: Comment(
       //     'Computing',
       //     '2020 October 12, 01:17 PM',

@@ -200,6 +200,7 @@ class _PostState extends State<PostCardView> {
                                       ),
                                     ),
                                     Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
                                         Text(
                                           upvotes.toString(),
