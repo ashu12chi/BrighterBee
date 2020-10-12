@@ -87,7 +87,7 @@ class _PostState extends State<PostCardView> {
                       children: <Widget>[
                         CircularProgressIndicator(
                           valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.grey),
+                              new AlwaysStoppedAnimation<Color>(Colors.grey),
                         ),
                         SizedBox(
                           width: 15,
@@ -200,15 +200,19 @@ class _PostState extends State<PostCardView> {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
                                         Text(
                                           upvotes.toString(),
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (upvoted
-                                                ? Theme.of(context).accentColor
-                                                : Theme.of(context)
+                                                ? Theme
+                                                .of(context)
+                                                .accentColor
+                                                : Theme
+                                                .of(context)
                                                 .buttonColor),
                                           ),
                                         ),
@@ -230,8 +234,11 @@ class _PostState extends State<PostCardView> {
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (downvoted
-                                                ? Theme.of(context).accentColor
-                                                : Theme.of(context)
+                                                ? Theme
+                                                .of(context)
+                                                .accentColor
+                                                : Theme
+                                                .of(context)
                                                 .buttonColor),
                                           ),
                                         ),

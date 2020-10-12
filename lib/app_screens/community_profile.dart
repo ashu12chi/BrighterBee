@@ -10,18 +10,22 @@ class _CommunityProfileState extends State<CommunityProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mathematics',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
+        title: Text(
+          'Mathematics',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: <Widget>[
-            Text('About',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
+            Text('About',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             Padding(
-              padding: const EdgeInsets.only(top:4.0),
+              padding: const EdgeInsets.only(top: 4.0),
               child: Text(
-                  "This group is for propagating information regarding Mathematics and it's changing word.",
-                  style: TextStyle(fontSize: 16),
+                "This group is for propagating information regarding Mathematics and it's changing word.",
+                style: TextStyle(fontSize: 16),
               ),
             ),
             Padding(
@@ -30,8 +34,11 @@ class _CommunityProfileState extends State<CommunityProfile> {
                 children: <Widget>[
                   Icon(Icons.public),
                   Padding(
-                    padding: const EdgeInsets.only(left:8.0),
-                    child: Text('Privacy',style: TextStyle(fontSize: 18),),
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Privacy',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   )
                 ],
               ),
@@ -42,8 +49,11 @@ class _CommunityProfileState extends State<CommunityProfile> {
                 children: <Widget>[
                   Icon(Icons.visibility),
                   Padding(
-                    padding: const EdgeInsets.only(left:8.0),
-                    child: Text('Visibility',style: TextStyle(fontSize: 18),),
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Visibility',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   )
                 ],
               ),
@@ -54,8 +64,11 @@ class _CommunityProfileState extends State<CommunityProfile> {
                 children: <Widget>[
                   Icon(Icons.people),
                   Padding(
-                    padding: const EdgeInsets.only(left:8.0),
-                    child: Text('Posts',style: TextStyle(fontSize: 18),),
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Posts',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   )
                 ],
               ),
@@ -66,8 +79,11 @@ class _CommunityProfileState extends State<CommunityProfile> {
                 children: <Widget>[
                   Icon(Icons.person),
                   Padding(
-                    padding: const EdgeInsets.only(left:8.0),
-                    child: Text('Verification',style: TextStyle(fontSize: 18),),
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Verification',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   )
                 ],
               ),
