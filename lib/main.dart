@@ -1,10 +1,8 @@
-import 'package:brighter_bee/app_screens/create_post.dart';
-import 'package:brighter_bee/app_screens/feed.dart';
-import 'package:brighter_bee/app_screens/home.dart';
 import 'package:brighter_bee/app_screens/post_card_view.dart';
-import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'app_screens/post_ui.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +22,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
           accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Colors.white,
-              ),
+            color: Colors.white,
+          ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
           buttonColor: Colors.black,
@@ -50,7 +48,7 @@ class _MyAppState extends State<MyApp> {
               .of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.white)),
-      home: Feed(),
+      home: PostUI(),
     );
   }
 }
