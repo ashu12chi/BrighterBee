@@ -88,3 +88,16 @@ undoDownvote(String community, String key, String username, bool upvoted,
 
   debugPrint('Downvote undone!');
 }
+
+addToViewers(String community, String key, String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference postRef =
+        instance.collection('communities/$community/posts').doc(key);
+    await transaction.update(postRef, {
+      'viewers': FieldValue.arrayUnion([username])
+    });
+  });
+
+  debugPrint('Added as viewer!');
+}

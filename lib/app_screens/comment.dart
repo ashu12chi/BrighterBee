@@ -1,38 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Comment extends StatefulWidget {
   String community;
   String dateLong;
   String postKey;
+  String parentPostKey;
   String username;
   String title;
   String creator;
   bool isComment;
 
-  Comment(this.community, this.dateLong, this.postKey, this.username,
-      this.title, this.creator, this.isComment);
+  Comment(this.community, this.dateLong, this.postKey, this.parentPostKey,
+      this.username, this.title, this.creator, this.isComment);
 
   @override
-  _Comment createState() => _Comment(
-      community, dateLong, postKey, username, title, creator, isComment);
+  _Comment createState() => _Comment(community, dateLong, postKey,
+      parentPostKey, username, title, creator, isComment);
 }
 
 class _Comment extends State<Comment> {
   String community;
   String dateLong;
   String key;
+  String parentPostKey;
   String username;
   String title;
   String creator;
   bool isComment;
   TextEditingController textInputController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  _Comment(this.community, this.dateLong, this.key, this.username, this.title,
-      this.creator, this.isComment);
+  _Comment(this.community, this.dateLong, this.key, this.parentPostKey,
+      this.username, this.title, this.creator, this.isComment);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
           isComment ? 'Reply to comment' : 'Add comment',
@@ -55,11 +60,11 @@ class _Comment extends State<Comment> {
               children: [
                 Text(creator,
                     style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                    TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
                 Icon(Icons.arrow_right),
                 Text(community,
                     style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold))
+                    TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold))
               ],
             ),
             Align(
@@ -94,22 +99,69 @@ class _Comment extends State<Comment> {
             ),
             Expanded(
                 child: TextField(
-              maxLines: 100,
-              controller: textInputController,
-              keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
-                hintText: isComment ? 'Your reply' : 'Your comment',
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
-              ),
-            )),
+                  maxLines: 100,
+                  controller: textInputController,
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+                    hintText: isComment ? 'Your reply' : 'Your comment',
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    focusedErrorBorder: InputBorder.none,
+                  ),
+                )),
           ])),
     );
   }
 
-  postComment() {}
+  postComment() async {
+    _scaffoldKey.currentState.hideCurrentSnackBar();
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      behavior: SnackBarBehavior.floating,
+      duration: Duration(hours: 1),
+      content: Row(
+        children: <Widget>[
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Text("Posting...")
+        ],
+      ),
+    ));
+    var time = DateTime
+        .now()
+        .millisecondsSinceEpoch;
+    String commKey = 'C' + time.toString();
+    FirebaseFirestore instance = FirebaseFirestore.instance;
+    await instance.collection('comments').doc(commKey).set({
+      'time': time,
+      'text': textInputController.text,
+      'creator': username,
+      'parent': key,
+      'community': community,
+      'parentPost': parentPostKey,
+    });
+    if (isComment) {
+      await instance.collection('comments').doc(key).update({
+        'comments': FieldValue.arrayUnion([commKey]),
+      });
+    } else {
+      await instance
+          .collection('collections/$community/posts')
+          .doc(key)
+          .update({
+        'comments': FieldValue.arrayUnion([commKey]),
+      });
+    }
+    await instance.collection('users').doc(username).update({
+      'comments': FieldValue.arrayUnion([commKey]),
+    });
+    Navigator.pop(context);
+    _scaffoldKey.currentState.hideCurrentSnackBar();
+  }
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -365,6 +364,7 @@ class _CreatePostState extends State<CreatePost> {
             behavior: SnackBarBehavior.floating,
             content: Text('Upload complete!'),
           ));
+          Navigator.pop(context);
         });
       });
     });
@@ -494,13 +494,6 @@ class _CreatePostState extends State<CreatePost> {
       noticeText = "Video selected for upload!";
       mediaType = 2;
     });
-  }
-
-  viewPost() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PostUI()),
-    );
   }
 }
 

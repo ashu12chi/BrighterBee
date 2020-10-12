@@ -10,18 +10,34 @@ import 'package:flutter/painting.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostUI extends StatefulWidget {
+  String community;
+  String postKey;
+  String username;
+
+  PostUI(this.community, this.postKey, this.username);
+
+  PostUI.test() {
+    this.community = 'Computing';
+    this.postKey = '1602488875571';
+    this.username = 'ashu12_chi';
+  }
+
   @override
-  _PostState createState() => _PostState();
+  _PostState createState() => _PostState(community, postKey, username);
 }
 
 class _PostState extends State<PostUI> {
-  String community = 'Computing';
-  String key = '1602488875571';
-  String username = 'ashu12_chi';
+  String community;
+  String key;
+  String username;
+  bool processing;
+
+  _PostState(this.community, this.key, this.username);
 
   @override
   void initState() {
     super.initState();
+    processing = false;
   }
 
   @override
@@ -45,12 +61,14 @@ class _PostState extends State<PostUI> {
                   Text('Loading data... Please Wait...')
                 ],
               );
+            addToViewers(community, key, username);
             String creator = snapshot.data['creator'];
             var time = snapshot.data['time'];
             int upvotes = snapshot.data['upvoters'].length;
             int downvotes = snapshot.data['downvoters'].length;
             String title = snapshot.data['title'];
             int views = snapshot.data['viewers'].length;
+            int commentCount = snapshot.data['comments'].length;
             int mediaType = snapshot.data['mediaType'];
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
@@ -215,14 +233,21 @@ class _PostState extends State<PostUI> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  upvote(community, key, username, upvoted,
-                                      downvoted);
+                                onPressed: () async {
+                                  if (processing) return;
+                                  processing = true;
+                                  await upvote(community, key, username,
+                                      upvoted, downvoted);
+                                  processing = false;
                                 },
                                 icon: Icon(Icons.arrow_upward),
                                 color: (upvoted
-                                    ? Theme.of(context).accentColor
-                                    : Theme.of(context).buttonColor),
+                                    ? Theme
+                                    .of(context)
+                                    .accentColor
+                                    : Theme
+                                    .of(context)
+                                    .buttonColor),
                               ),
                               Text(
                                 downvotes.toString(),
@@ -234,14 +259,21 @@ class _PostState extends State<PostUI> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  downvote(community, key, username, upvoted,
-                                      downvoted);
+                                onPressed: () async {
+                                  if (processing) return;
+                                  processing = true;
+                                  await downvote(community, key, username,
+                                      upvoted, downvoted);
+                                  processing = false;
                                 },
                                 icon: Icon(Icons.arrow_downward),
                                 color: (downvoted
-                                    ? Theme.of(context).accentColor
-                                    : Theme.of(context).buttonColor),
+                                    ? Theme
+                                    .of(context)
+                                    .accentColor
+                                    : Theme
+                                    .of(context)
+                                    .buttonColor),
                               ),
                               Text(
                                 views.toString(),
@@ -254,7 +286,7 @@ class _PostState extends State<PostUI> {
                                 padding:
                                     const EdgeInsets.only(left: 8.0, right: 8),
                                 child: Text(
-                                  '108',
+                                  commentCount.toString(),
                                   style: TextStyle(fontSize: 15),
                                 ),
                               ),
@@ -283,7 +315,18 @@ class _PostState extends State<PostUI> {
 
   comment(String community, String dateLong, String key, String username,
       String title, String creator, bool isComment) {
-    Comment(community, dateLong, key, username, title, creator, isComment);
-    debugPrint('Commented');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext) =>
+                Comment(
+                    community,
+                    dateLong,
+                    key,
+                    key,
+                    username,
+                    title,
+                    creator,
+                    isComment)));
   }
 }
