@@ -107,19 +107,19 @@ class _Comment extends State<Comment> {
             ),
             Expanded(
                 child: TextField(
-                  maxLines: 100,
-                  controller: textInputController,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    hintText: isReply ? 'Your reply' : 'Your comment',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    focusedErrorBorder: InputBorder.none,
-                  ),
-                )),
+              maxLines: 100,
+              controller: textInputController,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                hintText: isReply ? 'Your reply' : 'Your comment',
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+              ),
+            )),
           ])),
     );
   }

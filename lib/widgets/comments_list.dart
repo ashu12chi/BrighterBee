@@ -89,10 +89,10 @@ class CommentListBloc {
   Future fetchFirstList() async {
     try {
       documentList = (await FirebaseFirestore.instance
-          .collection("communities/$community/posts/$key/comments")
-      // .orderBy("upvotes")
-          .limit(10)
-          .get())
+              .collection("communities/$community/posts/$key/comments")
+              // .orderBy("upvotes")
+              .limit(10)
+              .get())
           .docs;
       print(documentList);
       commentController.sink.add(documentList);

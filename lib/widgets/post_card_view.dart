@@ -148,7 +148,7 @@ class _PostState extends State<PostCardView> {
                                                             name1.indexOf(' ')),
                                                         style: TextStyle(
                                                             fontWeight:
-                                                            FontWeight.bold,
+                                                                FontWeight.bold,
                                                             fontSize: 16.0)),
                                                     Icon(Icons.arrow_right),
                                                     Text(community,

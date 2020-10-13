@@ -330,15 +330,7 @@ class _PostState extends State<PostUI> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext) =>
-                Comment(
-                    community,
-                    dateLong,
-                    key,
-                    key,
-                    username,
-                    title,
-                    creator,
-                    isReply)));
+            builder: (BuildContext) => Comment(community, dateLong, key, key,
+                username, title, creator, isReply)));
   }
 }
