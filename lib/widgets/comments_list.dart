@@ -1,23 +1,36 @@
 import 'dart:io';
 
+import 'package:brighter_bee/widgets/comment_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
 class CommentsList extends StatefulWidget {
+  String community;
+  String postKey;
+  String username;
+
+  CommentsList(this.community, this.postKey, this.username);
+
   @override
-  _CommentsList createState() => _CommentsList();
+  _CommentsList createState() => _CommentsList(community, postKey, username);
 }
 
 class _CommentsList extends State<CommentsList> {
+  String community;
+  String key;
+  String username;
+
   CommentListBloc commentListBloc;
   ScrollController controller = ScrollController();
+
+  _CommentsList(this.community, this.key, this.username);
 
   @override
   void initState() {
     super.initState();
-    commentListBloc = CommentListBloc();
+    commentListBloc = CommentListBloc(community, key);
     commentListBloc.fetchFirstList();
     controller.addListener(_scrollListener);
   }
@@ -25,54 +38,48 @@ class _CommentsList extends State<CommentsList> {
   void _scrollListener() {
     if (controller.offset >= controller.position.maxScrollExtent &&
         !controller.position.outOfRange) {
-      print("at the end of list");
+      print("At the end of list");
       commentListBloc.fetchNextComments();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Firebase firestore pagination"),
-      ),
-      body: StreamBuilder<List<DocumentSnapshot>>(
-        stream: commentListBloc.commentStream,
-        builder: (context, snapshot) {
-          if (snapshot.data != null) {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              shrinkWrap: true,
-              controller: controller,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                          child: Text(snapshot.data[index]["rank"].toString())),
-                      title: Text(snapshot.data[index]["title"]),
-                    ),
-                  ),
-                );
-              },
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
-      ),
+    return StreamBuilder<List<DocumentSnapshot>>(
+      stream: commentListBloc.commentStream,
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            shrinkWrap: true,
+            controller: controller,
+            itemBuilder: (context, index) {
+              debugPrint('NSP');
+              return CommentCard(
+                  snapshot.data[index]['community'],
+                  snapshot.data[index]['parentPost'],
+                  snapshot.data[index]['commKey'],
+                  username);
+            },
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 }
 
 class CommentListBloc {
+  String community;
+  String key;
+
   bool showIndicator = false;
   List<DocumentSnapshot> documentList;
   BehaviorSubject<bool> showIndicatorController;
   BehaviorSubject<List<DocumentSnapshot>> commentController;
 
-  MovieListBloc() {
+  CommentListBloc(this.community, this.key) {
     commentController = BehaviorSubject<List<DocumentSnapshot>>();
   }
 
@@ -82,10 +89,10 @@ class CommentListBloc {
   Future fetchFirstList() async {
     try {
       documentList = (await FirebaseFirestore.instance
-              .collection("/communities/Mathematics/posts/")
-              .orderBy("rank")
-              .limit(10)
-              .get())
+          .collection("communities/$community/posts/$key/comments")
+      // .orderBy("upvotes")
+          .limit(10)
+          .get())
           .docs;
       print(documentList);
       commentController.sink.add(documentList);
@@ -103,11 +110,12 @@ class CommentListBloc {
     try {
       updateIndicator(true);
       List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore.instance
-              .collection("movies")
-              .orderBy("rank")
-              .startAfterDocument(documentList[documentList.length - 1])
-              .limit(10)
-              .get())
+          .collection(
+          "communities/Mathematics/posts/1602505903260/comments")
+      // .orderBy("upvotes")
+          .startAfterDocument(documentList[documentList.length - 1])
+          .limit(10)
+          .get())
           .docs;
       documentList.addAll(newDocumentList);
       commentController.sink.add(documentList);

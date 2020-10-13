@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
           accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Colors.white,
+                color: Colors.black,
               ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),

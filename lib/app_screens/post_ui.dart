@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/helpers/upvote_downvote.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
+import 'package:brighter_bee/widgets/comments_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -218,6 +219,25 @@ class _PostState extends State<PostUI> {
                                         width: double.infinity,
                                         height: 250,
                                       ),
+                                Divider(
+                                  color: Theme.of(context).buttonColor,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 15, left: 15),
+                                      child: Text(
+                                        'Comments',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                CommentsList(community, key, username),
                               ]))),
                       Padding(
                           padding: EdgeInsets.only(left: 15, right: 15),

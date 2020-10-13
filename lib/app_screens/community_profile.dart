@@ -9,12 +9,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Mathematics',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-      ),
+      appBar: AppBar(title: Text('Mathematics')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(

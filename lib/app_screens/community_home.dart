@@ -19,17 +19,17 @@ class _CommunityHomeState extends State<CommunityHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          'Mathematics',
+        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.grey,
-            ),
+            icon: Icon(Icons.search, color: Theme.of(context).buttonColor),
           ),
           IconButton(
             icon: Icon(
               Icons.more_horiz,
-              color: Colors.grey,
+              color: Theme.of(context).buttonColor,
             ),
             onPressed: showOptions,
           )
@@ -178,6 +178,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter state) {
                 return SingleChildScrollView(
+                  padding: EdgeInsets.all(10),
                   child: LimitedBox(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -185,42 +186,42 @@ class _CommunityHomeState extends State<CommunityHome> {
                         Column(
                           children: <Widget>[
                             IconButton(
-                                icon: Icon(
-                                  Icons.share,
-                                  size: 30,
-                                  color: Colors.black,
-                                )),
+                                icon: Icon(Icons.share,
+                                    size: 30,
+                                    color: Theme
+                                        .of(context)
+                                        .buttonColor)),
                             Text(
                               'Share',
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 14),
                             ),
                           ],
                         ),
                         Column(
                           children: <Widget>[
                             IconButton(
-                                icon: Icon(
-                                  Icons.exit_to_app,
-                                  size: 30,
-                                  color: Colors.black,
-                                )),
+                                icon: Icon(Icons.exit_to_app,
+                                    size: 30,
+                                    color: Theme
+                                        .of(context)
+                                        .buttonColor)),
                             Text(
                               'Leave Community',
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 14),
                             ),
                           ],
                         ),
                         Column(
                           children: <Widget>[
                             IconButton(
-                                icon: Icon(
-                                  Icons.report,
-                                  size: 30,
-                                  color: Colors.black,
-                                )),
+                                icon: Icon(Icons.report,
+                                    size: 30,
+                                    color: Theme
+                                        .of(context)
+                                        .buttonColor)),
                             Text(
                               'Report',
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 14),
                             ),
                           ],
                         )

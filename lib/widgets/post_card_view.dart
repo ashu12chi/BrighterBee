@@ -76,6 +76,7 @@ class _PostState extends State<PostCardView> {
             String content = snapshot.data['content'];
             final document1 = NotusDocument.fromJson(jsonDecode(content));
             final editor = new ZefyrEditor(
+              autofocus: false,
               padding: EdgeInsets.all(0),
               focusNode: _focusNode,
               controller: ZefyrController(document1),

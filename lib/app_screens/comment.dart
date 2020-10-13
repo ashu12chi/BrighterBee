@@ -158,8 +158,8 @@ class _Comment extends State<Comment> {
         'parent': key,
         'community': community,
         'parentPost': parentPostKey,
-        'upvotes': 0,
-        'downvotes': 0,
+        'upvoters': [],
+        'downvoters': [],
         'commKey': commKey
       });
       await instance.runTransaction((transaction) async {
@@ -185,8 +185,8 @@ class _Comment extends State<Comment> {
         'parent': key,
         'community': community,
         'parentPost': parentPostKey,
-        'upvotes': 0,
-        'downvotes': 0,
+        'upvoters': [],
+        'downvoters': [],
         'commKey': commKey,
         'replyCount': 0,
       });
