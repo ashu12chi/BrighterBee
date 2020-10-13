@@ -1,4 +1,4 @@
-import 'package:brighter_bee/app_screens/post_card_view.dart';
+import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -125,41 +125,41 @@ class _CommunityHomeState extends State<CommunityHome> {
               builder: (context, snapshot) {
                 return snapshot.connectionState == ConnectionState.waiting
                     ? Center(
-                  child: CircularProgressIndicator(),
-                )
+                        child: CircularProgressIndicator(),
+                      )
                     : ListView.builder(
-                  //scrollDirection: Axis.vertical,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot documentSnapshot =
-                    snapshot.data.docs[index];
-                    print(documentSnapshot.id);
-                    print('112');
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child: Container(
-                            height: 5.0,
-                            width: double.infinity,
-                            color: Colors.black12,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, top: 8.0),
-                          child: SizedBox(
-                              height: 530,
-                              child: PostCardView(
-                                  'Mathematics', documentSnapshot.id)),
-                        ),
-                      ],
-                    );
-                    //return Text('ashu12_chi');
-                  },
-                );
+                        //scrollDirection: Axis.vertical,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot documentSnapshot =
+                              snapshot.data.docs[index];
+                          print(documentSnapshot.id);
+                          print('112');
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                child: Container(
+                                  height: 5.0,
+                                  width: double.infinity,
+                                  color: Colors.black12,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0, top: 8.0),
+                                child: SizedBox(
+                                    height: 530,
+                                    child: PostCardView(
+                                        'Mathematics', documentSnapshot.id)),
+                              ),
+                            ],
+                          );
+                          //return Text('ashu12_chi');
+                        },
+                      );
               },
             )
           ],

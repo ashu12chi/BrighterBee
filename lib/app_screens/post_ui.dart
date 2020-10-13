@@ -68,7 +68,7 @@ class _PostState extends State<PostUI> {
             int downvotes = snapshot.data['downvoters'].length;
             String title = snapshot.data['title'];
             int views = snapshot.data['viewers'].length;
-            int commentCount = snapshot.data['comments'].length;
+            int commentCount = snapshot.data['commentCount'];
             int mediaType = snapshot.data['mediaType'];
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
@@ -306,7 +306,7 @@ class _PostState extends State<PostUI> {
   }
 
   comment(String community, String dateLong, String key, String username,
-      String title, String creator, bool isComment) {
+      String title, String creator, bool isReply) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -319,6 +319,6 @@ class _PostState extends State<PostUI> {
                     username,
                     title,
                     creator,
-                    isComment)));
+                    isReply)));
   }
 }

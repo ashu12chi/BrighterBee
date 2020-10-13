@@ -42,6 +42,7 @@ dependencies:
   path_provider: ^1.6.18
   image: ^2.1.18
   firebase_storage: ^4.0.1
+  rxdart: ^0.24.1
 
 dev_dependencies:
   flutter_test:

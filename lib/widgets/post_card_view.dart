@@ -64,7 +64,7 @@ class _PostState extends State<PostCardView> {
             int upvotes = snapshot.data['upvoters'].length;
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
-            int commentCount = snapshot.data['comments'].length;
+            int commentCount = snapshot.data['commentCount'];
             String title = snapshot.data['title'];
             String mediaUrl =
                 'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
@@ -117,7 +117,7 @@ class _PostState extends State<PostCardView> {
                   //return Text('Loading data.. Please Wait..');
                   return Padding(
                     padding:
-                    const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                        const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [

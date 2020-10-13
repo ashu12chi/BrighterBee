@@ -351,7 +351,8 @@ class _CreatePostState extends State<CreatePost> {
         "time": time,
         "upvoters": [],
         "downvoters": [],
-        "titleSearch": titleSearchList
+        "titleSearch": titleSearchList,
+        "commentCount": 0,
       }).then((action) {
         debugPrint("successful posting in community!");
 

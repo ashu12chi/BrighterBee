@@ -9,14 +9,14 @@ class Comment extends StatefulWidget {
   String username;
   String title;
   String creator;
-  bool isComment;
+  bool isReply;
 
   Comment(this.community, this.dateLong, this.postKey, this.parentPostKey,
-      this.username, this.title, this.creator, this.isComment);
+      this.username, this.title, this.creator, this.isReply);
 
   @override
   _Comment createState() => _Comment(community, dateLong, postKey,
-      parentPostKey, username, title, creator, isComment);
+      parentPostKey, username, title, creator, isReply);
 }
 
 class _Comment extends State<Comment> {
@@ -27,12 +27,12 @@ class _Comment extends State<Comment> {
   String username;
   String title;
   String creator;
-  bool isComment;
+  bool isReply;
   TextEditingController textInputController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _Comment(this.community, this.dateLong, this.key, this.parentPostKey,
-      this.username, this.title, this.creator, this.isComment);
+      this.username, this.title, this.creator, this.isReply);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class _Comment extends State<Comment> {
           },
         ),
         title: Text(
-          isComment ? 'Reply to comment' : 'Add comment',
+          isReply ? 'Reply to comment' : 'Add comment',
         ),
         elevation: 0,
         actions: <Widget>[
@@ -111,7 +111,7 @@ class _Comment extends State<Comment> {
                   controller: textInputController,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
-                    hintText: isComment ? 'Your reply' : 'Your comment',
+                    hintText: isReply ? 'Your reply' : 'Your comment',
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -146,29 +146,67 @@ class _Comment extends State<Comment> {
         .millisecondsSinceEpoch;
     String commKey = 'C' + time.toString();
     FirebaseFirestore instance = FirebaseFirestore.instance;
-    await instance.collection('comments').doc(commKey).set({
-      'time': time,
-      'text': textInputController.text,
-      'creator': username,
-      'parent': key,
-      'community': community,
-      'parentPost': parentPostKey,
-    });
-    if (isComment) {
-      await instance.collection('comments').doc(key).update({
-        'comments': FieldValue.arrayUnion([commKey]),
+    if (isReply) {
+      await instance
+          .collection(
+          'communities/$community/posts/$parentPostKey/comments/$key/replies')
+          .doc(commKey)
+          .set({
+        'time': time,
+        'text': textInputController.text,
+        'creator': username,
+        'parent': key,
+        'community': community,
+        'parentPost': parentPostKey,
+        'upvotes': 0,
+        'downvotes': 0,
+        'commKey': commKey
+      });
+      await instance.runTransaction((transaction) async {
+        DocumentReference postRef = instance
+            .collection('communities/$community/posts')
+            .doc(parentPostKey);
+        await transaction
+            .update(postRef, {'commentCount': FieldValue.increment(1)});
+        postRef = instance
+            .collection('communities/$community/posts/$parentPostKey/comments')
+            .doc(key);
+        await transaction
+            .update(postRef, {'replyCount': FieldValue.increment(1)});
       });
     } else {
       await instance
-          .collection('communities/$community/posts')
-          .doc(parentPostKey)
-          .update({
-        'comments': FieldValue.arrayUnion([commKey]),
+          .collection('communities/$community/posts/$parentPostKey/comments')
+          .doc(commKey)
+          .set({
+        'time': time,
+        'text': textInputController.text,
+        'creator': username,
+        'parent': key,
+        'community': community,
+        'parentPost': parentPostKey,
+        'upvotes': 0,
+        'downvotes': 0,
+        'commKey': commKey,
+        'replyCount': 0,
+      });
+      await instance.runTransaction((transaction) async {
+        DocumentReference postRef = instance
+            .collection('communities/$community/posts')
+            .doc(parentPostKey);
+        await transaction
+            .update(postRef, {'commentCount': FieldValue.increment(1)});
       });
     }
-    await instance.collection('users').doc(username).update({
-      'comments': FieldValue.arrayUnion([commKey]),
+
+    await instance.collection('users/$username/comments').doc(commKey).set({
+      'community': community,
+      'commKey': commKey,
+      'isReply': isReply,
+      'parentPost': parentPostKey,
+      'parent': key,
     });
+
     _scaffoldKey.currentState.hideCurrentSnackBar();
     Navigator.pop(context);
   }
