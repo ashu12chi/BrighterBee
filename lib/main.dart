@@ -21,8 +21,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
           accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Colors.black,
-              ),
+            color: Colors.black,
+          ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
           buttonColor: Colors.black,
@@ -35,8 +35,8 @@ class _MyAppState extends State<MyApp> {
               .apply(bodyColor: Colors.black)),
       darkTheme: ThemeData.dark().copyWith(
           accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Colors.white,
-              ),
+            color: Colors.white,
+          ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
           buttonColor: Colors.white,
