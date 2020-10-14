@@ -42,13 +42,13 @@ downvote(String community, String key, String username, bool upvoted,
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {
     DocumentReference postRef =
-    instance.collection('communities/$community/posts').doc(key);
+        instance.collection('communities/$community/posts').doc(key);
     await transaction.update(postRef, {
       'downvoters': FieldValue.arrayUnion([username]),
       'downvotes': FieldValue.increment(1),
     });
     DocumentReference userRef =
-    instance.collection('users/$username/posts').doc('downvoted');
+        instance.collection('users/$username/posts').doc('downvoted');
     await transaction.update(userRef, {
       community: FieldValue.arrayUnion([key])
     });
@@ -62,13 +62,13 @@ undoUpvote(String community, String key, String username, bool upvoted,
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {
     DocumentReference postRef =
-    instance.collection('communities/$community/posts').doc(key);
+        instance.collection('communities/$community/posts').doc(key);
     await transaction.update(postRef, {
       'upvoters': FieldValue.arrayRemove([username]),
       'upvotes': FieldValue.increment(-1),
     });
     DocumentReference userRef =
-    instance.collection('users/$username/posts').doc('upvoted');
+        instance.collection('users/$username/posts').doc('upvoted');
     await transaction.update(userRef, {
       community: FieldValue.arrayRemove([key])
     });

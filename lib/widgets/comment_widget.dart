@@ -70,7 +70,7 @@ class _CommentWidget extends State<CommentWidget> {
           var time = snapshot.data['time'];
           String dateLong = formatDate(
               DateTime.fromMillisecondsSinceEpoch(time),
-              [yyyy, ' ', MM, ' ', dd, ', ', hh, ':', nn, ' ', am]);
+              [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn, ' ', am]);
           return Column(
             children: <Widget>[
               Row(
@@ -83,11 +83,14 @@ class _CommentWidget extends State<CommentWidget> {
                       padding: const EdgeInsets.only(left: 5.0),
                       child: Row(
                         children: <Widget>[
-                          Text(creator),
+                          Text(
+                            creator,
+                            style: TextStyle(fontSize: 14),
+                          ),
                           SizedBox(width: 10),
                           Text(
                             dateLong,
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
                           )
                         ],
                       )),
@@ -103,6 +106,7 @@ class _CommentWidget extends State<CommentWidget> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   text,
+                  style: TextStyle(fontSize: 14),
                 ),
               ),
               Row(
@@ -110,6 +114,7 @@ class _CommentWidget extends State<CommentWidget> {
                   Text(
                     upvotes.toString(),
                     style: TextStyle(
+                      fontSize: 14,
                       color: (upvoted
                           ? Theme.of(context).accentColor
                           : Theme.of(context).buttonColor),
@@ -139,9 +144,14 @@ class _CommentWidget extends State<CommentWidget> {
                   Text(
                     downvotes.toString(),
                     style: TextStyle(
+                      fontSize: 14,
                       color: (downvoted
-                          ? Theme.of(context).accentColor
-                          : Theme.of(context).buttonColor),
+                          ? Theme
+                          .of(context)
+                          .accentColor
+                          : Theme
+                          .of(context)
+                          .buttonColor),
                     ),
                   ),
                   IconButton(
@@ -169,8 +179,11 @@ class _CommentWidget extends State<CommentWidget> {
                           SizedBox(width: 10),
                           Text(
                             replyCount.toString(),
-                            style:
-                                TextStyle(color: Theme.of(context).buttonColor),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Theme
+                                    .of(context)
+                                    .buttonColor),
                           ),
                           SizedBox(width: 10),
                           IconButton(
