@@ -198,20 +198,20 @@ class _PostState extends State<PostCardView> {
                                     mediaType == 0
                                         ? Container()
                                         : Padding(
-                                      padding:
-                                      const EdgeInsets.only(top: 8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                        children: [
-                                          Image.network(
-                                            mediaUrl,
-                                            fit: BoxFit.fill,
-                                            height: 200,
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: [
+                                                Image.network(
+                                                  mediaUrl,
+                                                  fit: BoxFit.fill,
+                                                  height: 200,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
                                     Row(
                                       children: <Widget>[
                                         Text(
@@ -219,12 +219,9 @@ class _PostState extends State<PostCardView> {
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (upvoted
-                                                ? Theme
-                                                .of(context)
-                                                .accentColor
-                                                : Theme
-                                                .of(context)
-                                                .buttonColor),
+                                                ? Theme.of(context).accentColor
+                                                : Theme.of(context)
+                                                    .buttonColor),
                                           ),
                                         ),
                                         IconButton(

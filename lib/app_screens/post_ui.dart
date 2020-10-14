@@ -103,12 +103,13 @@ class _PostState extends State<PostUI> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
-                    return Expanded(
+                    return Padding(
+                        padding: EdgeInsets.only(top: 50),
                         child: Row(
                           children: <Widget>[
                             CircularProgressIndicator(
-                              valueColor:
-                              new AlwaysStoppedAnimation<Color>(Colors.grey),
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.grey),
                             ),
                             SizedBox(
                               width: 15,
@@ -178,74 +179,70 @@ class _PostState extends State<PostUI> {
                       Expanded(
                           child: SingleChildScrollView(
                               child: Column(children: <Widget>[
-                                Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 15, right: 15),
-                                    child: ZefyrView(
-                                      document: document,
-                                      imageDelegate: MyAppZefyrImageDelegate(),
-                                    )),
-                                // Container(
-                                //   height: 700,
-                                //   child: ZefyrScaffold(
-                                //     child: editor,
-                                //   ),
-                                // ),
-                                mediaType == 0
-                                    ? Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        CircularProgressIndicator(
-                                          valueColor:
-                                          new AlwaysStoppedAnimation<Color>(
-                                              Colors.grey),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            CircularProgressIndicator(
-                                              valueColor:
-                                              new AlwaysStoppedAnimation<Color>(
-                                                  Colors.grey),
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Text(
-                                                'Loading data... Please Wait...')
-                                          ],
-                                        ),
-                                      ],
-                                    ))
-                                    : Image.network(
-                                  mediaUrl,
-                                  width: double.infinity,
-                                  height: 250,
-                                ),
-                                Divider(
-                                  color: Theme
-                                      .of(context)
-                                      .buttonColor,
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8, bottom: 15, left: 15),
-                                      child: Text(
-                                        'Comments',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          child: ZefyrView(
+                            document: document,
+                            imageDelegate: MyAppZefyrImageDelegate(),
+                          ),
+                        ),
+                        // Container(
+                        //   height: 700,
+                        //   child: ZefyrScaffold(
+                        //     child: editor,
+                        //   ),
+                        // ),
+                        mediaType == 0
+                            ? Container(
+                                child: Row(
+                                children: <Widget>[
+                                  CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            Colors.grey),
                                   ),
-                                ),
-                                CommentsList(community, key, username),
-                              ]))),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      CircularProgressIndicator(
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<Color>(
+                                                Colors.grey),
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text('Loading data... Please Wait...')
+                                    ],
+                                  ),
+                                ],
+                              ))
+                            : Image.network(
+                                mediaUrl,
+                                width: double.infinity,
+                                height: 250,
+                              ),
+                        Divider(
+                          color: Theme.of(context).buttonColor,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8, bottom: 15, left: 15),
+                              child: Text(
+                                'Comments',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        CommentsList(community, key, username),
+                      ]))),
                       Padding(
                           padding: EdgeInsets.only(left: 15, right: 15),
                           child: Row(
@@ -255,9 +252,7 @@ class _PostState extends State<PostUI> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: (upvoted
-                                      ? Theme
-                                      .of(context)
-                                      .accentColor
+                                      ? Theme.of(context).accentColor
                                       : Theme.of(context).buttonColor),
                                 ),
                               ),

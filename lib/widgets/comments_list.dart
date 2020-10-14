@@ -125,11 +125,11 @@ class CommentListBloc {
     try {
       updateIndicator(true);
       List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore.instance
-          .collection("communities/$community/posts/$key/comments")
-          .orderBy("upvotes", descending: true)
-          .startAfterDocument(documentList[documentList.length - 1])
-          .limit(10)
-          .get())
+              .collection("communities/$community/posts/$key/comments")
+              .orderBy("upvotes", descending: true)
+              .startAfterDocument(documentList[documentList.length - 1])
+              .limit(10)
+              .get())
           .docs;
       documentList.addAll(newDocumentList);
       commentController.sink.add(documentList);
