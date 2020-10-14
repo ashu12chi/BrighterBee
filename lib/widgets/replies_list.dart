@@ -1,37 +1,39 @@
 import 'dart:io';
 
 import 'package:brighter_bee/widgets/comment_widget.dart';
-import 'package:brighter_bee/widgets/replies_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
-class CommentsList extends StatefulWidget {
+class RepliesList extends StatefulWidget {
   String community;
   String postKey;
+  String commKey;
   String username;
 
-  CommentsList(this.community, this.postKey, this.username);
+  RepliesList(this.community, this.postKey, this.commKey, this.username);
 
   @override
-  _CommentsList createState() => _CommentsList(community, postKey, username);
+  _RepliesList createState() =>
+      _RepliesList(community, postKey, commKey, username);
 }
 
-class _CommentsList extends State<CommentsList> {
+class _RepliesList extends State<RepliesList> {
   String community;
-  String key;
+  String postKey;
+  String commKey;
   String username;
 
   CommentListBloc commentListBloc;
   ScrollController controller = ScrollController();
 
-  _CommentsList(this.community, this.key, this.username);
+  _RepliesList(this.community, this.postKey, this.commKey, this.username);
 
   @override
   void initState() {
     super.initState();
-    commentListBloc = CommentListBloc(community, key);
+    commentListBloc = CommentListBloc(community, postKey, commKey);
     commentListBloc.fetchFirstList();
     controller.addListener(_scrollListener);
   }
@@ -55,26 +57,18 @@ class _CommentsList extends State<CommentsList> {
             shrinkWrap: true,
             controller: controller,
             itemBuilder: (context, index) {
-              debugPrint('NSP');
-              return ExpansionTile(
-                backgroundColor: Color.fromRGBO(204, 204, 204, 0.5),
-                title: CommentWidget(
-                    snapshot.data[index]['community'],
-                    snapshot.data[index]['parentPost'],
-                    snapshot.data[index]['commKey'],
-                    snapshot.data[index]['parent'],
-                    username,
-                    false),
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(left: 20, bottom: 15),
-                      child: RepliesList(
+              debugPrint('NSP replies');
+              return Card(
+                  elevation: 8,
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      child: CommentWidget(
                           snapshot.data[index]['community'],
                           snapshot.data[index]['parentPost'],
                           snapshot.data[index]['commKey'],
-                          username))
-                ],
-              );
+                          snapshot.data[index]['parent'],
+                          username,
+                          true)));
             },
           );
         } else {
@@ -87,14 +81,15 @@ class _CommentsList extends State<CommentsList> {
 
 class CommentListBloc {
   String community;
-  String key;
+  String postKey;
+  String commKey;
 
   bool showIndicator = false;
   List<DocumentSnapshot> documentList;
   BehaviorSubject<bool> showIndicatorController;
   BehaviorSubject<List<DocumentSnapshot>> commentController;
 
-  CommentListBloc(this.community, this.key) {
+  CommentListBloc(this.community, this.postKey, this.commKey) {
     commentController = BehaviorSubject<List<DocumentSnapshot>>();
   }
 
@@ -104,8 +99,8 @@ class CommentListBloc {
   Future fetchFirstList() async {
     try {
       documentList = (await FirebaseFirestore.instance
-              .collection("communities/$community/posts/$key/comments")
-              .orderBy("upvotes", descending: true)
+              .collection(
+                  "communities/$community/posts/$postKey/comments/$commKey/replies")
               .limit(10)
               .get())
           .docs;
@@ -125,11 +120,11 @@ class CommentListBloc {
     try {
       updateIndicator(true);
       List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore.instance
-          .collection("communities/$community/posts/$key/comments")
-          .orderBy("upvotes", descending: true)
-          .startAfterDocument(documentList[documentList.length - 1])
-          .limit(10)
-          .get())
+              .collection(
+                  "communities/$community/posts/$postKey/comments/$commKey/replies")
+              .startAfterDocument(documentList[documentList.length - 1])
+              .limit(10)
+              .get())
           .docs;
       documentList.addAll(newDocumentList);
       commentController.sink.add(documentList);

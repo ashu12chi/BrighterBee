@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/post_ui.dart';
-import 'package:brighter_bee/helpers/upvote_downvote.dart';
+import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
@@ -155,8 +155,8 @@ class _PostState extends State<PostCardView> {
                                                         style: TextStyle(
                                                             fontSize: 16.0,
                                                             fontWeight:
-                                                            FontWeight
-                                                                .bold))
+                                                                FontWeight
+                                                                    .bold))
                                                   ],
                                                 ),
                                                 Text(

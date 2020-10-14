@@ -141,15 +141,13 @@ class _Comment extends State<Comment> {
         ],
       ),
     ));
-    var time = DateTime
-        .now()
-        .millisecondsSinceEpoch;
+    var time = DateTime.now().millisecondsSinceEpoch;
     String commKey = 'C' + time.toString();
     FirebaseFirestore instance = FirebaseFirestore.instance;
     if (isReply) {
       await instance
           .collection(
-          'communities/$community/posts/$parentPostKey/comments/$key/replies')
+              'communities/$community/posts/$parentPostKey/comments/$key/replies')
           .doc(commKey)
           .set({
         'time': time,
@@ -159,6 +157,8 @@ class _Comment extends State<Comment> {
         'community': community,
         'parentPost': parentPostKey,
         'upvoters': [],
+        'upvotes': 0,
+        'downvotes': 0,
         'downvoters': [],
         'commKey': commKey
       });
@@ -186,6 +186,8 @@ class _Comment extends State<Comment> {
         'community': community,
         'parentPost': parentPostKey,
         'upvoters': [],
+        'upvotes': 0,
+        'downvotes': 0,
         'downvoters': [],
         'commKey': commKey,
         'replyCount': 0,

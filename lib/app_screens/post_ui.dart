@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/comment.dart';
-import 'package:brighter_bee/helpers/upvote_downvote.dart';
+import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:brighter_bee/widgets/comments_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -65,8 +65,8 @@ class _PostState extends State<PostUI> {
             addToViewers(community, key, username);
             String creator = snapshot.data['creator'];
             var time = snapshot.data['time'];
-            int upvotes = snapshot.data['upvoters'].length;
-            int downvotes = snapshot.data['downvoters'].length;
+            int upvotes = snapshot.data['upvotes'];
+            int downvotes = snapshot.data['downvotes'];
             String title = snapshot.data['title'];
             int views = snapshot.data['viewers'].length;
             int commentCount = snapshot.data['commentCount'];
@@ -75,6 +75,9 @@ class _PostState extends State<PostUI> {
             bool downvoted = snapshot.data['downvoters'].contains(username);
             String mediaUrl;
             if (mediaType > 0) mediaUrl = snapshot.data['mediaUrl'];
+            if (mediaType == 2)
+              mediaUrl =
+                  'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
             String content = snapshot.data['content'];
             NotusDocument document =
                 NotusDocument.fromJson(jsonDecode(content));
@@ -100,18 +103,19 @@ class _PostState extends State<PostUI> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData)
-                    return Row(
-                      children: <Widget>[
-                        CircularProgressIndicator(
-                          valueColor:
+                    return Expanded(
+                        child: Row(
+                          children: <Widget>[
+                            CircularProgressIndicator(
+                              valueColor:
                               new AlwaysStoppedAnimation<Color>(Colors.grey),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Loading data... Please Wait...')
-                      ],
-                    );
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text('Loading data... Please Wait...')
+                          ],
+                        ));
                   String name1 = snapshot.data['name'];
 
                   return SafeArea(
@@ -173,13 +177,14 @@ class _PostState extends State<PostUI> {
                       ),
                       Expanded(
                           child: SingleChildScrollView(
-                              padding: EdgeInsets.only(
-                                  right: 15, left: 15, bottom: 15),
                               child: Column(children: <Widget>[
-                                ZefyrView(
-                                  document: document,
-                                  imageDelegate: MyAppZefyrImageDelegate(),
-                                ),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 15, right: 15),
+                                    child: ZefyrView(
+                                      document: document,
+                                      imageDelegate: MyAppZefyrImageDelegate(),
+                                    )),
                                 // Container(
                                 //   height: 700,
                                 //   child: ZefyrScaffold(
@@ -188,39 +193,41 @@ class _PostState extends State<PostUI> {
                                 // ),
                                 mediaType == 0
                                     ? Container(
-                                        child: Row(
-                                        children: <Widget>[
-                                          CircularProgressIndicator(
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(Colors.grey),
-                                          ),
-                                          SizedBox(
-                                            width: 15,
-                                          ),
-                                          Row(
-                                            children: <Widget>[
-                                              CircularProgressIndicator(
-                                                valueColor:
-                                                    new AlwaysStoppedAnimation<
-                                                        Color>(Colors.grey),
-                                              ),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                              Text(
-                                                  'Loading data... Please Wait...')
-                                            ],
-                                          ),
-                                        ],
-                                      ))
+                                    child: Row(
+                                      children: <Widget>[
+                                        CircularProgressIndicator(
+                                          valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              Colors.grey),
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            CircularProgressIndicator(
+                                              valueColor:
+                                              new AlwaysStoppedAnimation<Color>(
+                                                  Colors.grey),
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Text(
+                                                'Loading data... Please Wait...')
+                                          ],
+                                        ),
+                                      ],
+                                    ))
                                     : Image.network(
-                                        mediaUrl,
-                                        width: double.infinity,
-                                        height: 250,
-                                      ),
+                                  mediaUrl,
+                                  width: double.infinity,
+                                  height: 250,
+                                ),
                                 Divider(
-                                  color: Theme.of(context).buttonColor,
+                                  color: Theme
+                                      .of(context)
+                                      .buttonColor,
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -248,7 +255,9 @@ class _PostState extends State<PostUI> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: (upvoted
-                                      ? Theme.of(context).accentColor
+                                      ? Theme
+                                      .of(context)
+                                      .accentColor
                                       : Theme.of(context).buttonColor),
                                 ),
                               ),

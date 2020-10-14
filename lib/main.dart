@@ -48,15 +48,6 @@ class _MyAppState extends State<MyApp> {
       // home: CreatePost(),
       // home: PostUI.test(),
       home: CommunityHome(),
-      // home: Comment(
-      //     'Computing',
-      //     '2020 October 12, 01:17 PM',
-      //     '1602488875571',
-      //     '1602488875571',
-      //     'ashu12_chi',
-      //     'Check post, with Photo. Adding some text to just make it larger ;)',
-      //     'nisiddharth',
-      //     false),
     );
   }
 }
