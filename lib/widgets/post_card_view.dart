@@ -242,12 +242,9 @@ class _PostState extends State<PostCardView> {
                                           style: TextStyle(
                                             fontSize: 15,
                                             color: (downvoted
-                                                ? Theme
-                                                .of(context)
-                                                .accentColor
-                                                : Theme
-                                                .of(context)
-                                                .buttonColor),
+                                                ? Theme.of(context).accentColor
+                                                : Theme.of(context)
+                                                    .buttonColor),
                                           ),
                                         ),
                                         IconButton(
