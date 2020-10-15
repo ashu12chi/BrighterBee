@@ -18,6 +18,14 @@ export const sendToDevice = functions.firestore
        .collection('tokens')
        .get();
 
+    var community = notification.community;
+    community = community.concat(',');
+    var postId = notification.postId;
+    postId = postId.concat(',');
+    var id = community.concat(postId.toString());
+    var name = notification.receiver;
+    var id2 = id.concat(name.toString());
+
      const tokens = querySnapshot.docs.map(snap => snap.id);
   
     //var tokens = ['c3tlmM7fSdq97Cw12e2qLS:APA91bEJHdYII8FahAdLE3ugnnPlrW7HClGjVGPuZsoj5bn4Tbsvs0pEMRpngB//cnF5HFQM1JQnJHk1TlwRXrgXGXzmX09r49lNg4IQPzqZAQv_7l5OMVNX8nGnMxEvYMum7wn0hhkuD0'];
@@ -28,6 +36,11 @@ export const sendToDevice = functions.firestore
         body: notification.body,
         icon: 'your-icon-url',
         click_action: 'FLUTTER_NOTIFICATION_CLICK'
+      },
+      data: {
+      	sound: 'default',
+      	status: 'Comment',
+      	id: id2
       }
     };
 
@@ -42,3 +55,5 @@ export const sendToDevice = functions.firestore
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
+//'Mathematics,1602505903260,nisiddharth'
