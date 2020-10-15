@@ -23,7 +23,7 @@ export const sendToDevice = functions.firestore
     var postId = notification.postId;
     postId = postId.concat(',');
     var id = community.concat(postId.toString());
-    var name = notification.receiver;
+    var name = notification.creator;
     var id2 = id.concat(name.toString());
 
      const tokens = querySnapshot.docs.map(snap => snap.id);
@@ -32,7 +32,7 @@ export const sendToDevice = functions.firestore
 
     const payload: admin.messaging.MessagingPayload = {
       notification: {
-        title: 'New Comment!',
+        title: notification.title,
         body: notification.body,
         icon: 'your-icon-url',
         click_action: 'FLUTTER_NOTIFICATION_CLICK'
@@ -56,4 +56,12 @@ export const sendToDevice = functions.firestore
 //   response.send("Hello from Firebase!");
 // });
 
-//'Mathematics,1602505903260,nisiddharth'
+// In the notification collection in firestore following keys to be added:
+// 1. receiver : person who will recieve notification
+// 2. title : title of notification
+// 3. body : Body of notification
+// 4. community : Community in which that post belong
+// 5. postId : Post Id.
+// 6. creator: creator of Post
+
+// Last three are for PostUI constructor 
