@@ -13,7 +13,6 @@ class CommunityHome extends StatefulWidget {
 class _CommunityHomeState extends State<CommunityHome> {
   String mediaUrl =
       'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +20,7 @@ class _CommunityHomeState extends State<CommunityHome> {
       appBar: AppBar(
         title: Text(
           'Mathematics',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(
@@ -128,36 +128,17 @@ class _CommunityHomeState extends State<CommunityHome> {
                         child: CircularProgressIndicator(),
                       )
                     : ListView.builder(
-                        //scrollDirection: Axis.vertical,
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: snapshot.data.docs.length,
                         itemBuilder: (context, index) {
                           DocumentSnapshot documentSnapshot =
                               snapshot.data.docs[index];
-                          print(documentSnapshot.id);
-                          print('112');
                           return Column(
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: double.infinity,
-                                  color: Colors.black12,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0, top: 8.0),
-                                child: SizedBox(
-                                    height: 530,
-                                    child: PostCardView(
-                                        'Mathematics', documentSnapshot.id)),
-                              ),
+                              PostCardView('Mathematics', documentSnapshot.id),
                             ],
                           );
-                          //return Text('ashu12_chi');
                         },
                       );
               },
