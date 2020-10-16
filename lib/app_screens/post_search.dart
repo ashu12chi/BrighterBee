@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -77,31 +78,37 @@ class _PostSearchState extends State<PostSearch> {
                     .doc(snapshot.data.docs[index].id)
                     .collection('posts')
                     .snapshots(),
-                builder: (context, snapshot) {
-                  return snapshot.connectionState == ConnectionState.waiting
+                builder: (context, snapshot1) {
+                  return snapshot1.connectionState == ConnectionState.waiting
                       ? Center(
                     child: Container(),
                   )
                       :ListView.builder(
                     shrinkWrap: true,
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
+                      itemCount: snapshot1.data.docs.length,
+                      itemBuilder: (context, index1) {
                         DocumentSnapshot documentSnapshot =
-                            snapshot.data.docs[index];
+                            snapshot1.data.docs[index1];
                         print(documentSnapshot['title']);
                         return Padding(
                           padding: const EdgeInsets.only(
                               left: 8.0, right: 8.0, top: 8.0),
                           child: SizedBox(
                             height: 50,
-                            child: Card(
-                                child: Center(
-                              child: Text(
-                                documentSnapshot['title'],
-                                style: TextStyle(fontSize: 18),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )),
+                            child: InkWell (
+                              child: Card(
+                                  child: Center(
+                                child: Text(
+                                  documentSnapshot['title'],
+                                  style: TextStyle(fontSize: 18),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )),
+                              onTap: (){
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => PostUI(snapshot.data.docs[index].id,snapshot1.data.docs[index1].id,documentSnapshot['creator'])));
+                              },
+                            ),
                           ),
                         );
                       },
