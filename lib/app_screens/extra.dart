@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -19,8 +20,12 @@ class _ExtraState extends State<Extra> {
         shadowColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search,color: Colors.grey,),
             iconSize: 30.0,
+            onPressed: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserSearch()));
+            },
           ),
         ],
       ),
