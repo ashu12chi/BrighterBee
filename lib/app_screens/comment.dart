@@ -31,6 +31,9 @@ class _Comment extends State<Comment> {
   TextEditingController textInputController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  List<String> users = [], words = [];
+  String str = '';
+
   _Comment(this.community, this.dateLong, this.key, this.parentPostKey,
       this.username, this.title, this.creator, this.isReply);
 
@@ -109,16 +112,25 @@ class _Comment extends State<Comment> {
                 child: TextField(
               maxLines: 100,
               controller: textInputController,
-              keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
-                hintText: isReply ? 'Your reply' : 'Your comment',
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
-              ),
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      hintText: isReply ? 'Your reply' : 'Your comment',
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        words = val.split(' ');
+                        str = words.length > 0 &&
+                            words[words.length - 1].startsWith('@')
+                            ? words[words.length - 1]
+                            : '';
+                      });
+                    }
             )),
           ])),
     );
@@ -141,17 +153,20 @@ class _Comment extends State<Comment> {
         ],
       ),
     ));
-    var time = DateTime.now().millisecondsSinceEpoch;
+    var time = DateTime
+        .now()
+        .millisecondsSinceEpoch;
     String commKey = 'C' + time.toString();
     FirebaseFirestore instance = FirebaseFirestore.instance;
+    String commentText = textInputController.text;
     if (isReply) {
       await instance
           .collection(
-              'communities/$community/posts/$parentPostKey/comments/$key/replies')
+          'communities/$community/posts/$parentPostKey/comments/$key/replies')
           .doc(commKey)
           .set({
         'time': time,
-        'text': textInputController.text,
+        'text': commentText,
         'creator': username,
         'parent': key,
         'community': community,
@@ -166,13 +181,19 @@ class _Comment extends State<Comment> {
         DocumentReference postRef = instance
             .collection('communities/$community/posts')
             .doc(parentPostKey);
-        await transaction
-            .update(postRef, {'commentCount': FieldValue.increment(1)});
+        transaction.update(postRef, {'commentCount': FieldValue.increment(1)});
         postRef = instance
             .collection('communities/$community/posts/$parentPostKey/comments')
             .doc(key);
-        await transaction
-            .update(postRef, {'replyCount': FieldValue.increment(1)});
+        transaction.update(postRef, {'replyCount': FieldValue.increment(1)});
+      });
+      await instance.collection('notification').add({
+        'title': "Your comment in $community has a reply",
+        'body': commentText,
+        'community': community,
+        'creator': username,
+        'postId': parentPostKey,
+        'receiver': creator,
       });
     } else {
       await instance
@@ -180,7 +201,7 @@ class _Comment extends State<Comment> {
           .doc(commKey)
           .set({
         'time': time,
-        'text': textInputController.text,
+        'text': commentText,
         'creator': username,
         'parent': key,
         'community': community,
@@ -196,8 +217,15 @@ class _Comment extends State<Comment> {
         DocumentReference postRef = instance
             .collection('communities/$community/posts')
             .doc(parentPostKey);
-        await transaction
-            .update(postRef, {'commentCount': FieldValue.increment(1)});
+        transaction.update(postRef, {'commentCount': FieldValue.increment(1)});
+      });
+      await instance.collection('notification').add({
+        'title': "Your post in $community has a comment",
+        'body': commentText,
+        'community': community,
+        'creator': username,
+        'postId': parentPostKey,
+        'receiver': creator,
       });
     }
 

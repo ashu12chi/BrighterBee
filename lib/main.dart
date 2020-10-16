@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
                 .apply(bodyColor: Colors.white)),
         // home: CreatePost(),
         // home: PostUI.test(),
-        //home: CommunityHome(),
+        // home: CommunityHome(),
         //home: MessagingWidget(),
         home: Feed());
   }
