@@ -1,4 +1,4 @@
-import 'package:brighter_bee/app_screens/create_post.dart';
+import 'package:brighter_bee/app_screens/community_home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
               .apply(bodyColor: Colors.white, fontFamily: 'Raleway')),
       // home: CreatePost(),
       // home: PostUI.test(),
-      home: CreatePost(),
+      home: CommunityHome(),
       //home: MessagingWidget(),
       // home: Feed()
     );
