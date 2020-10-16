@@ -15,13 +15,13 @@ upvote(String community, String key, String username, bool upvoted,
   await instance.runTransaction((transaction) async {
     DocumentReference postRef =
         instance.collection('communities/$community/posts').doc(key);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'upvoters': FieldValue.arrayUnion([username]),
       'upvotes': FieldValue.increment(1),
     });
     DocumentReference userRef =
         instance.collection('users/$username/posts').doc('upvoted');
-    await transaction.update(userRef, {
+    transaction.update(userRef, {
       community: FieldValue.arrayUnion([key])
     });
   });
@@ -43,13 +43,13 @@ downvote(String community, String key, String username, bool upvoted,
   await instance.runTransaction((transaction) async {
     DocumentReference postRef =
         instance.collection('communities/$community/posts').doc(key);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'downvoters': FieldValue.arrayUnion([username]),
       'downvotes': FieldValue.increment(1),
     });
     DocumentReference userRef =
         instance.collection('users/$username/posts').doc('downvoted');
-    await transaction.update(userRef, {
+    transaction.update(userRef, {
       community: FieldValue.arrayUnion([key])
     });
   });
@@ -63,13 +63,13 @@ undoUpvote(String community, String key, String username, bool upvoted,
   await instance.runTransaction((transaction) async {
     DocumentReference postRef =
         instance.collection('communities/$community/posts').doc(key);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'upvoters': FieldValue.arrayRemove([username]),
       'upvotes': FieldValue.increment(-1),
     });
     DocumentReference userRef =
         instance.collection('users/$username/posts').doc('upvoted');
-    await transaction.update(userRef, {
+    transaction.update(userRef, {
       community: FieldValue.arrayRemove([key])
     });
   });
@@ -83,13 +83,13 @@ undoDownvote(String community, String key, String username, bool upvoted,
   await instance.runTransaction((transaction) async {
     DocumentReference postRef =
         instance.collection('communities/$community/posts').doc(key);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'downvoters': FieldValue.arrayRemove([username]),
       'downvotes': FieldValue.increment(-1),
     });
     DocumentReference userRef =
         instance.collection('users/$username/posts').doc('downvoted');
-    await transaction.update(userRef, {
+    transaction.update(userRef, {
       community: FieldValue.arrayRemove([key])
     });
   });
@@ -102,8 +102,9 @@ addToViewers(String community, String key, String username) async {
   await instance.runTransaction((transaction) async {
     DocumentReference postRef =
         instance.collection('communities/$community/posts').doc(key);
-    await transaction.update(postRef, {
-      'viewers': FieldValue.arrayUnion([username])
+    transaction.update(postRef, {
+      'viewers': FieldValue.arrayUnion([username]),
+      'views': FieldValue.increment(1),
     });
   });
 

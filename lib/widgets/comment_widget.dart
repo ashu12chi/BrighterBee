@@ -1,8 +1,10 @@
 import 'package:brighter_bee/app_screens/comment.dart';
+import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_comment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class CommentWidget extends StatefulWidget {
@@ -104,11 +106,27 @@ class _CommentWidget extends State<CommentWidget> {
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  text,
-                  style: TextStyle(fontSize: 14),
-                ),
+                child: Text.rich(TextSpan(
+                    text: '',
+                    children: text.split(' ').map((w) {
+                      return w.startsWith('@') && w.length > 1
+                          ? TextSpan(
+                              text: ' ' + w,
+                              style: TextStyle(color: Colors.blue),
+                              recognizer: new TapGestureRecognizer()
+                                ..onTap = () => Profile(),
+                            )
+                          : TextSpan(
+                              text: ' ' + w, style: TextStyle(fontSize: 14));
+                    }).toList())),
               ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: Text(
+              //     text,
+              //     style: TextStyle(fontSize: 14),
+              //   ),
+              // ),
               Row(
                 children: <Widget>[
                   Text(

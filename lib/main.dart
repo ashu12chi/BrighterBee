@@ -1,7 +1,6 @@
+import 'package:brighter_bee/app_screens/create_post.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'app_screens/community_home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,17 +46,15 @@ class _MyAppState extends State<MyApp> {
           buttonColor: Colors.white,
           accentColor: Colors.deepOrange,
           primaryColor: Colors.black,
-          textTheme: Theme
-              .of(context)
+          textTheme: Theme.of(context)
               .textTheme
               .apply(bodyColor: Colors.white, fontFamily: 'Roboto'),
-          primaryTextTheme: Theme
-              .of(context)
+          primaryTextTheme: Theme.of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.white, fontFamily: 'Raleway')),
       // home: CreatePost(),
       // home: PostUI.test(),
-      home: CommunityHome(),
+      home: CreatePost(),
       //home: MessagingWidget(),
       // home: Feed()
     );

@@ -10,7 +10,7 @@ class _Test extends State<Test> {
   TextEditingController ctrl;
   List<String> users = ['Naveen', 'Ram', 'Satish', 'Some Other'], words = [];
   String str = '';
-  List<String> coments = [];
+  List<String> comments = [];
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _Test extends State<Test> {
                 onPressed: () {
                   if (ctrl.text.isNotEmpty)
                     setState(() {
-                      coments.add(ctrl.text);
+                      comments.add(ctrl.text);
                     });
                 }),
           ),
@@ -72,25 +72,25 @@ class _Test extends State<Test> {
               }).toList())
           : SizedBox(),
       SizedBox(height: 25),
-      coments.length > 0
+              comments.length > 0
           ? ListView.builder(
-              shrinkWrap: true,
-              itemCount: coments.length,
-              itemBuilder: (con, ind) {
-                return Text.rich(
-                  TextSpan(
-                      text: '',
-                      children: coments[ind].split(' ').map((w) {
-                        return w.startsWith('@') && w.length > 1
-                            ? TextSpan(
-                                text: ' ' + w,
-                                style: TextStyle(color: Colors.blue),
-                                recognizer: new TapGestureRecognizer()
-                                  ..onTap = () => showProfile(w),
-                              )
-                            : TextSpan(
-                                text: ' ' + w,
-                                style: TextStyle(color: Colors.black));
+                shrinkWrap: true,
+                itemCount: comments.length,
+                itemBuilder: (con, ind) {
+                  return Text.rich(
+                    TextSpan(
+                        text: '',
+                        children: comments[ind].split(' ').map((w) {
+                          return w.startsWith('@') && w.length > 1
+                              ? TextSpan(
+                            text: ' ' + w,
+                            style: TextStyle(color: Colors.blue),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () => showProfile(w),
+                          )
+                              : TextSpan(
+                              text: ' ' + w,
+                              style: TextStyle(color: Colors.black));
                       }).toList()),
                 );
               },

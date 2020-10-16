@@ -351,6 +351,9 @@ class _CreatePostState extends State<CreatePost> {
         "time": time,
         "upvoters": [],
         "downvoters": [],
+        "downvotes": 0,
+        "upvotes": 0,
+        "views": 0,
         "titleSearch": titleSearchList,
         "commentCount": 0,
       }).then((action) {
