@@ -1,6 +1,8 @@
-import 'package:brighter_bee/app_screens/community_home.dart';
+import 'package:brighter_bee/app_screens/create_post.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'app_screens/feed.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,9 +56,9 @@ class _MyAppState extends State<MyApp> {
               .apply(bodyColor: Colors.white, fontFamily: 'Raleway')),
       // home: CreatePost(),
       // home: PostUI.test(),
-      home: CommunityHome(),
+      //home: CreatePost(),
       //home: MessagingWidget(),
-      // home: Feed()
+       home: Feed()
     );
   }
 }
