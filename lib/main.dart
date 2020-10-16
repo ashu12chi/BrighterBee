@@ -67,6 +67,12 @@ class _MyAppState extends State<MyApp> {
       //home: CreatePost(),
       //home: MessagingWidget(),
       home: Feed(),
+      themeMode: ThemeMode.system,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 }
