@@ -1,4 +1,3 @@
-import 'package:brighter_bee/app_screens/create_post.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -22,20 +21,23 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
         accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-          color: Colors.black,
+                color: Colors.black,
+              ),
+          textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
+          textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
+          buttonColor: Colors.black,
+          accentColor: Colors.deepOrange,
+          primaryColor: Colors.white,
+          backgroundColor: Colors.white,
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: Theme.of(context)
+              .appBarTheme
+              .copyWith(iconTheme: Theme.of(context).iconTheme),
+          textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Roboto'),
+          primaryTextTheme: Theme.of(context)
+              .primaryTextTheme
+              .apply(bodyColor: Colors.black, fontFamily: 'Raleway'),
         ),
-        textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
-        textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
-        buttonColor: Colors.black,
-        accentColor: Colors.deepOrange,
-        primaryColor: Colors.white,
-        backgroundColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Roboto'),
-        primaryTextTheme: Theme.of(context)
-            .primaryTextTheme
-            .apply(bodyColor: Colors.black, fontFamily: 'Raleway'),
-      ),
       darkTheme: ThemeData.dark().copyWith(
           accentIconTheme: Theme
               .of(context)
@@ -48,10 +50,12 @@ class _MyAppState extends State<MyApp> {
           buttonColor: Colors.white,
           accentColor: Colors.deepOrange,
           primaryColor: Colors.black,
-          textTheme: Theme.of(context)
+          textTheme: Theme
+              .of(context)
               .textTheme
               .apply(bodyColor: Colors.white, fontFamily: 'Roboto'),
-          primaryTextTheme: Theme.of(context)
+          primaryTextTheme: Theme
+              .of(context)
               .primaryTextTheme
               .apply(bodyColor: Colors.white, fontFamily: 'Raleway')),
       // home: CreatePost(),
