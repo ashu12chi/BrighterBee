@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:brighter_bee/app_screens/communities.dart';
 import 'package:brighter_bee/app_screens/extra.dart';
 import 'package:brighter_bee/app_screens/home.dart';
+import 'package:brighter_bee/app_screens/notifications.dart';
 import 'package:brighter_bee/app_screens/post_search.dart';
 import 'package:brighter_bee/app_screens/post_ui.dart';
-import 'package:brighter_bee/providers/notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +56,6 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -73,29 +72,33 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
         bottom: TabBar(
           controller: _controller,
           indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(width: 3, color: Colors.blue)),
+              borderSide:
+                  BorderSide(width: 3, color: Theme.of(context).accentColor)),
           tabs: <Widget>[
             new Tab(
               icon: Icon(
                 Icons.home,
-                color: Colors.black54,
               ),
             ),
             new Tab(
-              icon: Icon(Icons.people, color: Colors.black54),
+              icon: Icon(
+                Icons.people,
+              ),
             ),
             new Tab(
-              icon: Icon(Icons.notifications, color: Colors.black54),
+              icon: Icon(Icons.notifications,),
             ),
             new Tab(
-              icon: Icon(Icons.view_headline, color: Colors.black54),
+              icon: Icon(Icons.view_headline,),
             )
           ],
         ),
         title: Text(
           'BrighterBee',
           style: TextStyle(
-              fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.blue),
+              fontSize: 25.0, fontWeight: FontWeight.bold, color: Theme
+              .of(context)
+              .accentColor),
         ),
       ),
       body: TabBarView(

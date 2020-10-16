@@ -1,4 +1,3 @@
-import 'package:brighter_bee/app_screens/community_home.dart';
 import 'package:flutter/material.dart';
 
 import 'community_search.dart';
@@ -15,15 +14,15 @@ class _CommunitiesState extends State<Communities> {
       appBar: AppBar(
         title: Text(
           'Communities',
-          style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search,color: Colors.grey,),
+            icon: Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
             iconSize: 30.0,
-            onPressed: (){
+            onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CommunitySearch()));
             },
@@ -40,11 +39,9 @@ class _CommunitiesState extends State<Communities> {
                   children: <Widget>[
                     Icon(
                       Icons.people,
-                      color: Colors.black,
                     ),
                     Text(
                       'Added',
-                      style: TextStyle(color: Colors.black),
                     )
                   ],
                 ),
@@ -57,11 +54,9 @@ class _CommunitiesState extends State<Communities> {
                   children: <Widget>[
                     Icon(
                       Icons.explore,
-                      color: Colors.black,
                     ),
                     Text(
                       'Discover',
-                      style: TextStyle(color: Colors.black),
                     )
                   ],
                 ),
@@ -74,11 +69,9 @@ class _CommunitiesState extends State<Communities> {
                   children: <Widget>[
                     Icon(
                       Icons.add_circle,
-                      color: Colors.black,
                     ),
                     Text(
                       'Create',
-                      style: TextStyle(color: Colors.black),
                     )
                   ],
                 ),

@@ -12,10 +12,7 @@ class _NotificationsState extends State<Notifications> {
       appBar: AppBar(
         title: Text(
           'Notifications',
-          style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
       ),
     );
   }

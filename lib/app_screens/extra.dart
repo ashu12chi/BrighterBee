@@ -12,17 +12,15 @@ class _ExtraState extends State<Extra> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Menu',
-          style: TextStyle(color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
+        title: Text('Menu'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search,color: Colors.grey,),
+            icon: Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
             iconSize: 30.0,
-            onPressed: (){
+            onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => UserSearch()));
             },
@@ -46,9 +44,7 @@ class _ExtraState extends State<Extra> {
                       Text(
                         'Ashutosh Chitranshi',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.0),
+                            fontWeight: FontWeight.bold, fontSize: 18.0),
                       ),
                       Text(
                         'See your profile\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t',
@@ -64,7 +60,7 @@ class _ExtraState extends State<Extra> {
               child: Container(
                 height: 1.0,
                 width: double.infinity,
-                color: Colors.black12,
+                color: Colors.grey,
               ),
             ),
             Row(
@@ -74,6 +70,7 @@ class _ExtraState extends State<Extra> {
                   height: 100,
                   width: MediaQuery.of(context).size.width / 2 - 10,
                   child: Card(
+                    elevation: 8,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -90,6 +87,7 @@ class _ExtraState extends State<Extra> {
                   height: 100,
                   width: MediaQuery.of(context).size.width / 2 - 10,
                   child: Card(
+                    elevation: 8,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -111,6 +109,7 @@ class _ExtraState extends State<Extra> {
                   height: 100,
                   width: MediaQuery.of(context).size.width / 2 - 10,
                   child: Card(
+                    elevation: 8,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -127,6 +126,7 @@ class _ExtraState extends State<Extra> {
                   height: 100,
                   width: MediaQuery.of(context).size.width / 2 - 10,
                   child: Card(
+                    elevation: 8,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -147,14 +147,18 @@ class _ExtraState extends State<Extra> {
                 width: double.infinity,
                 height: 67,
                 child: Card(
+                  elevation: 8,
                   child: Row(
                     children: <Widget>[
+                      SizedBox(
+                        width: 8,
+                      ),
                       Icon(Icons.help),
                       Padding(
                         padding: const EdgeInsets.only(left: 4.0),
                         child: Text(
                           'Help & Support',
-                          style: TextStyle(color: Colors.black, fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0),
                         ),
                       )
                     ],
@@ -169,14 +173,18 @@ class _ExtraState extends State<Extra> {
               width: double.infinity,
               height: 67,
               child: Card(
+                elevation: 8,
                 child: Row(
                   children: <Widget>[
+                    SizedBox(
+                      width: 8,
+                    ),
                     Icon(Icons.settings),
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
                         'Settings and Privacy',
-                        style: TextStyle(color: Colors.black, fontSize: 18.0),
+                        style: TextStyle(fontSize: 18.0),
                       ),
                     )
                   ],
@@ -190,14 +198,18 @@ class _ExtraState extends State<Extra> {
               width: double.infinity,
               height: 67,
               child: Card(
+                elevation: 8,
                 child: Row(
                   children: <Widget>[
+                    SizedBox(
+                      width: 8,
+                    ),
                     Icon(Icons.exit_to_app),
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
                         'Logout',
-                        style: TextStyle(color: Colors.black, fontSize: 18.0),
+                        style: TextStyle(fontSize: 18.0),
                       ),
                     )
                   ],
