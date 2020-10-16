@@ -110,8 +110,8 @@ class _Comment extends State<Comment> {
             ),
             Expanded(
                 child: TextField(
-              maxLines: 100,
-              controller: textInputController,
+                    maxLines: 100,
+                    controller: textInputController,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                       hintText: isReply ? 'Your reply' : 'Your comment',
@@ -126,12 +126,11 @@ class _Comment extends State<Comment> {
                       setState(() {
                         words = val.split(' ');
                         str = words.length > 0 &&
-                            words[words.length - 1].startsWith('@')
+                                words[words.length - 1].startsWith('@')
                             ? words[words.length - 1]
                             : '';
                       });
-                    }
-            )),
+                    })),
           ])),
     );
   }
@@ -235,6 +234,20 @@ class _Comment extends State<Comment> {
       'isReply': isReply,
       'parentPost': parentPostKey,
       'parent': key,
+    });
+
+    commentText.split(' ').map((w) async {
+      if (w.startsWith('@') && w.length > 1) {
+        w = w.replaceAll('[^A-Za-z0-9]', '');
+        await instance.collection('notification').add({
+          'title': "$username tagged you in a comment",
+          'body': commentText,
+          'community': community,
+          'creator': username,
+          'postId': parentPostKey,
+          'receiver': w,
+        });
+      }
     });
 
     _scaffoldKey.currentState.hideCurrentSnackBar();

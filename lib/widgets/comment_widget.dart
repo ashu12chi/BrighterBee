@@ -112,7 +112,8 @@ class _CommentWidget extends State<CommentWidget> {
                       return w.startsWith('@') && w.length > 1
                           ? TextSpan(
                               text: ' ' + w,
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor),
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () => openProfile(
                                     w.replaceAll('[^A-Za-z0-9]', '')),
@@ -121,13 +122,6 @@ class _CommentWidget extends State<CommentWidget> {
                               text: ' ' + w, style: TextStyle(fontSize: 14));
                     }).toList())),
               ),
-              // Align(
-              //   alignment: Alignment.centerLeft,
-              //   child: Text(
-              //     text,
-              //     style: TextStyle(fontSize: 14),
-              //   ),
-              // ),
               Row(
                 children: <Widget>[
                   Text(

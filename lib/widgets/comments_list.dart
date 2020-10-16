@@ -57,7 +57,7 @@ class _CommentsList extends State<CommentsList> {
             itemBuilder: (context, index) {
               debugPrint('NSP');
               return ExpansionTile(
-                backgroundColor: Color.fromRGBO(204, 204, 204, 0.5),
+                backgroundColor: Theme.of(context).buttonColor.withOpacity(0.2),
                 title: CommentWidget(
                     snapshot.data[index]['community'],
                     snapshot.data[index]['parentPost'],

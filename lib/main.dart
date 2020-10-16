@@ -21,48 +21,52 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
         accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Colors.black,
+              color: Colors.black,
+            ),
+        textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
+        textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
+        buttonColor: Colors.black,
+        accentColor: Colors.deepOrange,
+        primaryColor: Colors.white,
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: Theme.of(context)
+            .appBarTheme
+            .copyWith(iconTheme: Theme.of(context).iconTheme),
+        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Roboto'),
+        primaryTextTheme: Theme.of(context)
+            .primaryTextTheme
+            .apply(bodyColor: Colors.black, fontFamily: 'Roboto'),
+      ),
+      // dark theme
+      darkTheme: ThemeData.dark().copyWith(
+          accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
+                color: Color.fromRGBO(226, 226, 226, 1),
               ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
-          buttonColor: Colors.black,
-          accentColor: Colors.deepOrange,
-          primaryColor: Colors.white,
-          backgroundColor: Colors.white,
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: Theme.of(context)
-              .appBarTheme
-              .copyWith(iconTheme: Theme.of(context).iconTheme),
-          textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Roboto'),
-          primaryTextTheme: Theme.of(context)
-              .primaryTextTheme
-              .apply(bodyColor: Colors.black, fontFamily: 'Raleway'),
-        ),
-      darkTheme: ThemeData.dark().copyWith(
-          accentIconTheme: Theme
-              .of(context)
-              .accentIconTheme
-              .copyWith(
-            color: Colors.white,
-          ),
-          textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
-          textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
-          buttonColor: Colors.white,
-          accentColor: Colors.deepOrange,
-          primaryColor: Colors.black,
-          textTheme: Theme
-              .of(context)
-              .textTheme
-              .apply(bodyColor: Colors.white, fontFamily: 'Roboto'),
-          primaryTextTheme: Theme
-              .of(context)
-              .primaryTextTheme
-              .apply(bodyColor: Colors.white, fontFamily: 'Raleway')),
+          buttonColor: Color.fromRGBO(226, 226, 226, 1),
+          errorColor: Color.fromRGBO(207, 102, 121, 1),
+          accentColor: Colors.deepOrangeAccent,
+          primaryColor: Color.fromRGBO(18, 18, 18, 1),
+          backgroundColor: Color.fromRGBO(18, 18, 18, 1),
+          // #121212
+          scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
+          appBarTheme: Theme.of(context).appBarTheme.copyWith(
+                color: Color.fromRGBO(31, 31, 31, 1), // #1F1F1F
+              ),
+          cardColor: Color.fromRGBO(31, 31, 31, 1),
+          textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: Color.fromRGBO(226, 226, 226, 1),
+              fontFamily: 'Roboto'),
+          primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
+              bodyColor: Color.fromRGBO(226, 226, 226, 1),
+              fontFamily: 'Roboto')),
       // home: CreatePost(),
       // home: PostUI.test(),
       //home: CreatePost(),
       //home: MessagingWidget(),
-       home: Feed()
+      home: Feed(),
     );
   }
 }
