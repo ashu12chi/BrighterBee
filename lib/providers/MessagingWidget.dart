@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:brighter_bee/app_screens/community_home.dart';
-import 'package:brighter_bee/app_screens/post_ui.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 
 class MessagingWidget extends StatefulWidget {
   @override
@@ -69,32 +68,32 @@ class _MessagingWidgetState extends State<MessagingWidget> {
             BottomNavigationBarItem(
               icon: _newNotification
                   ? Stack(
-                children: <Widget>[
-                  Icon(Icons.notifications),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      padding: EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 13,
-                        minHeight: 13,
-                      ),
-                      child: Text(
-                        '',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 8,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-                ],
-              )
+                      children: <Widget>[
+                        Icon(Icons.notifications),
+                        Positioned(
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 13,
+                              minHeight: 13,
+                            ),
+                            child: Text(
+                              '',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 8,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
                   : Icon(Icons.notifications),
               title: Text('Notifications'),
             ),
@@ -104,14 +103,15 @@ class _MessagingWidgetState extends State<MessagingWidget> {
           onTap: _onItemTapped,
         ),
         body: Material(
-          child:
-          Padding(
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text(_homeScreenText,style: TextStyle(fontSize: 19),),
+              child: Text(
+                _homeScreenText,
+                style: TextStyle(fontSize: 19),
+              ),
             ),
           ),
-
         ));
   }
 
@@ -129,14 +129,15 @@ class _MessagingWidgetState extends State<MessagingWidget> {
   void _onItemTapped(int index) {
     setState(() {
       _bottomNavBarSelectedIndex = index;
-      if (index == 1){
-        _newNotification = false ;
+      if (index == 1) {
+        _newNotification = false;
       }
     });
   }
 }
 
 final Map<String, MessageBean> _items = <String, MessageBean>{};
+
 MessageBean _itemForMessage(Map<String, dynamic> message) {
   //If the message['data'] is non-null, we will return its value, else return map message object
   final dynamic data = message['data'] ?? message;
@@ -150,28 +151,34 @@ MessageBean _itemForMessage(Map<String, dynamic> message) {
 //Model class to represent the message return by FCM
 class MessageBean {
   MessageBean({this.itemId});
+
   final String itemId;
 
   StreamController<MessageBean> _controller =
   StreamController<MessageBean>.broadcast();
+
   Stream<MessageBean> get onChanged => _controller.stream;
 
   String _status;
+
   String get status => _status;
+
   set status(String value) {
     _status = value;
     _controller.add(this);
   }
 
   static final Map<String, Route<void>> routes = <String, Route<void>>{};
+
   Route<void> get route {
     final String routeName = '/detail/$itemId';
     return routes.putIfAbsent(
       routeName,
-          () => MaterialPageRoute<void>(
-        settings: RouteSettings(name: routeName),
-        builder: (BuildContext context) => DetailPage(itemId),
-      ),
+          () =>
+          MaterialPageRoute<void>(
+            settings: RouteSettings(name: routeName),
+            builder: (BuildContext context) => DetailPage(itemId),
+          ),
     );
   }
 }
@@ -179,7 +186,9 @@ class MessageBean {
 //Detail UI screen that will display the content of the message return from FCM
 class DetailPage extends StatefulWidget {
   DetailPage(this.itemId);
+
   final String itemId;
+
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -213,6 +222,6 @@ class _DetailPageState extends State<DetailPage> {
 //        child: Center(child: Text("Item status: ${_item.status}")),
 //      ),
 //    );
-      return CommunityHome();
+    return CommunityHome();
   }
 }

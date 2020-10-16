@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:brighter_bee/app_screens/communities.dart';
-import 'package:brighter_bee/app_screens/community_home.dart';
 import 'package:brighter_bee/app_screens/extra.dart';
 import 'package:brighter_bee/app_screens/home.dart';
 import 'package:brighter_bee/app_screens/notifications.dart';
 import 'package:brighter_bee/app_screens/post_search.dart';
 import 'package:brighter_bee/app_screens/post_ui.dart';
-import 'package:brighter_bee/providers/MessagingWidget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -19,14 +17,14 @@ class Feed extends StatefulWidget {
 class _FeedState extends State<Feed> with TickerProviderStateMixin {
   TabController _controller;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   void initState() {
     super.initState();
     _controller = TabController(initialIndex: 0, length: 4, vsync: this);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        setState(() {
-        });
+        setState(() {});
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
@@ -49,8 +47,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
     //Getting the token from FCM
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
-      setState(() {
-      });
+      setState(() {});
     });
   }
 
@@ -106,6 +103,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       ),
     );
   }
+
   void _navigateToItemDetail(Map<String, dynamic> message) {
     final MessageBean item = _itemForMessage(message);
     // Clear away dialogs
@@ -114,7 +112,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       Navigator.push(context, item.route);
     }
   }
+
   final Map<String, MessageBean> _items = <String, MessageBean>{};
+
   MessageBean _itemForMessage(Map<String, dynamic> message) {
     //If the message['data'] is non-null, we will return its value, else return map message object
     final dynamic data = message['data'] ?? message;
@@ -132,7 +132,7 @@ class MessageBean {
   final String itemId;
 
   StreamController<MessageBean> _controller =
-  StreamController<MessageBean>.broadcast();
+      StreamController<MessageBean>.broadcast();
 
   Stream<MessageBean> get onChanged => _controller.stream;
 
@@ -151,10 +151,10 @@ class MessageBean {
     final String routeName = '/detail/$itemId';
     print('oct 15');
     print(routeName);
-    String community = itemId.substring(0,itemId.indexOf(','));
-    String temp = routeName.substring(routeName.indexOf(',')+1);
-    String postID = temp.substring(0,temp.indexOf(','));
-    temp = temp.substring(temp.indexOf(',')+1);
+    String community = itemId.substring(0, itemId.indexOf(','));
+    String temp = routeName.substring(routeName.indexOf(',') + 1);
+    String postID = temp.substring(0, temp.indexOf(','));
+    temp = temp.substring(temp.indexOf(',') + 1);
     String creator = temp;
     print(community);
     print(postID);
@@ -164,7 +164,8 @@ class MessageBean {
           () =>
           MaterialPageRoute<void>(
             settings: RouteSettings(name: routeName),
-            builder: (BuildContext context) => PostUI(community,postID,creator),
+            builder: (BuildContext context) =>
+                PostUI(community, postID, creator),
           ),
     );
   }

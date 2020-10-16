@@ -146,12 +146,8 @@ class _CommentWidget extends State<CommentWidget> {
                     style: TextStyle(
                       fontSize: 14,
                       color: (downvoted
-                          ? Theme
-                          .of(context)
-                          .accentColor
-                          : Theme
-                          .of(context)
-                          .buttonColor),
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).buttonColor),
                     ),
                   ),
                   IconButton(
