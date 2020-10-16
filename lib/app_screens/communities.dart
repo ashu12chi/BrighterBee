@@ -1,4 +1,7 @@
+import 'package:brighter_bee/app_screens/community_home.dart';
 import 'package:flutter/material.dart';
+
+import 'community_search.dart';
 
 class Communities extends StatefulWidget {
   @override
@@ -11,15 +14,19 @@ class _CommunitiesState extends State<Communities> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Groups',
+          'Communities',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search,color: Colors.grey,),
             iconSize: 30.0,
+            onPressed: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CommunitySearch()));
+            },
           ),
         ],
       ),
