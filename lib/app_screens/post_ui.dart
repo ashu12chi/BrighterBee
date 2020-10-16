@@ -62,7 +62,6 @@ class _PostState extends State<PostUI> {
                   Text('Loading data... Please Wait...')
                 ],
               );
-            addToViewers(community, key, username);
             String creator = snapshot.data['creator'];
             var time = snapshot.data['time'];
             int upvotes = snapshot.data['upvotes'];
@@ -73,6 +72,8 @@ class _PostState extends State<PostUI> {
             int mediaType = snapshot.data['mediaType'];
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
+            if (!snapshot.data['viewers'].contains(username))
+              addToViewers(community, key, username);
             String mediaUrl;
             if (mediaType > 0) mediaUrl = snapshot.data['mediaUrl'];
             if (mediaType == 2)
@@ -186,49 +187,26 @@ class _PostState extends State<PostUI> {
                             imageDelegate: MyAppZefyrImageDelegate(),
                           ),
                         ),
-                        // Container(
-                        //   height: 700,
-                        //   child: ZefyrScaffold(
-                        //     child: editor,
-                        //   ),
-                        // ),
-                        mediaType == 0
-                            ? Container(
-                                child: Row(
-                                children: <Widget>[
-                                  CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            Colors.grey),
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      CircularProgressIndicator(
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text('Loading data... Please Wait...')
-                                    ],
-                                  ),
-                                ],
-                              ))
-                            : Image.network(
-                                mediaUrl,
-                                width: double.infinity,
-                                height: 250,
-                              ),
-                        Divider(
-                          color: Theme.of(context).buttonColor,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
+                                // Container(
+                                //   height: 700,
+                                //   child: ZefyrScaffold(
+                                //     child: editor,
+                                //   ),
+                                // ),
+                                (mediaType == 0)
+                                    ? Container()
+                                    : Image.network(
+                                  mediaUrl,
+                                  width: double.infinity,
+                                  height: 250,
+                                ),
+                                Divider(
+                                  color: Theme
+                                      .of(context)
+                                      .buttonColor,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
                           child: Container(
                             child: Padding(
                               padding: const EdgeInsets.only(
