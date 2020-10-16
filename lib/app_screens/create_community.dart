@@ -8,6 +8,9 @@ class CreateGroup extends StatefulWidget {
 class _CreateGroupState extends State<CreateGroup> {
   int _radioValue1 = 1;
   int _radioValue2 = 2;
+  int _radioValue3 = 3;
+  int _radioValue4 = 4;
+
 
   void _handleRadioValueChange1(int value) {
     setState(() {
@@ -18,6 +21,18 @@ class _CreateGroupState extends State<CreateGroup> {
   void _handleRadioValueChange2(int value) {
     setState(() {
       _radioValue2 = value;
+    });
+  }
+
+  void _handleRadioValueChange3(int value) {
+    setState(() {
+      _radioValue3 = value;
+    });
+  }
+
+  void _handleRadioValueChange4(int value) {
+    setState(() {
+      _radioValue4 = value;
     });
   }
 
@@ -49,6 +64,33 @@ class _CreateGroupState extends State<CreateGroup> {
             decoration: InputDecoration(
                 focusColor: Colors.blue,
                 hintText: 'Name your community',
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                border: new OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Colors.grey, width: 5))),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Colors.black12,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'About',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          TextField(
+            decoration: InputDecoration(
+                focusColor: Colors.blue,
+                hintText: 'Write description of your community',
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
                 border: new OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -231,8 +273,8 @@ class _CreateGroupState extends State<CreateGroup> {
             children: <Widget>[
               new Radio(
                 value: 0,
-                groupValue: _radioValue2,
-                onChanged: _handleRadioValueChange2,
+                groupValue: _radioValue3,
+                onChanged: _handleRadioValueChange3,
               ),
               Row(
                 children: [
@@ -248,8 +290,8 @@ class _CreateGroupState extends State<CreateGroup> {
               ),
               new Radio(
                 value: 1,
-                groupValue: _radioValue2,
-                onChanged: _handleRadioValueChange2,
+                groupValue: _radioValue3,
+                onChanged: _handleRadioValueChange3,
               ),
               Row(
                 children: [
@@ -290,8 +332,8 @@ class _CreateGroupState extends State<CreateGroup> {
             children: <Widget>[
               new Radio(
                 value: 0,
-                groupValue: _radioValue2,
-                onChanged: _handleRadioValueChange2,
+                groupValue: _radioValue4,
+                onChanged: _handleRadioValueChange4,
               ),
               Row(
                 children: [
@@ -307,8 +349,8 @@ class _CreateGroupState extends State<CreateGroup> {
               ),
               new Radio(
                 value: 1,
-                groupValue: _radioValue2,
-                onChanged: _handleRadioValueChange2,
+                groupValue: _radioValue4,
+                onChanged: _handleRadioValueChange4,
               ),
               Row(
                 children: [

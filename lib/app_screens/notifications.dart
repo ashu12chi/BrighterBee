@@ -16,12 +16,6 @@ class _NotificationsState extends State<Notifications> {
         ),
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            iconSize: 30.0,
-          ),
-        ],
       ),
     );
   }

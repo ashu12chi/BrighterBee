@@ -50,51 +50,65 @@ class _PostSearchState extends State<PostSearch> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: (searchController.text != "" && searchController.text != null)
-            ? FirebaseFirestore.instance
-                .collection('communities')
-                .doc('Mathematics')
-                .collection('posts')
-                .doc('posted')
-                .collection('2020-10-10')
-                .where('titleSearch', arrayContains: searchController.text)
-                .snapshots()
-            : FirebaseFirestore.instance
-                .collection('communities')
-                .doc('Mathematics')
-                .collection('posts')
-                .doc('posted')
-                .collection('2020-10-10')
-                .snapshots(),
+        stream:  FirebaseFirestore.instance.collection('communities').snapshots(),
         builder: (context, snapshot) {
           return snapshot.connectionState == ConnectionState.waiting
               ? Center(
                   child: CircularProgressIndicator(),
-                )
-              : ListView.builder(
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot documentSnapshot =
-                        snapshot.data.docs[index];
-                    print(documentSnapshot['title']);
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, right: 8.0, top: 8.0),
-                      child: SizedBox(
-                        height: 50,
-                        child: Card(
-                            child: Center(
-                          child: Text(
-                            documentSnapshot['title'],
-                            style: TextStyle(fontSize: 18),
-                            overflow: TextOverflow.ellipsis,
+                ):
+                //Center(child: Text(snapshot.data.docs[0].documentID),);
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context,index) {
+                      return snapshot.connectionState == ConnectionState.waiting
+                      ? Center(
+                    child: CircularProgressIndicator(),
+                  ): StreamBuilder<QuerySnapshot>(
+                stream: (searchController.text != "" && searchController.text != null)
+                    ? FirebaseFirestore.instance
+                    .collection('communities')
+                    .doc(snapshot.data.docs[index].id)
+                    .collection('posts')
+                    .where('titleSearch', arrayContains: searchController.text)
+                    .snapshots()
+                    : FirebaseFirestore.instance
+                    .collection('communities')
+                    .doc(snapshot.data.docs[index].id)
+                    .collection('posts')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? Center(
+                    child: Container(),
+                  )
+                      :ListView.builder(
+                    shrinkWrap: true,
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot documentSnapshot =
+                            snapshot.data.docs[index];
+                        print(documentSnapshot['title']);
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, right: 8.0, top: 8.0),
+                          child: SizedBox(
+                            height: 50,
+                            child: Card(
+                                child: Center(
+                              child: Text(
+                                documentSnapshot['title'],
+                                style: TextStyle(fontSize: 18),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )),
                           ),
-                        )),
-                      ),
+                        );
+                      },
                     );
-                  },
-                );
-        },
+                }
+              );}
+              );},
       ),
     );
   }
