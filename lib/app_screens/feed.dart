@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:brighter_bee/app_screens/communities.dart';
 import 'package:brighter_bee/app_screens/extra.dart';
 import 'package:brighter_bee/app_screens/home.dart';
-import 'package:brighter_bee/app_screens/notifications.dart';
 import 'package:brighter_bee/app_screens/post_search.dart';
 import 'package:brighter_bee/app_screens/post_ui.dart';
+import 'package:brighter_bee/providers/notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
