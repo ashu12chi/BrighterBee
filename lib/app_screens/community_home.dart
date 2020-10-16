@@ -20,6 +20,7 @@ class _CommunityHomeState extends State<CommunityHome> {
       appBar: AppBar(
         title: Text(
           'Mathematics',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(

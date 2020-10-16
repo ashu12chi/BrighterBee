@@ -31,24 +31,30 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Roboto'),
-        primaryTextTheme:
-            Theme.of(context).primaryTextTheme.apply(fontFamily: 'Roboto'),
+        primaryTextTheme: Theme.of(context)
+            .primaryTextTheme
+            .apply(bodyColor: Colors.black, fontFamily: 'Raleway'),
       ),
       darkTheme: ThemeData.dark().copyWith(
-          accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Colors.white,
-              ),
+          accentIconTheme: Theme
+              .of(context)
+              .accentIconTheme
+              .copyWith(
+            color: Colors.white,
+          ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
           buttonColor: Colors.white,
           accentColor: Colors.deepOrange,
           primaryColor: Colors.black,
-          textTheme: Theme.of(context)
+          textTheme: Theme
+              .of(context)
               .textTheme
               .apply(bodyColor: Colors.white, fontFamily: 'Roboto'),
-          primaryTextTheme: Theme.of(context)
+          primaryTextTheme: Theme
+              .of(context)
               .primaryTextTheme
-              .apply(bodyColor: Colors.white, fontFamily: 'Roboto')),
+              .apply(bodyColor: Colors.white, fontFamily: 'Raleway')),
       // home: CreatePost(),
       // home: PostUI.test(),
       home: CommunityHome(),
