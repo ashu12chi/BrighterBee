@@ -37,6 +37,10 @@ class _MyAppState extends State<MyApp> {
         primaryTextTheme: Theme.of(context)
             .primaryTextTheme
             .apply(bodyColor: Colors.black, fontFamily: 'Roboto'),
+        tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
+          labelColor: Colors.deepOrange,
+          unselectedLabelColor: Colors.black
+        )
       ),
       // dark theme
       darkTheme: ThemeData.dark().copyWith(
@@ -61,7 +65,12 @@ class _MyAppState extends State<MyApp> {
               fontFamily: 'Roboto'),
           primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
-              fontFamily: 'Roboto')),
+              fontFamily: 'Roboto'),
+          tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
+              labelColor: Colors.deepOrange,
+              unselectedLabelColor: Colors.white
+          )
+      ),
       // home: CreatePost(),
       // home: PostUI.test(),
       //home: CreatePost(),

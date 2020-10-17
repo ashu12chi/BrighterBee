@@ -22,6 +22,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
     super.initState();
     // _firebaseMessaging.getToken().then((value) => print("Dev token: $value"));
     _controller = TabController(initialIndex: 0, length: 4, vsync: this);
+    _controller.addListener(_handleTabSelection);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -50,6 +51,10 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       assert(token != null);
       setState(() {});
     });
+  }
+
+  void _handleTabSelection (){
+    setState(() {});
   }
 
   @override
