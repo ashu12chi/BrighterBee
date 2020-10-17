@@ -88,12 +88,12 @@ class _RegisterState extends State<Register> {
                       child: _imageFile != null
                           ? Image.file(_imageFile)
                           : FlatButton(
-                        child: Icon(
-                          Icons.add_a_photo,
-                          size: 50,
-                        ),
-                        onPressed: pickImage,
-                      ),
+                              child: Icon(
+                                Icons.add_a_photo,
+                                size: 50,
+                              ),
+                              onPressed: pickImage,
+                            ),
                     ),
                   ),
                   TextFormField(
