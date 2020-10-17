@@ -1,9 +1,6 @@
-import 'package:brighter_bee/app_screens/community_home.dart';
-import 'package:brighter_bee/app_screens/community_profile.dart';
+import 'package:brighter_bee/Authentication/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'app_screens/feed.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +30,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: Colors.white,
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
+        errorColor: Color.fromRGBO(176, 0, 32, 1),
         appBarTheme: Theme.of(context)
             .appBarTheme
             .copyWith(iconTheme: Theme.of(context).iconTheme),
@@ -40,10 +38,6 @@ class _MyAppState extends State<MyApp> {
         primaryTextTheme: Theme.of(context)
             .primaryTextTheme
             .apply(bodyColor: Colors.black, fontFamily: 'Roboto'),
-        tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
-          labelColor: Colors.deepOrange,
-          unselectedLabelColor: Colors.black
-        )
       ),
       // dark theme
       darkTheme: ThemeData.dark().copyWith(
@@ -70,7 +64,10 @@ class _MyAppState extends State<MyApp> {
           primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
               fontFamily: 'Roboto'),
-          tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
+          tabBarTheme: Theme
+              .of(context)
+              .tabBarTheme
+              .copyWith(
               labelColor: Colors.deepOrange,
               unselectedLabelColor: Colors.white
           )
@@ -78,8 +75,8 @@ class _MyAppState extends State<MyApp> {
       // home: CreatePost(),
       // home: PostUI.test(),
       //home: CreatePost(),
-      home: CommunityHome(),
-      //home: Feed(),
+      //home: MessagingWidget(),
+      home: SignIn(),
       themeMode: ThemeMode.system,
     );
   }

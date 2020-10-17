@@ -6,10 +6,15 @@ import 'package:brighter_bee/app_screens/home.dart';
 import 'package:brighter_bee/app_screens/notifications.dart';
 import 'package:brighter_bee/app_screens/post_search.dart';
 import 'package:brighter_bee/app_screens/post_ui.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Feed extends StatefulWidget {
+  final User user;
+
+  const Feed({Key key, this.user}) : super(key: key);
+
   @override
   _FeedState createState() => _FeedState();
 }
@@ -53,7 +58,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
     });
   }
 
-  void _handleTabSelection (){
+  void _handleTabSelection() {
     setState(() {});
   }
 
@@ -91,19 +96,23 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
               ),
             ),
             new Tab(
-              icon: Icon(Icons.notifications,),
+              icon: Icon(
+                Icons.notifications,
+              ),
             ),
             new Tab(
-              icon: Icon(Icons.view_headline,),
+              icon: Icon(
+                Icons.view_headline,
+              ),
             )
           ],
         ),
         title: Text(
           'BrighterBee',
           style: TextStyle(
-              fontSize: 25.0, fontWeight: FontWeight.bold, color: Theme
-              .of(context)
-              .accentColor),
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).accentColor),
         ),
       ),
       body: TabBarView(

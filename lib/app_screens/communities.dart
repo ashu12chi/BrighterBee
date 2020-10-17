@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/community_home.dart';
 import 'package:brighter_bee/app_screens/create_community.dart';
 import 'package:flutter/material.dart';
 
@@ -51,6 +52,13 @@ class _CommunitiesState extends State<Communities> {
                     side: BorderSide(color: Colors.grey)),
               ),
               FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                      // TODO: Change this
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext) => CommunityHome()));
+                },
                 child: Row(
                   children: <Widget>[
                     Icon(
@@ -58,7 +66,7 @@ class _CommunitiesState extends State<Communities> {
                     ),
                     Text(
                       'Discover',
-                    )
+                    ),
                   ],
                 ),
                 shape: RoundedRectangleBorder(

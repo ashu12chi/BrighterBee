@@ -1,4 +1,6 @@
+import 'package:brighter_bee/Authentication/sign_in.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -8,6 +10,8 @@ class Extra extends StatefulWidget {
 }
 
 class _ExtraState extends State<Extra> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,21 +203,28 @@ class _ExtraState extends State<Extra> {
               height: 67,
               child: Card(
                 elevation: 8,
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Icon(Icons.exit_to_app),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: Text(
-                        'Logout',
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                    )
-                  ],
-                ),
+                child: InkWell(
+                    onTap: () {
+                      _signOut().whenComplete(() {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => SignIn()));
+                      });
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Icon(Icons.exit_to_app),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                        )
+                      ],
+                    )),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
                 ),
@@ -223,5 +234,9 @@ class _ExtraState extends State<Extra> {
         ),
       ),
     );
+  }
+
+  Future _signOut() async {
+    await _auth.signOut();
   }
 }

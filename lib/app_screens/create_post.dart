@@ -295,7 +295,7 @@ class _CreatePostState extends State<CreatePost> {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
-        content: Text('Title in empty.'),
+        content: Text('Title is empty.'),
       ));
       return false;
     }

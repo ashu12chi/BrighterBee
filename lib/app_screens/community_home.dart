@@ -110,7 +110,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Colors.black12),
+                    side: BorderSide(color: Colors.grey),
                   ),
                   onPressed: () {},
                 ),
