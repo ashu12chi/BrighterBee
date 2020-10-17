@@ -67,7 +67,7 @@ class _ProfileState extends State<Profile> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Row(
@@ -217,7 +217,7 @@ class _ProfileState extends State<Profile> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Text(

@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/create_community.dart';
 import 'package:flutter/material.dart';
 
 import 'community_search.dart';
@@ -75,6 +76,10 @@ class _CommunitiesState extends State<Communities> {
                     )
                   ],
                 ),
+                onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CreateGroup()));
+                },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                     side: BorderSide(color: Colors.grey)),

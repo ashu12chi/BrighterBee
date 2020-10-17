@@ -44,7 +44,7 @@ class _CreateGroupState extends State<CreateGroup> {
           child: Text(
             'Create Community',
             style: TextStyle(
-                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -55,7 +55,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Text(
               'Name',
               style: TextStyle(
-                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -74,7 +73,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Padding(
@@ -82,7 +81,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Text(
               'About',
               style: TextStyle(
-                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -101,7 +99,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Padding(
@@ -109,7 +107,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Text(
               'Cover Photo',
               style: TextStyle(
-                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -125,7 +122,7 @@ class _CreateGroupState extends State<CreateGroup> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
                     'Add Cover Photo',
-                    style: TextStyle(color: Colors.black, fontSize: 18),
+                    style: TextStyle(fontSize: 18),
                   ),
                 )
               ],
@@ -137,7 +134,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Padding(
@@ -145,7 +142,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Text(
               'Privacy',
               style: TextStyle(
-                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -196,7 +192,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Padding(
@@ -204,7 +200,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Text(
               'Visibility',
               style: TextStyle(
-                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -255,7 +250,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Padding(
@@ -263,7 +258,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Text(
               'Posts',
               style: TextStyle(
-                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -314,7 +308,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Padding(
@@ -322,7 +316,6 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Text(
               'Verification',
               style: TextStyle(
-                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -373,7 +366,7 @@ class _CreateGroupState extends State<CreateGroup> {
             child: Container(
               height: 1.0,
               width: double.infinity,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
           ),
           Padding(
@@ -381,11 +374,10 @@ class _CreateGroupState extends State<CreateGroup> {
             child: FlatButton(
               child: Text(
                 'Create Community',
-                style: TextStyle(color: Colors.blueAccent),
+                 style: TextStyle(color: Theme.of(context).accentColor)
               ),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  side: BorderSide(color: Colors.blue)),
+                  borderRadius: BorderRadius.circular(5.0),side: BorderSide(color: Theme.of(context).accentColor)),
             ),
           )
         ],
