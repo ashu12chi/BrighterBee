@@ -137,9 +137,7 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Theme
-                            .of(context)
-                            .buttonColor),
+                            BorderSide(color: Theme.of(context).buttonColor),
                       ),
                     ),
                     validator: (value) {
