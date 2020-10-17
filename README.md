@@ -1,6 +1,6 @@
 # BrighterBee
 
-Developing a community for learners.
+Developing a community for learners. Made for Droidrush Avishkar MNNIT 2k20.
 
 ## Planned process flow of the app
 
