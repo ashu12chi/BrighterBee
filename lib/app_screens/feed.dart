@@ -90,7 +90,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
           controller: _controller,
           indicator: UnderlineTabIndicator(
               borderSide:
-              BorderSide(width: 3, color: Theme.of(context).accentColor)),
+                  BorderSide(width: 3, color: Theme.of(context).accentColor)),
           tabs: <Widget>[
             new Tab(
               icon: Icon(

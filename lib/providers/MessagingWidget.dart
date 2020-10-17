@@ -174,11 +174,10 @@ class MessageBean {
     final String routeName = '/detail/$itemId';
     return routes.putIfAbsent(
       routeName,
-          () =>
-          MaterialPageRoute<void>(
-            settings: RouteSettings(name: routeName),
-            builder: (BuildContext context) => DetailPage(itemId),
-          ),
+      () => MaterialPageRoute<void>(
+        settings: RouteSettings(name: routeName),
+        builder: (BuildContext context) => DetailPage(itemId),
+      ),
     );
   }
 }

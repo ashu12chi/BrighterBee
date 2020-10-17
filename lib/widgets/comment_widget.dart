@@ -221,16 +221,8 @@ class _CommentWidget extends State<CommentWidget> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext) =>
-                Comment(
-                    community,
-                    dateLong,
-                    parentKey,
-                    parentPostKey,
-                    username,
-                    title,
-                    creator,
-                    isReply)));
+            builder: (BuildContext) => Comment(community, dateLong, parentKey,
+                parentPostKey, username, title, creator, isReply)));
   }
 
   openProfile(String tag) {

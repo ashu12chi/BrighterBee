@@ -22,8 +22,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
         accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-          color: Colors.black,
-        ),
+              color: Colors.black,
+            ),
         textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
         textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
         buttonColor: Colors.black,
@@ -43,7 +43,10 @@ class _MyAppState extends State<MyApp> {
       ),
       // dark theme
       darkTheme: ThemeData.dark().copyWith(
-          accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
+          accentIconTheme: Theme
+              .of(context)
+              .accentIconTheme
+              .copyWith(
             color: Color.fromRGBO(226, 226, 226, 1),
           ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
@@ -56,17 +59,29 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Color.fromRGBO(18, 18, 18, 1),
           // #121212
           scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
-          appBarTheme: Theme.of(context).appBarTheme.copyWith(
+          appBarTheme: Theme
+              .of(context)
+              .appBarTheme
+              .copyWith(
             color: Color.fromRGBO(31, 31, 31, 1), // #1F1F1F
           ),
           cardColor: Color.fromRGBO(31, 31, 31, 1),
-          textTheme: Theme.of(context).textTheme.apply(
+          textTheme: Theme
+              .of(context)
+              .textTheme
+              .apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
               fontFamily: 'Roboto'),
-          primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
+          primaryTextTheme: Theme
+              .of(context)
+              .primaryTextTheme
+              .apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
               fontFamily: 'Roboto'),
-          tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
+          tabBarTheme: Theme
+              .of(context)
+              .tabBarTheme
+              .copyWith(
               labelColor: Colors.deepOrange,
               unselectedLabelColor: Colors.white)),
       home: FirebaseAuth.instance.currentUser == null
