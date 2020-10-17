@@ -36,3 +36,8 @@ Articles and comments will be lazily loaded.
 ## Class diagram
 
 ![Class diagram](https://github.com/NPDevs/BrighterBee/raw/master/class_diagram.png?raw=true)
+
+## Team details
+1. [Ashutosh Chitranshi](https://github.com/ashu12chi)
+2. [Nishchal Siddharth Pandey](https://github.com/nisiddharth)
+3. [Anushka Srivastava](https://github.com/Anushkaa-Srivastava)
