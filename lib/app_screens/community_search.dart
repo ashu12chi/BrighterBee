@@ -36,8 +36,8 @@ class _CommunitySearchState extends State<CommunitySearch> {
                 controller: searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25)),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25),
                     borderSide: BorderSide(
@@ -50,18 +50,21 @@ class _CommunitySearchState extends State<CommunitySearch> {
           ),
         ),
         body: StreamBuilder<QuerySnapshot>(
-            stream: (searchController.text != "" && searchController.text != null)
+            stream: (searchController.text != "" &&
+                searchController.text != null)
                 ? FirebaseFirestore.instance
                 .collection('communities')
                 .where('nameSearch', arrayContains: searchController.text)
                 .snapshots()
                 : FirebaseFirestore.instance
-                .collection('communities').snapshots(),
+                .collection('communities')
+                .snapshots(),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
                   ? Center(
                 child: Container(),
-              ) :ListView.builder(
+              )
+                  : ListView.builder(
                 shrinkWrap: true,
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
@@ -85,8 +88,6 @@ class _CommunitySearchState extends State<CommunitySearch> {
                   );
                 },
               );
-            }
-        )
-    );
+            }));
   }
 }

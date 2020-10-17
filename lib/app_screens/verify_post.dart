@@ -10,11 +10,12 @@ class _VerifyPostState extends State<VerifyPost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verify Post',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'Verify Post',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
-      body: ListView(
-
-      ),
+      body: ListView(),
     );
   }
 }

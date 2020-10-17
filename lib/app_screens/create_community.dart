@@ -11,7 +11,6 @@ class _CreateGroupState extends State<CreateGroup> {
   int _radioValue3 = 3;
   int _radioValue4 = 4;
 
-
   void _handleRadioValueChange1(int value) {
     setState(() {
       _radioValue1 = value;
@@ -43,8 +42,7 @@ class _CreateGroupState extends State<CreateGroup> {
         title: Center(
           child: Text(
             'Create Community',
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -54,9 +52,7 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Name',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           TextField(
@@ -80,9 +76,7 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'About',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           TextField(
@@ -106,9 +100,7 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Cover Photo',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           FlatButton(
@@ -141,9 +133,7 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Privacy',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -199,9 +189,7 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Visibility',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -257,9 +245,7 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Posts',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -315,9 +301,7 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Verification',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -372,12 +356,11 @@ class _CreateGroupState extends State<CreateGroup> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              child: Text(
-                'Create Community',
-                 style: TextStyle(color: Theme.of(context).accentColor)
-              ),
+              child: Text('Create Community',
+                  style: TextStyle(color: Theme.of(context).accentColor)),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),side: BorderSide(color: Theme.of(context).accentColor)),
+                  borderRadius: BorderRadius.circular(5.0),
+                  side: BorderSide(color: Theme.of(context).accentColor)),
             ),
           )
         ],

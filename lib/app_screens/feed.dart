@@ -16,12 +16,18 @@ class Feed extends StatefulWidget {
   const Feed({Key key, this.user}) : super(key: key);
 
   @override
-  _FeedState createState() => _FeedState();
+  _FeedState createState() => _FeedState(user);
 }
 
 class _FeedState extends State<Feed> with TickerProviderStateMixin {
   TabController _controller;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  User user;
+  String username;
+
+  _FeedState(this.user) {
+    username = user.displayName;
+  }
 
   void initState() {
     super.initState();
@@ -64,6 +70,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Got: $username");
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -83,7 +90,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
           controller: _controller,
           indicator: UnderlineTabIndicator(
               borderSide:
-                  BorderSide(width: 3, color: Theme.of(context).accentColor)),
+              BorderSide(width: 3, color: Theme.of(context).accentColor)),
           tabs: <Widget>[
             new Tab(
               icon: Icon(
@@ -179,12 +186,10 @@ class MessageBean {
     print(creator);
     return routes.putIfAbsent(
       routeName,
-          () =>
-          MaterialPageRoute<void>(
-            settings: RouteSettings(name: routeName),
-            builder: (BuildContext context) =>
-                PostUI(community, postID, creator),
-          ),
+      () => MaterialPageRoute<void>(
+        settings: RouteSettings(name: routeName),
+        builder: (BuildContext context) => PostUI(community, postID, creator),
+      ),
     );
   }
 }

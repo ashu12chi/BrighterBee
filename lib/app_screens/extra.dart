@@ -1,5 +1,5 @@
-import 'package:brighter_bee/Authentication/sign_in.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
+import 'package:brighter_bee/authentication/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

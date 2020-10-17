@@ -105,9 +105,11 @@ class _CommunityProfileState extends State<CommunityProfile> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(color: Theme.of(context).accentColor)),
-                onPressed: (){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditCommunityDetails()));
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditCommunityDetails()));
                 },
               ),
             ),
@@ -130,7 +132,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(color: Theme.of(context).accentColor)),
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => VerifyPost()));
                 },
@@ -155,7 +157,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(color: Theme.of(context).accentColor)),
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => VerifyUser()));
                 },

@@ -190,9 +190,7 @@ class _CommentWidget extends State<CommentWidget> {
                             replyCount.toString(),
                             style: TextStyle(
                                 fontSize: 14,
-                                color: Theme
-                                    .of(context)
-                                    .buttonColor),
+                                color: Theme.of(context).buttonColor),
                           ),
                           SizedBox(width: 10),
                           IconButton(

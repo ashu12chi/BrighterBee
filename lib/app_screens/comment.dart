@@ -152,16 +152,14 @@ class _Comment extends State<Comment> {
         ],
       ),
     ));
-    var time = DateTime
-        .now()
-        .millisecondsSinceEpoch;
+    var time = DateTime.now().millisecondsSinceEpoch;
     String commKey = 'C' + time.toString();
     FirebaseFirestore instance = FirebaseFirestore.instance;
     String commentText = textInputController.text;
     if (isReply) {
       await instance
           .collection(
-          'communities/$community/posts/$parentPostKey/comments/$key/replies')
+              'communities/$community/posts/$parentPostKey/comments/$key/replies')
           .doc(commKey)
           .set({
         'time': time,

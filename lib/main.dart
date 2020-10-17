@@ -1,4 +1,4 @@
-import 'package:brighter_bee/Authentication/sign_in.dart';
+import 'package:brighter_bee/authentication/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -64,14 +64,9 @@ class _MyAppState extends State<MyApp> {
           primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
               fontFamily: 'Roboto'),
-          tabBarTheme: Theme
-              .of(context)
-              .tabBarTheme
-              .copyWith(
+          tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
               labelColor: Colors.deepOrange,
-              unselectedLabelColor: Colors.white
-          )
-      ),
+              unselectedLabelColor: Colors.white)),
       // home: CreatePost(),
       // home: PostUI.test(),
       //home: CreatePost(),

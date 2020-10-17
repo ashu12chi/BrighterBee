@@ -11,7 +11,6 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
   int _radioValue3 = 3;
   int _radioValue4 = 4;
 
-
   void _handleRadioValueChange1(int value) {
     setState(() {
       _radioValue1 = value;
@@ -40,7 +39,10 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Community Details',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'Edit Community Details',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -48,9 +50,7 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'About',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           TextField(
@@ -74,9 +74,7 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Cover Photo',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           FlatButton(
@@ -109,9 +107,7 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Privacy',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -167,9 +163,7 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Visibility',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -225,9 +219,7 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Posts',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -283,9 +275,7 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Verification',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
@@ -340,12 +330,11 @@ class _EditCommunityDetailsState extends State<EditCommunityDetails> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
-              child: Text(
-                  'Save Changes',
-                  style: TextStyle(color: Theme.of(context).accentColor)
-              ),
+              child: Text('Save Changes',
+                  style: TextStyle(color: Theme.of(context).accentColor)),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),side: BorderSide(color: Theme.of(context).accentColor)),
+                  borderRadius: BorderRadius.circular(5.0),
+                  side: BorderSide(color: Theme.of(context).accentColor)),
             ),
           )
         ],

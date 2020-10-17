@@ -155,7 +155,7 @@ class MessageBean {
   final String itemId;
 
   StreamController<MessageBean> _controller =
-  StreamController<MessageBean>.broadcast();
+      StreamController<MessageBean>.broadcast();
 
   Stream<MessageBean> get onChanged => _controller.stream;
 

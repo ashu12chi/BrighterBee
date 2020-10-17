@@ -84,7 +84,7 @@ class _CommunitiesState extends State<Communities> {
                     )
                   ],
                 ),
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => CreateGroup()));
                 },

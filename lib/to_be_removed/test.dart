@@ -72,25 +72,25 @@ class _Test extends State<Test> {
               }).toList())
           : SizedBox(),
       SizedBox(height: 25),
-              comments.length > 0
+      comments.length > 0
           ? ListView.builder(
-                shrinkWrap: true,
-                itemCount: comments.length,
-                itemBuilder: (con, ind) {
-                  return Text.rich(
-                    TextSpan(
-                        text: '',
-                        children: comments[ind].split(' ').map((w) {
-                          return w.startsWith('@') && w.length > 1
-                              ? TextSpan(
-                            text: ' ' + w,
-                            style: TextStyle(color: Colors.blue),
-                            recognizer: new TapGestureRecognizer()
-                              ..onTap = () => showProfile(w),
-                          )
-                              : TextSpan(
-                              text: ' ' + w,
-                              style: TextStyle(color: Colors.black));
+              shrinkWrap: true,
+              itemCount: comments.length,
+              itemBuilder: (con, ind) {
+                return Text.rich(
+                  TextSpan(
+                      text: '',
+                      children: comments[ind].split(' ').map((w) {
+                        return w.startsWith('@') && w.length > 1
+                            ? TextSpan(
+                                text: ' ' + w,
+                                style: TextStyle(color: Colors.blue),
+                                recognizer: new TapGestureRecognizer()
+                                  ..onTap = () => showProfile(w),
+                              )
+                            : TextSpan(
+                                text: ' ' + w,
+                                style: TextStyle(color: Colors.black));
                       }).toList()),
                 );
               },

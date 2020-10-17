@@ -31,8 +31,10 @@ class _HomeState extends State<Home> {
                         style: TextStyle(color: Colors.grey, fontSize: 18.0),
                       ),
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => CreatePost()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreatePost()));
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),

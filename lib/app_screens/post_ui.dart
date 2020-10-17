@@ -187,26 +187,24 @@ class _PostState extends State<PostUI> {
                             imageDelegate: MyAppZefyrImageDelegate(),
                           ),
                         ),
-                                // Container(
-                                //   height: 700,
-                                //   child: ZefyrScaffold(
-                                //     child: editor,
-                                //   ),
-                                // ),
-                                (mediaType == 0)
-                                    ? Container()
-                                    : Image.network(
-                                  mediaUrl,
-                                  width: double.infinity,
-                                  height: 250,
-                                ),
-                                Divider(
-                                  color: Theme
-                                      .of(context)
-                                      .buttonColor,
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
+                        // Container(
+                        //   height: 700,
+                        //   child: ZefyrScaffold(
+                        //     child: editor,
+                        //   ),
+                        // ),
+                        (mediaType == 0)
+                            ? Container()
+                            : Image.network(
+                                mediaUrl,
+                                width: double.infinity,
+                                height: 250,
+                              ),
+                        Divider(
+                          color: Theme.of(context).buttonColor,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
                           child: Container(
                             child: Padding(
                               padding: const EdgeInsets.only(

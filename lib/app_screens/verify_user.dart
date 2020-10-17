@@ -10,11 +10,12 @@ class _VerifyUserState extends State<VerifyUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verify Users',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'Verify Users',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
-      body: ListView(
-
-      ),
+      body: ListView(),
     );
   }
 }

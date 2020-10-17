@@ -23,13 +23,6 @@ class DatabaseService {
     });
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     String deviceId = await _firebaseMessaging.getToken();
-    await instance.collection('users/$username/tokens').doc(username).set({
-      'name': name,
-      'username': username,
-      'photoUrl': url,
-      'motto': motto,
-      'email': email,
-    });
     final snapShot =
         await instance.collection('users/$username/tokens').doc(deviceId).get();
 

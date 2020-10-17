@@ -51,71 +51,93 @@ class _PostSearchState extends State<PostSearch> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream:  FirebaseFirestore.instance.collection('communities').snapshots(),
+        stream:
+            FirebaseFirestore.instance.collection('communities').snapshots(),
         builder: (context, snapshot) {
           return snapshot.connectionState == ConnectionState.waiting
               ? Center(
                   child: CircularProgressIndicator(),
-                ):
-                //Center(child: Text(snapshot.data.docs[0].documentID),);
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.docs.length,
-                    itemBuilder: (context,index) {
-                      return snapshot.connectionState == ConnectionState.waiting
-                      ? Center(
-                    child: CircularProgressIndicator(),
-                  ): StreamBuilder<QuerySnapshot>(
-                stream: (searchController.text != "" && searchController.text != null)
-                    ? FirebaseFirestore.instance
-                    .collection('communities')
-                    .doc(snapshot.data.docs[index].id)
-                    .collection('posts')
-                    .where('titleSearch', arrayContains: searchController.text)
-                    .snapshots()
-                    : FirebaseFirestore.instance
-                    .collection('communities')
-                    .doc(snapshot.data.docs[index].id)
-                    .collection('posts')
-                    .snapshots(),
-                builder: (context, snapshot1) {
-                  return snapshot1.connectionState == ConnectionState.waiting
-                      ? Center(
-                    child: Container(),
-                  )
-                      :ListView.builder(
-                    shrinkWrap: true,
-                      itemCount: snapshot1.data.docs.length,
-                      itemBuilder: (context, index1) {
-                        DocumentSnapshot documentSnapshot =
-                            snapshot1.data.docs[index1];
-                        print(documentSnapshot['title']);
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, top: 8.0),
-                          child: SizedBox(
-                            height: 50,
-                            child: InkWell (
-                              child: Card(
-                                  child: Center(
-                                child: Text(
-                                  documentSnapshot['title'],
-                                  style: TextStyle(fontSize: 18),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )),
-                              onTap: (){
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => PostUI(snapshot.data.docs[index].id,snapshot1.data.docs[index1].id,documentSnapshot['creator'])));
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                }
-              );}
-              );},
+                )
+              :
+              //Center(child: Text(snapshot.data.docs[0].documentID),);
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    return snapshot.connectionState == ConnectionState.waiting
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : StreamBuilder<QuerySnapshot>(
+                            stream: (searchController.text != "" &&
+                                    searchController.text != null)
+                                ? FirebaseFirestore.instance
+                                    .collection('communities')
+                                    .doc(snapshot.data.docs[index].id)
+                                    .collection('posts')
+                                    .where('titleSearch',
+                                        arrayContains: searchController.text)
+                                    .snapshots()
+                                : FirebaseFirestore.instance
+                                    .collection('communities')
+                                    .doc(snapshot.data.docs[index].id)
+                                    .collection('posts')
+                                    .snapshots(),
+                            builder: (context, snapshot1) {
+                              return snapshot1.connectionState ==
+                                      ConnectionState.waiting
+                                  ? Center(
+                                      child: Container(),
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: snapshot1.data.docs.length,
+                                      itemBuilder: (context, index1) {
+                                        DocumentSnapshot documentSnapshot =
+                                            snapshot1.data.docs[index1];
+                                        print(documentSnapshot['title']);
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 8.0),
+                                          child: SizedBox(
+                                            height: 50,
+                                            child: InkWell(
+                                              child: Card(
+                                                  child: Center(
+                                                child: Text(
+                                                  documentSnapshot['title'],
+                                                  style:
+                                                      TextStyle(fontSize: 18),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              )),
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PostUI(
+                                                                snapshot
+                                                                    .data
+                                                                    .docs[index]
+                                                                    .id,
+                                                                snapshot1
+                                                                    .data
+                                                                    .docs[
+                                                                        index1]
+                                                                    .id,
+                                                                documentSnapshot[
+                                                                    'creator'])));
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                            });
+                  });
+        },
       ),
     );
   }
