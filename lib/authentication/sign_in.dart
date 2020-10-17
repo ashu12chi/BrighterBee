@@ -181,6 +181,7 @@ class _SignInState extends State<SignIn> {
         await user.sendEmailVerification();
         _scaffoldKey.currentState.hideCurrentSnackBar();
         print("email not verified..." + (_emailController.text));
+        _signOut();
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text('Please verify email first, email has been sent.'),

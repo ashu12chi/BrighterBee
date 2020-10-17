@@ -286,7 +286,7 @@ class _RegisterState extends State<Register> {
       FirebaseFirestore instance = FirebaseFirestore.instance;
       final snapShot =
       await instance.collection('users').doc(_usernameText.text).get();
-      if (!(snapShot == null && !snapShot.exists)) {
+      if (snapShot != null && snapShot.exists) {
         _scaffoldKey.currentState.hideCurrentSnackBar();
         print("Failed, username exists.");
         _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -315,6 +315,7 @@ class _RegisterState extends State<Register> {
         ));
         await user.updateProfile(
             displayName: _usernameText.text, photoURL: url);
+        await _auth.signOut();
         await showAlertDialog(context);
         Navigator.of(context).pop();
       } else {

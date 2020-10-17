@@ -53,8 +53,7 @@ class _MyAppState extends State<MyApp> {
           errorColor: Color.fromRGBO(207, 102, 121, 1),
           accentColor: Colors.deepOrangeAccent,
           primaryColor: Color.fromRGBO(18, 18, 18, 1),
-          backgroundColor: Color.fromRGBO(18, 18, 18, 1),
-          // #121212
+          backgroundColor: Color.fromRGBO(18, 18, 18, 1), // #121212
           scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
           appBarTheme: Theme.of(context).appBarTheme.copyWith(
                 color: Color.fromRGBO(31, 31, 31, 1), // #1F1F1F
@@ -69,7 +68,7 @@ class _MyAppState extends State<MyApp> {
           tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
               labelColor: Colors.deepOrange,
               unselectedLabelColor: Colors.white)),
-      home: FirebaseAuth.instance.currentUser == null
+      home: (FirebaseAuth.instance.currentUser == null || !FirebaseAuth.instance.currentUser.emailVerified)
           ? SignIn()
           : Feed(user: FirebaseAuth.instance.currentUser),
       themeMode: ThemeMode.system,
