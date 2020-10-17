@@ -1,4 +1,6 @@
+import 'package:brighter_bee/app_screens/feed.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +22,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: Theme.of(context).copyWith(
         accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-              color: Colors.black,
-            ),
+          color: Colors.black,
+        ),
         textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
         textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
         buttonColor: Colors.black,
@@ -42,8 +44,8 @@ class _MyAppState extends State<MyApp> {
       // dark theme
       darkTheme: ThemeData.dark().copyWith(
           accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-                color: Color.fromRGBO(226, 226, 226, 1),
-              ),
+            color: Color.fromRGBO(226, 226, 226, 1),
+          ),
           textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
           textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
           dividerColor: Colors.white60,
@@ -55,8 +57,8 @@ class _MyAppState extends State<MyApp> {
           // #121212
           scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
           appBarTheme: Theme.of(context).appBarTheme.copyWith(
-                color: Color.fromRGBO(31, 31, 31, 1), // #1F1F1F
-              ),
+            color: Color.fromRGBO(31, 31, 31, 1), // #1F1F1F
+          ),
           cardColor: Color.fromRGBO(31, 31, 31, 1),
           textTheme: Theme.of(context).textTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
@@ -67,11 +69,9 @@ class _MyAppState extends State<MyApp> {
           tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
               labelColor: Colors.deepOrange,
               unselectedLabelColor: Colors.white)),
-      // home: CreatePost(),
-      // home: PostUI.test(),
-      //home: CreatePost(),
-      //home: MessagingWidget(),
-      home: SignIn(),
+      home: FirebaseAuth.instance.currentUser == null
+          ? SignIn()
+          : Feed(user: FirebaseAuth.instance.currentUser),
       themeMode: ThemeMode.system,
     );
   }
