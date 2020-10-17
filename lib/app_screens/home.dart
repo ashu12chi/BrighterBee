@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/create_post.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -29,7 +30,10 @@ class _HomeState extends State<Home> {
                         'Write something here...    ',
                         style: TextStyle(color: Colors.grey, fontSize: 18.0),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => CreatePost()));
+                      },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                         side: BorderSide(color: Colors.grey),

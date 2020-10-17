@@ -1,3 +1,5 @@
+import 'package:brighter_bee/app_screens/community_home.dart';
+import 'package:brighter_bee/app_screens/community_profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -76,8 +78,8 @@ class _MyAppState extends State<MyApp> {
       // home: CreatePost(),
       // home: PostUI.test(),
       //home: CreatePost(),
-      //home: MessagingWidget(),
-      home: Feed(),
+      home: CommunityHome(),
+      //home: Feed(),
       themeMode: ThemeMode.system,
     );
   }
