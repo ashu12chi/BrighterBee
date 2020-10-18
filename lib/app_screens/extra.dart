@@ -33,7 +33,7 @@ class _ExtraState extends State<Extra> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: ListView(
           children: <Widget>[
             InkWell(
               onTap: (){

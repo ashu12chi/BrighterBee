@@ -13,11 +13,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String username;
   _ProfileState(this.username);
-  DocumentReference _reference;
-  void initState() {
-    super.initState();
-    _reference = FirebaseFirestore.instance.collection('users').doc(username);
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,305 +35,280 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          Center(
-              child: CircleAvatar(
-            radius: 90,
-            backgroundColor: Colors.grey,
-          )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-                child: Text(
-              _reference.id,
-              softWrap: true,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            )),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10),
-            child: Center(
-                child: Text(
-              'Fallen Cherub, to be weak is miserable, Doing or suffering',
-              softWrap: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 18),
-            )),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
-          Row(
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection('users').doc(username).snapshots(),
+        builder: (context, snapshot) {
+          return ListView(
             children: <Widget>[
-              Icon(Icons.school),
+              Container(
+                margin: EdgeInsets.only(top:20,bottom: 20,left: 40,right: 40),
+                width: 200,
+                height: 250,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: snapshot.connectionState==ConnectionState.waiting?CircularProgressIndicator():NetworkImage(snapshot.data['photoUrl']),
+                      fit: BoxFit.fill
+                  ),
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 8.0,
-                  right: 8.0,
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: Text(
+                  snapshot.data['name'],
+                  softWrap: true,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10),
+                child: Center(
+                    child: Text(
+                  snapshot.data['motto'],
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey, fontSize: 18),
+                )),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Container(
+                  height: 1.0,
+                  width: double.infinity,
+                  color: Theme.of(context).dividerColor,
                 ),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width - 100,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.home),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Text(
+                          'Lives in ${snapshot.data['currentCity']}, India',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.location_on),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Text(
+                          'From ${snapshot.data['homeTown']}, India',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.access_time),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Text(
+                          'Joined ${DateTime.fromMillisecondsSinceEpoch(snapshot.data['time']).year}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.check_box),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Text(
+                          'Followed by 108 people',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.link),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Text(
+                          snapshot.data['website'],
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: FlatButton(
                   child: Text(
-                    'Studies Computer Science and Engineering at Motilal Nehru National Institute of Technology',
-                    style: TextStyle(fontSize: 18),
+                    'Edit details',
+                    style: TextStyle(
+                        fontSize: 18, color: Theme.of(context).accentColor),
                   ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: Theme.of(context).accentColor)),
                 ),
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.school),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Text(
-                      'Went to K. V. No. 2 J.L.A Bareilly cantt Bareilly',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.home),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Text(
-                      'Lives in Allahabad, India',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.location_on),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Text(
-                      'From Bareilly, India',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.access_time),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Text(
-                      'Joined September 2020',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.check_box),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Text(
-                      'Followed by 108 people',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
+                child: Container(
+                  height: 1.0,
+                  width: double.infinity,
+                  color: Theme.of(context).dividerColor,
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.link),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Text(
-                      'ashu12chi.github.io',
-                      style: TextStyle(fontSize: 18),
-                    ),
+              ),
+              Text(
+                'Communities',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '23 communities',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Card(),
                   ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-            child: FlatButton(
-              child: Text(
-                'Edit details',
-                style: TextStyle(
-                    fontSize: 18, color: Theme.of(context).accentColor),
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Card(),
+                  ),
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Card(),
+                  )
+                ],
               ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Theme.of(context).accentColor)),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
-          Text(
-            'Communities',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '23 communities',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SizedBox(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                child: Card(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width / 3 - 10,
+                      child: Center(
+                          child: Text(
+                        'Flutter',
+                        overflow: TextOverflow.ellipsis,
+                      ))),
+                  SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width / 3 - 10,
+                      child: Center(
+                          child: Text(
+                        'Github',
+                        softWrap: true,
+                      ))),
+                  SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width / 3 - 10,
+                      child: Center(
+                          child: Text(
+                        'NP Devs',
+                        softWrap: true,
+                      )))
+                ],
               ),
-              SizedBox(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                child: Card(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Card(),
+                  ),
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Card(),
+                  ),
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 3 - 10,
+                    child: Card(),
+                  )
+                ],
               ),
-              SizedBox(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                child: Card(),
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width / 3 - 10,
+                      child: Center(
+                          child: Text(
+                        'Flutter',
+                        softWrap: true,
+                      ))),
+                  SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width / 3 - 10,
+                      child: Center(
+                          child: Text(
+                        'Github',
+                        softWrap: true,
+                      ))),
+                  SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width / 3 - 10,
+                      child: Center(
+                          child: Text(
+                        'NP Devs',
+                        softWrap: true,
+                      )))
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
+                child: Container(
+                  height: 1.0,
+                  width: double.infinity,
+                  color: Colors.black12,
+                ),
+              ),
             ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SizedBox(
-                  height: 20,
-                  width: MediaQuery.of(context).size.width / 3 - 10,
-                  child: Center(
-                      child: Text(
-                    'Flutter',
-                    overflow: TextOverflow.ellipsis,
-                  ))),
-              SizedBox(
-                  height: 20,
-                  width: MediaQuery.of(context).size.width / 3 - 10,
-                  child: Center(
-                      child: Text(
-                    'Github',
-                    softWrap: true,
-                  ))),
-              SizedBox(
-                  height: 20,
-                  width: MediaQuery.of(context).size.width / 3 - 10,
-                  child: Center(
-                      child: Text(
-                    'NP Devs',
-                    softWrap: true,
-                  )))
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SizedBox(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                child: Card(),
-              ),
-              SizedBox(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                child: Card(),
-              ),
-              SizedBox(
-                height: 100,
-                width: MediaQuery.of(context).size.width / 3 - 10,
-                child: Card(),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SizedBox(
-                  height: 20,
-                  width: MediaQuery.of(context).size.width / 3 - 10,
-                  child: Center(
-                      child: Text(
-                    'Flutter',
-                    softWrap: true,
-                  ))),
-              SizedBox(
-                  height: 20,
-                  width: MediaQuery.of(context).size.width / 3 - 10,
-                  child: Center(
-                      child: Text(
-                    'Github',
-                    softWrap: true,
-                  ))),
-              SizedBox(
-                  height: 20,
-                  width: MediaQuery.of(context).size.width / 3 - 10,
-                  child: Center(
-                      child: Text(
-                    'NP Devs',
-                    softWrap: true,
-                  )))
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Colors.black12,
-            ),
-          ),
-        ],
+          );
+        }
       ),
     );
   }
