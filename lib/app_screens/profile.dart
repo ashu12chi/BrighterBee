@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/edit_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -182,6 +183,12 @@ class _ProfileState extends State<Profile> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(color: Theme.of(context).accentColor)),
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditDetails()));
+                  },
                 ),
               ),
               Padding(

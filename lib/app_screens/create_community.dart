@@ -60,7 +60,6 @@ class _CreateGroupState extends State<CreateGroup> {
       appBar: AppBar(
         title: Text(
           'Create Community',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView(
