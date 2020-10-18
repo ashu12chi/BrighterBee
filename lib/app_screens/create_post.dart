@@ -390,6 +390,9 @@ class _CreatePostState extends State<CreatePost> {
 
   _showImagePicker(context) {
     showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
+        ),
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(

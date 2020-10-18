@@ -148,8 +148,7 @@ class _RegisterState extends State<Register> {
                     ),
                     validator: (value) {
                       if (value.isEmpty ||
-                          !RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(value)) return 'Enter valid email';
                       return null;
                     },
@@ -185,9 +184,7 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Theme
-                            .of(context)
-                            .buttonColor),
+                            BorderSide(color: Theme.of(context).buttonColor),
                       ),
                     ),
                     validator: (value) {
@@ -213,14 +210,12 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Theme
-                            .of(context)
-                            .buttonColor),
+                            BorderSide(color: Theme.of(context).buttonColor),
                       ),
                     ),
                     validator: (value) {
                       if (value.isEmpty ||
-                          value.contains('[^A-Za-z0-9]') ||
+                          RegExp("[^a-z^A-Z^0-9]+").hasMatch(value) ||
                           value.length < 3 ||
                           value.length > 20)
                         return 'Enter valid username of length atleast 3 and atmost 20';
@@ -242,9 +237,7 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Theme
-                            .of(context)
-                            .buttonColor),
+                            BorderSide(color: Theme.of(context).buttonColor),
                       ),
                     ),
                   ),
@@ -263,9 +256,7 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Theme
-                            .of(context)
-                            .buttonColor),
+                            BorderSide(color: Theme.of(context).buttonColor),
                       ),
                     ),
                   ),
@@ -284,9 +275,7 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Theme
-                            .of(context)
-                            .buttonColor),
+                            BorderSide(color: Theme.of(context).buttonColor),
                       ),
                     ),
                   ),
@@ -305,9 +294,7 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                        BorderSide(color: Theme
-                            .of(context)
-                            .buttonColor),
+                            BorderSide(color: Theme.of(context).buttonColor),
                       ),
                     ),
                   ),
@@ -354,7 +341,7 @@ class _RegisterState extends State<Register> {
     try {
       FirebaseFirestore instance = FirebaseFirestore.instance;
       final snapShot =
-      await instance.collection('users').doc(_usernameText.text).get();
+          await instance.collection('users').doc(_usernameText.text).get();
       if (snapShot != null && snapShot.exists) {
         _scaffoldKey.currentState.hideCurrentSnackBar();
         print("Failed, username exists.");
@@ -371,9 +358,15 @@ class _RegisterState extends State<Register> {
         password: _passwordController.text,
       ))
           .user;
-      await DatabaseService(uid: user.uid).updateUserData(_emailController.text,
-          _displayName.text, _usernameText.text, url, _mottoText.text,_websiteText.text,_hometownText.text,
-      _currentCityText.text);
+      await DatabaseService(uid: user.uid).updateUserData(
+          _emailController.text,
+          _displayName.text,
+          _usernameText.text,
+          url,
+          _mottoText.text,
+          _websiteText.text,
+          _hometownText.text,
+          _currentCityText.text);
 
       if (user != null) {
         if (!user.emailVerified) await user.sendEmailVerification();
@@ -403,7 +396,7 @@ class _RegisterState extends State<Register> {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
         content:
-        Text('Registration failed. Email ID or username already exists!'),
+            Text('Registration failed. Email ID or username already exists!'),
       ));
     }
   }
