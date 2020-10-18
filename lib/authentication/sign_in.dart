@@ -1,6 +1,8 @@
 import 'package:brighter_bee/app_screens/feed.dart';
 import 'package:brighter_bee/authentication/register.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -194,6 +196,13 @@ class _SignInState extends State<SignIn> {
         behavior: SnackBarBehavior.floating,
         content: Text('Signed in!'),
       ));
+
+      String username = user.displayName;
+      FirebaseFirestore instance = FirebaseFirestore.instance;
+      final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+      String deviceId = await _firebaseMessaging.getToken();
+      await instance.collection('users/$username/tokens').doc(deviceId).set({});
+
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => Feed(
                 user: user,

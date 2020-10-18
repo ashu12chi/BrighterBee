@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CreateGroup extends StatefulWidget {
@@ -6,32 +8,40 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  int _radioValue1 = 1;
-  int _radioValue2 = 2;
-  int _radioValue3 = 3;
-  int _radioValue4 = 4;
+  String username;
+  String photoUrl;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController aboutController = TextEditingController();
+  int _radioPrivacy = 0;
+  int _radioVisibility = 0;
+  int _radioPosts = 0;
+  int _radioVerification = 0;
 
   void _handleRadioValueChange1(int value) {
     setState(() {
-      _radioValue1 = value;
+      _radioPrivacy = value;
+      debugPrint('value 1: $_radioPrivacy');
     });
   }
 
   void _handleRadioValueChange2(int value) {
     setState(() {
-      _radioValue2 = value;
+      _radioVisibility = value;
+      debugPrint('value 2: $_radioVisibility');
     });
   }
 
   void _handleRadioValueChange3(int value) {
     setState(() {
-      _radioValue3 = value;
+      _radioPosts = value;
+      debugPrint('value 3: $_radioPosts');
     });
   }
 
   void _handleRadioValueChange4(int value) {
     setState(() {
-      _radioValue4 = value;
+      _radioVerification = value;
+      debugPrint('value 4: $_radioVerification');
     });
   }
 
@@ -39,11 +49,9 @@ class _CreateGroupState extends State<CreateGroup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            'Create Community',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+        title: Text(
+          'Create Community',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView(
@@ -52,55 +60,49 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Name',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ),
-          TextField(
-            decoration: InputDecoration(
-                focusColor: Colors.blue,
-                hintText: 'Name your community',
-                hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                border: new OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey, width: 5))),
           ),
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
+              padding: EdgeInsets.only(left: 8, right: 8),
+              child: TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  hintText: 'Name your community',
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).buttonColor),
+                  ),
+                ),
+              )),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'About',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ),
-          TextField(
-            decoration: InputDecoration(
-                focusColor: Colors.blue,
-                hintText: 'Write description of your community',
-                hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                border: new OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: Colors.grey, width: 5))),
           ),
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
+              padding: EdgeInsets.only(left: 8, right: 8),
+              child: TextField(
+                controller: aboutController,
+                decoration: InputDecoration(
+                  hintText: 'Write description of your community',
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).buttonColor),
+                  ),
+                ),
+              )),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Cover Photo',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           FlatButton(
@@ -108,7 +110,7 @@ class _CreateGroupState extends State<CreateGroup> {
               children: <Widget>[
                 Icon(
                   Icons.add_box,
-                  size: 30,
+                  size: 24,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
@@ -133,16 +135,17 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Privacy',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Radio(
                 value: 0,
-                groupValue: _radioValue1,
+                groupValue: _radioPrivacy,
                 onChanged: _handleRadioValueChange1,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
@@ -158,12 +161,13 @@ class _CreateGroupState extends State<CreateGroup> {
               ),
               new Radio(
                 value: 1,
-                groupValue: _radioValue1,
+                groupValue: _radioPrivacy,
                 onChanged: _handleRadioValueChange1,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
-                  Icon(Icons.close),
+                  Icon(Icons.lock),
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0),
                     child: new Text(
@@ -189,16 +193,17 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Visibility',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Radio(
                 value: 0,
-                groupValue: _radioValue2,
+                groupValue: _radioVisibility,
                 onChanged: _handleRadioValueChange2,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
@@ -214,8 +219,9 @@ class _CreateGroupState extends State<CreateGroup> {
               ),
               new Radio(
                 value: 1,
-                groupValue: _radioValue2,
+                groupValue: _radioVisibility,
                 onChanged: _handleRadioValueChange2,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
@@ -245,16 +251,17 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Posts',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Radio(
                 value: 0,
-                groupValue: _radioValue3,
+                groupValue: _radioPosts,
                 onChanged: _handleRadioValueChange3,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
@@ -270,8 +277,9 @@ class _CreateGroupState extends State<CreateGroup> {
               ),
               new Radio(
                 value: 1,
-                groupValue: _radioValue3,
+                groupValue: _radioPosts,
                 onChanged: _handleRadioValueChange3,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
@@ -301,16 +309,17 @@ class _CreateGroupState extends State<CreateGroup> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Verification',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
           new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Radio(
                 value: 0,
-                groupValue: _radioValue4,
+                groupValue: _radioVerification,
                 onChanged: _handleRadioValueChange4,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
@@ -326,8 +335,9 @@ class _CreateGroupState extends State<CreateGroup> {
               ),
               new Radio(
                 value: 1,
-                groupValue: _radioValue4,
+                groupValue: _radioVerification,
                 onChanged: _handleRadioValueChange4,
+                activeColor: Theme.of(context).accentColor,
               ),
               Row(
                 children: [
@@ -356,8 +366,10 @@ class _CreateGroupState extends State<CreateGroup> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: FlatButton(
+              onPressed: createCommunity,
               child: Text('Create Community',
-                  style: TextStyle(color: Theme.of(context).accentColor)),
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor, fontSize: 18)),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
                   side: BorderSide(color: Theme.of(context).accentColor)),
@@ -366,5 +378,33 @@ class _CreateGroupState extends State<CreateGroup> {
         ],
       ),
     );
+  }
+
+  createCommunity() {
+    username = FirebaseAuth.instance.currentUser.displayName;
+    String commName = nameController.text;
+    String about = aboutController.text;
+    int time = DateTime.now().millisecondsSinceEpoch;
+    List<String> nameSearchList = List();
+    String temp = "";
+    for (int i = 0; i < commName.length; i++) {
+      temp = temp + commName[i];
+      nameSearchList.add(temp);
+    }
+
+    FirebaseFirestore instance = FirebaseFirestore.instance;
+    instance.collection('communities').doc(commName).set({
+      'name': commName,
+      'about': about,
+      'photoUrl': photoUrl,
+      'privacy': _radioPrivacy,
+      'visibility': _radioVisibility,
+      'posts': _radioPosts,
+      'verification': _radioVerification,
+      'nameSearch': nameSearchList,
+      'creationTime': time,
+    });
+
+    instance.collection('communities/$commName/admins').doc(username).set({});
   }
 }
