@@ -21,6 +21,9 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameText = TextEditingController();
   final TextEditingController _mottoText = TextEditingController();
+  final TextEditingController _currentCityText = TextEditingController();
+  final TextEditingController _hometownText = TextEditingController();
+  final TextEditingController _websiteText = TextEditingController();
   bool _passwordVisible;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -60,6 +63,9 @@ class _RegisterState extends State<Register> {
     _usernameText.dispose();
     _mottoText.dispose();
     _displayName.dispose();
+    _websiteText.dispose();
+    _hometownText.dispose();
+    _currentCityText.dispose();
     super.dispose();
   }
 
@@ -223,11 +229,74 @@ class _RegisterState extends State<Register> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
+                    controller: _currentCityText,
+                    decoration: InputDecoration(
+                      labelText: 'Current city',
+                      prefixIcon: Icon(
+                        Icons.home,
+                        color: Colors.grey,
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                        BorderSide(color: Theme
+                            .of(context)
+                            .buttonColor),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _hometownText,
+                    decoration: InputDecoration(
+                      labelText: 'Hometown',
+                      prefixIcon: Icon(
+                        Icons.location_on,
+                        color: Colors.grey,
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                        BorderSide(color: Theme
+                            .of(context)
+                            .buttonColor),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
                     controller: _mottoText,
                     decoration: InputDecoration(
                       labelText: 'Your motto',
                       prefixIcon: Icon(
                         Icons.speaker_notes,
+                        color: Colors.grey,
+                      ),
+                      labelStyle: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                        BorderSide(color: Theme
+                            .of(context)
+                            .buttonColor),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _websiteText,
+                    decoration: InputDecoration(
+                      labelText: 'Website',
+                      prefixIcon: Icon(
+                        Icons.link,
                         color: Colors.grey,
                       ),
                       labelStyle: TextStyle(
@@ -303,7 +372,8 @@ class _RegisterState extends State<Register> {
       ))
           .user;
       await DatabaseService(uid: user.uid).updateUserData(_emailController.text,
-          _displayName.text, _usernameText.text, url, _mottoText.text);
+          _displayName.text, _usernameText.text, url, _mottoText.text,_websiteText.text,_hometownText.text,
+      _currentCityText.text);
 
       if (user != null) {
         if (!user.emailVerified) await user.sendEmailVerification();

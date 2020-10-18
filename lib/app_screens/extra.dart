@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,6 @@ class Extra extends StatefulWidget {
 
 class _ExtraState extends State<Extra> {
   FirebaseAuth _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,29 +35,37 @@ class _ExtraState extends State<Extra> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 30.0,
-                  backgroundColor: Colors.grey,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Ashutosh Chitranshi',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18.0),
+            InkWell(
+              onTap: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Profile(_auth.currentUser.displayName)));
+              },
+              child: Card(
+                child: Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 30.0,
+                      backgroundColor: Colors.grey,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            'Ashutosh Chitranshi',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18.0),
+                          ),
+                          Text(
+                            'See your profile\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t',
+                            style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                          )
+                        ],
                       ),
-                      Text(
-                        'See your profile\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t',
-                        style: TextStyle(color: Colors.grey, fontSize: 15.0),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                    )
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(top: 4.0, bottom: 4.0),

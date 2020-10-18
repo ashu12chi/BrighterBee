@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -11,9 +12,12 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String username;
-
   _ProfileState(this.username);
-
+  DocumentReference _reference;
+  void initState() {
+    super.initState();
+    _reference = FirebaseFirestore.instance.collection('users').doc(username);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +51,7 @@ class _ProfileState extends State<Profile> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
                 child: Text(
-              'Ashutosh Chitranshi',
+              _reference.id,
               softWrap: true,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             )),
