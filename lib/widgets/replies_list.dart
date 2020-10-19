@@ -63,10 +63,10 @@ class _RepliesList extends State<RepliesList> {
                   child: Padding(
                       padding: EdgeInsets.only(left: 5, right: 5),
                       child: CommentWidget(
-                          snapshot.data[index]['community'],
-                          snapshot.data[index]['parentPost'],
+                          community,
+                          postKey,
                           snapshot.data[index]['commKey'],
-                          snapshot.data[index]['parent'],
+                          commKey,
                           username,
                           true)));
             },

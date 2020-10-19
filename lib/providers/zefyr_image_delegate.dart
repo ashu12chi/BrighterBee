@@ -15,17 +15,17 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
     File media = File(file.path);
 
     Fluttertoast.showToast(
-        msg: "Uploading image...",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+      msg: "Uploading image...",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
     );
 
     StorageUploadTask uploadTask;
     String fileName = getFileName(media);
-      uploadTask = FirebaseStorage.instance
-          .ref()
-          .child('textImage/IMG_$fileName')
-          .putFile(media);
+    uploadTask = FirebaseStorage.instance
+        .ref()
+        .child('textImage/IMG_$fileName')
+        .putFile(media);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     String url = await storageSnap.ref.getDownloadURL();
 

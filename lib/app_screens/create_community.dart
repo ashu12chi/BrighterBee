@@ -419,7 +419,10 @@ class _CreateGroupState extends State<CreateGroup> {
 
   createCommunity() async {
     String commName = nameController.text;
-    if (commName.isEmpty || RegExp("[^a-z^A-Z^0-9]+").hasMatch(commName) || commName.length < 3 || commName.length > 25) {
+    if (commName.isEmpty ||
+        RegExp("[^a-z^A-Z^0-9]+").hasMatch(commName) ||
+        commName.length < 3 ||
+        commName.length > 25) {
       await showAlertDialog(context);
       return;
     }
@@ -579,7 +582,8 @@ class _CreateGroupState extends State<CreateGroup> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Community name should be alphanumeric"),
-      content: Text("No special characters or spaces allowed. Length should be between 3 and 25 (inclusive)"),
+      content: Text(
+          "No special characters or spaces allowed. Length should be between 3 and 25 (inclusive)"),
       actions: [
         okButton,
       ],

@@ -8,30 +8,30 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
 class CommentsList extends StatefulWidget {
-  String community;
-  String postKey;
-  String username;
+  String _community;
+  String _postKey;
+  String _username;
 
-  CommentsList(this.community, this.postKey, this.username);
+  CommentsList(this._community, this._postKey, this._username);
 
   @override
-  _CommentsList createState() => _CommentsList(community, postKey, username);
+  _CommentsList createState() => _CommentsList(_community, _postKey, _username);
 }
 
 class _CommentsList extends State<CommentsList> {
   String community;
-  String key;
+  String postKey;
   String username;
 
   CommentListBloc commentListBloc;
   ScrollController controller = ScrollController();
 
-  _CommentsList(this.community, this.key, this.username);
+  _CommentsList(this.community, this.postKey, this.username);
 
   @override
   void initState() {
     super.initState();
-    commentListBloc = CommentListBloc(community, key);
+    commentListBloc = CommentListBloc(community, postKey);
     commentListBloc.fetchFirstList();
     controller.addListener(_scrollListener);
   }
@@ -58,21 +58,13 @@ class _CommentsList extends State<CommentsList> {
               debugPrint('NSP');
               return ExpansionTile(
                 backgroundColor: Theme.of(context).buttonColor.withOpacity(0.2),
-                title: CommentWidget(
-                    snapshot.data[index]['community'],
-                    snapshot.data[index]['parentPost'],
-                    snapshot.data[index]['commKey'],
-                    snapshot.data[index]['parent'],
-                    username,
-                    false),
+                title: CommentWidget(community, postKey,
+                    snapshot.data[index]['commKey'], postKey, username, false),
                 children: [
                   Padding(
                       padding: EdgeInsets.only(left: 20, bottom: 15),
-                      child: RepliesList(
-                          snapshot.data[index]['community'],
-                          snapshot.data[index]['parentPost'],
-                          snapshot.data[index]['commKey'],
-                          username))
+                      child: RepliesList(community, postKey,
+                          snapshot.data[index]['commKey'], username))
                 ],
               );
             },

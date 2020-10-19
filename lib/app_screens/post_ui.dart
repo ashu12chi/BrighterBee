@@ -314,6 +314,7 @@ class _PostState extends State<PostUI> {
             builder: (BuildContext) => Comment(community, dateLong, key, key,
                 username, title, creator, isReply)));
   }
+
   showOptions() {
     showModalBottomSheet(
         context: context,
@@ -323,53 +324,53 @@ class _PostState extends State<PostUI> {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter state) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.all(10),
-                  child: LimitedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(10),
+              child: LimitedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
                       children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.share,
-                                    size: 30,
-                                    color: Theme.of(context).buttonColor)),
-                            Text(
-                              'Share',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
+                        IconButton(
+                            icon: Icon(Icons.share,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Share',
+                          style: TextStyle(fontSize: 14),
                         ),
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.bookmark,
-                                    size: 30,
-                                    color: Theme.of(context).buttonColor)),
-                            Text(
-                              'Save article',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.report,
-                                    size: 30,
-                                    color: Theme.of(context).buttonColor)),
-                            Text(
-                              'Report',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        )
                       ],
                     ),
-                  ),
-                );
-              });
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.bookmark,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Save article',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.report,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Report',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
         });
   }
 }

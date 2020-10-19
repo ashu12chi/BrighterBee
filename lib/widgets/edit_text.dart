@@ -19,25 +19,26 @@ class _EditTextState extends State<EditText> {
     super.initState();
     _controller = TextEditingController(text: startValue);
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
-        Navigator.pop(context,startValue);
+      onWillPop: () {
+        Navigator.pop(context, startValue);
         return Future.value(false);
       },
       child: Scaffold(
         body: Column(
           children: <Widget>[
             Padding(
-                padding: EdgeInsets.only(top:40,left: 8, right: 8),
+                padding: EdgeInsets.only(top: 40, left: 8, right: 8),
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Theme.of(context).buttonColor),
+                          BorderSide(color: Theme.of(context).buttonColor),
                     ),
                   ),
                 )),
@@ -52,10 +53,9 @@ class _EditTextState extends State<EditText> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(color: Colors.grey)),
-                    onPressed: () {
-                      Navigator.pop(context,_controller.text);
-                    }
-                  ),
+                      onPressed: () {
+                        Navigator.pop(context, _controller.text);
+                      }),
                 ),
                 Container(
                   padding: const EdgeInsets.only(top: 16.0),
@@ -66,9 +66,8 @@ class _EditTextState extends State<EditText> {
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(color: Colors.grey)),
                       onPressed: () {
-                        Navigator.pop(context,startValue);
-                      }
-                  ),
+                        Navigator.pop(context, startValue);
+                      }),
                 ),
               ],
             ),

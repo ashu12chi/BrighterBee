@@ -36,9 +36,12 @@ class _ExtraState extends State<Extra> {
         child: ListView(
           children: <Widget>[
             InkWell(
-              onTap: (){
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Profile(_auth.currentUser.displayName)));
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Profile(_auth.currentUser.displayName)));
               },
               child: Card(
                 child: Row(
@@ -58,7 +61,8 @@ class _ExtraState extends State<Extra> {
                           ),
                           Text(
                             'See your profile\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t',
-                            style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 15.0),
                           )
                         ],
                       ),

@@ -8,18 +8,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class CommentWidget extends StatefulWidget {
-  String username;
-  String community;
-  String parentPostKey;
-  String commKey;
-  String parentKey;
-  bool isReply;
+  String _username;
+  String _community;
+  String _parentPostKey;
+  String _commKey;
+  String _parentKey;
+  bool _isReply;
 
-  CommentWidget(this.community, this.parentPostKey, this.commKey,
-      this.parentKey, this.username, this.isReply);
+  CommentWidget(this._community, this._parentPostKey, this._commKey,
+      this._parentKey, this._username, this._isReply);
 
   _CommentWidget createState() => _CommentWidget(
-      community, parentPostKey, commKey, parentKey, username, isReply);
+      _community, _parentPostKey, _commKey, _parentKey, _username, _isReply);
 }
 
 class _CommentWidget extends State<CommentWidget> {

@@ -27,8 +27,7 @@ class _MyAppState extends State<MyApp> {
         textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
         textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
         tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
-              labelColor: Colors.deepOrange,
-              unselectedLabelColor: Colors.black),
+            labelColor: Colors.deepOrange, unselectedLabelColor: Colors.black),
         buttonColor: Colors.black,
         dividerColor: Colors.black12,
         accentColor: Colors.deepOrange,
@@ -71,7 +70,8 @@ class _MyAppState extends State<MyApp> {
           tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
               labelColor: Colors.deepOrange,
               unselectedLabelColor: Colors.white)),
-      home: (FirebaseAuth.instance.currentUser == null || !FirebaseAuth.instance.currentUser.emailVerified)
+      home: (FirebaseAuth.instance.currentUser == null ||
+              !FirebaseAuth.instance.currentUser.emailVerified)
           ? SignIn()
           : Feed(user: FirebaseAuth.instance.currentUser),
       themeMode: ThemeMode.system,

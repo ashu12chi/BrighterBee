@@ -66,7 +66,7 @@ class _CreatePostState extends State<CreatePost> {
         ),
       ),
     );
-    
+
     _controller.document.changes.listen((NotusChange change) {
       final undoDelta = change.change.invert(change.before);
 
@@ -74,13 +74,15 @@ class _CreatePostState extends State<CreatePost> {
         if (operation.isInsert && operation.hasAttribute('embed')) {
           final embedPath = operation.attributes['embed']['source'] as String;
           print('File: $embedPath');
-          String filePath = embedPath
-              .replaceAll(new
-          RegExp(r'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/'), '');
+          String filePath = embedPath.replaceAll(
+              new RegExp(
+                  r'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/'),
+              '');
           filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
           filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
           StorageReference storageReference = FirebaseStorage.instance.ref();
-          storageReference.child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
+          storageReference.child(filePath).delete().then(
+              (_) => print('Successfully deleted $filePath storage item'));
         }
       }
     });
@@ -363,7 +365,6 @@ class _CreatePostState extends State<CreatePost> {
         "creator": username,
         "mediaType": mediaType,
         "mediaUrl": mediaURL,
-        "key": key,
         "title": titleController.text,
         "content": jsonEncode(_controller.document),
         "viewers": [],
@@ -375,6 +376,7 @@ class _CreatePostState extends State<CreatePost> {
         "views": 0,
         "titleSearch": titleSearchList,
         "commentCount": 0,
+        "lastModified": time
       }).then((action) {
         debugPrint("successful posting in community!");
 
@@ -445,8 +447,7 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   _imageFromGallery() async {
-    final file = await ImagePicker().getImage(
-        source: ImageSource.gallery);
+    final file = await ImagePicker().getImage(source: ImageSource.gallery);
     if (file == null) return null;
     media = File(file.path);
     debugPrint(file.path);
