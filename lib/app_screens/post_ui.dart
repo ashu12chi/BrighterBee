@@ -12,20 +12,14 @@ import 'package:flutter/painting.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostUI extends StatefulWidget {
-  String community;
-  String postKey;
-  String username;
+  String _community;
+  String _postKey;
+  String _username;
 
-  PostUI(this.community, this.postKey, this.username);
-
-  PostUI.test() {
-    this.community = 'Computing';
-    this.postKey = '1602488875571';
-    this.username = 'ashu12_chi';
-  }
+  PostUI(this._community, this._postKey, this._username);
 
   @override
-  _PostState createState() => _PostState(community, postKey, username);
+  _PostState createState() => _PostState(_community, _postKey, _username);
 }
 
 class _PostState extends State<PostUI> {
@@ -177,12 +171,13 @@ class _PostState extends State<PostUI> {
                         ),
                         (mediaType == 0)
                             ? Container()
-                            : Image.network(
-                                mediaUrl,
-                                width: double.infinity,
-                                height: 250,
-                              ),
-                        (mediaType == 2) ? ChewieDemo(mediaUrl) : Container(),
+                            : (mediaType == 2)
+                                ? ChewieDemo(mediaUrl)
+                                : Image.network(
+                                    mediaUrl,
+                                    width: double.infinity,
+                                    height: 250,
+                                  ),
                         Divider(
                           color: Theme.of(context).buttonColor,
                         ),

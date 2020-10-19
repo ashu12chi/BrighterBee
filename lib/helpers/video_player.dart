@@ -14,40 +14,59 @@ class ChewieDemo extends StatefulWidget {
 }
 
 class _ChewieDemoState extends State<ChewieDemo> {
-  VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
-  String videoUrl;
-
   _ChewieDemoState(this.videoUrl);
+  VideoPlayerController _controller;
+  Future<void> _future;
+
+  String videoUrl;
 
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = VideoPlayerController.network(videoUrl);
-    _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
-      aspectRatio: 3 / 2,
-      autoPlay: true,
-      looping: false,
-    );
+    _controller = VideoPlayerController.network(videoUrl);
+    _future = initVideoPlayer();
   }
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    _controller.dispose();
     _chewieController.dispose();
     super.dispose();
   }
 
+  Future<void> initVideoPlayer() async {
+    await _controller.initialize();
+    setState(() {
+      _chewieController = ChewieController(
+          videoPlayerController: _controller,
+          aspectRatio: _controller.value.aspectRatio,
+          autoPlay: true,
+          looping: false,
+          placeholder: buildPlaceholderImage());
+    });
+  }
+
+  buildPlaceholderImage() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    try {
-      return Chewie(
-        controller: _chewieController,
-      );
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-    return null;
+    return FutureBuilder(
+      future: _future,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return buildPlaceholderImage();
+
+        return Center(
+          child: Chewie(
+            controller: _chewieController,
+          ),
+        );
+      },
+    );
   }
 }
