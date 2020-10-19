@@ -78,7 +78,7 @@ class _PostState extends State<PostCardView> {
             padding: EdgeInsets.all(0),
             focusNode: _focusNode,
             controller: ZefyrController(document1),
-            imageDelegate: MyAppZefyrImageDelegate(),
+            imageDelegate: CardZefyrImageDelegate(),
             mode: ZefyrMode.view,
             physics: NeverScrollableScrollPhysics(),
           );

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
+import 'package:brighter_bee/helpers/video_player.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:brighter_bee/widgets/comments_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,26 +77,12 @@ class _PostState extends State<PostUI> {
               addToViewers(community, key, username);
             String mediaUrl;
             if (mediaType > 0) mediaUrl = snapshot.data['mediaUrl'];
-            if (mediaType == 2)
-              mediaUrl =
-                  'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
             String content = snapshot.data['content'];
             NotusDocument document =
                 NotusDocument.fromJson(jsonDecode(content));
             String dateLong = formatDate(
                 DateTime.fromMillisecondsSinceEpoch(time),
                 [yyyy, ' ', MM, ' ', dd, ', ', hh, ':', nn, ' ', am]);
-
-            // ZefyrController _controller = ZefyrController(document);
-            // FocusNode _focusNode = FocusNode();
-            // ZefyrField editor = ZefyrField(
-            //   focusNode: _focusNode,
-            //   controller: _controller,
-            //   imageDelegate: MyAppZefyrImageDelegate(),
-            //   autofocus: false,
-            //   mode: ZefyrMode.view,
-            //   physics: NeverScrollableScrollPhysics(),
-            // );
 
             return StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -188,12 +175,6 @@ class _PostState extends State<PostUI> {
                             imageDelegate: MyAppZefyrImageDelegate(),
                           ),
                         ),
-                        // Container(
-                        //   height: 700,
-                        //   child: ZefyrScaffold(
-                        //     child: editor,
-                        //   ),
-                        // ),
                         (mediaType == 0)
                             ? Container()
                             : Image.network(
@@ -201,6 +182,7 @@ class _PostState extends State<PostUI> {
                                 width: double.infinity,
                                 height: 250,
                               ),
+                        (mediaType == 2) ? ChewieDemo(mediaUrl) : Container(),
                         Divider(
                           color: Theme.of(context).buttonColor,
                         ),

@@ -47,7 +47,8 @@ dependencies:
   firebase_storage: ^4.0.1
   rxdart: ^0.24.1
   path: ^1.7.0
-  fluttertoast: ^7.1.1
+  chewie: ^0.9.10
+  video_player: ^0.10.9
 
 dev_dependencies:
   flutter_test:
