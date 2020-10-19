@@ -1,3 +1,4 @@
+import 'package:brighter_bee/widgets/edit_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,10 @@ class EditDetails extends StatefulWidget {
 
 class _EditDetailsState extends State<EditDetails> {
   String username;
+  String motto;
+  String homeTown;
+  String currentCity;
+  String website;
   FirebaseAuth _auth = FirebaseAuth.instance;
   void initState() {
     super.initState();
@@ -27,20 +32,35 @@ class _EditDetailsState extends State<EditDetails> {
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection('users').doc(username).snapshots(),
         builder: (context, snapshot) {
-          return snapshot.connectionState == ConnectionState.waiting?CircularProgressIndicator():Padding(
+          if(snapshot.connectionState == ConnectionState.waiting)
+            return CircularProgressIndicator();
+           if(motto == null)
+              motto = snapshot.data['motto'];
+           if(homeTown == null)
+            homeTown = snapshot.data['homeTown'];
+           if(currentCity == null)
+            currentCity = snapshot.data['currentCity'];
+           if(website == null)
+            website = snapshot.data['website'];
+          return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView(
               children: <Widget>[
                 Text('Profile Picture',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                Container(
-                  margin: EdgeInsets.only(top:20,bottom: 20,left: 40,right: 40),
-                  width: 200,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: snapshot.connectionState==ConnectionState.waiting?CircularProgressIndicator():NetworkImage(snapshot.data['photoUrl']),
-                        fit: BoxFit.fill
+                InkWell(
+                  onTap: (){
+                    
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top:20,bottom: 20,left: 40,right: 40),
+                    width: 200,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: snapshot.connectionState==ConnectionState.waiting?CircularProgressIndicator():NetworkImage(snapshot.data['photoUrl']),
+                          fit: BoxFit.fill
+                      ),
                     ),
                   ),
                 ),
@@ -56,14 +76,25 @@ class _EditDetailsState extends State<EditDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Motto',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                    IconButton(icon: Icon(Icons.edit),)
+                    IconButton(
+                      icon: Icon(Icons.edit,color: Colors.grey,),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditText(motto))).then((value){
+                          //print(value);
+                          setState(() {
+                            motto = value;
+                            print(motto);
+                          });
+                        });
+                      },
+                    )
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:5,left: 10.0, right: 10,bottom: 5),
                   child: Center(
                       child: Text(
-                        snapshot.data['motto'],
+                        motto,
                         softWrap: true,
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey, fontSize: 18),
@@ -81,14 +112,25 @@ class _EditDetailsState extends State<EditDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Icon(Icons.home),
-                    IconButton(icon: Icon(Icons.edit),)
+                    IconButton(
+                      icon: Icon(Icons.edit,color: Colors.grey,),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditText(homeTown))).then((value){
+                          //print(value);
+                          setState(() {
+                            homeTown = value;
+                            print(motto);
+                          });
+                        });
+                      },
+                    )
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:5,left: 10.0, right: 10,bottom: 5),
                   child: Center(
                       child: Text(
-                        'Lives in ${snapshot.data['homeTown']}, India',
+                        'Lives in $homeTown, India',
                         softWrap: true,
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey, fontSize: 18),
@@ -106,14 +148,25 @@ class _EditDetailsState extends State<EditDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Icon(Icons.location_on),
-                    IconButton(icon: Icon(Icons.edit),)
+                    IconButton(
+                      icon: Icon(Icons.edit,color: Colors.grey,),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditText(currentCity))).then((value){
+                          //print(value);
+                          setState(() {
+                            currentCity = value;
+                            print(motto);
+                          });
+                        });
+                      },
+                    )
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:5,left: 10.0, right: 10,bottom: 5),
                   child: Center(
                       child: Text(
-                        'From ${snapshot.data['currentCity']}, India',
+                        'From $currentCity, India',
                         softWrap: true,
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey, fontSize: 18),
@@ -131,14 +184,25 @@ class _EditDetailsState extends State<EditDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Icon(Icons.link),
-                    IconButton(icon: Icon(Icons.edit),)
+                    IconButton(
+                      icon: Icon(Icons.edit,color: Colors.grey,),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditText(website))).then((value){
+                          //print(value);
+                          setState(() {
+                            website = value;
+                            print(motto);
+                          });
+                        });
+                      },
+                    )
                   ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:5,left: 10.0, right: 10,bottom: 5),
                   child: Center(
                       child: Text(
-                        snapshot.data['website'],
+                        website,
                         softWrap: true,
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey, fontSize: 18),

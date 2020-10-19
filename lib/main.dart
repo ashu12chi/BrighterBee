@@ -26,6 +26,9 @@ class _MyAppState extends State<MyApp> {
             ),
         textSelectionColor: Color.fromRGBO(57, 171, 219, 0.7),
         textSelectionHandleColor: Color.fromRGBO(57, 171, 219, 1.0),
+        tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
+              labelColor: Colors.deepOrange,
+              unselectedLabelColor: Colors.black),
         buttonColor: Colors.black,
         dividerColor: Colors.black12,
         accentColor: Colors.deepOrange,
