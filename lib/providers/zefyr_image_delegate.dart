@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:brighter_bee/helpers/path_helper.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zefyr/zefyr.dart';
@@ -7,16 +9,26 @@ import 'package:zefyr/zefyr.dart';
 class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
   @override
   Future<String> pickImage(ImageSource source) async {
-    final file = await ImagePicker.pickImage(source: source);
+    final PickedFile file = await ImagePicker().getImage(source: source);
     if (file == null) return null;
-    return file.uri.toString();
+    File media = File(file.path);
+
+    StorageUploadTask uploadTask;
+    String fileName = getFileName(media);
+      uploadTask = FirebaseStorage.instance
+          .ref()
+          .child('textImage/IMG_$fileName')
+          .putFile(media);
+    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+    String url = await storageSnap.ref.getDownloadURL();
+
+    return url;
   }
 
   @override
   Widget buildImage(BuildContext context, String key) {
-    final file = File.fromUri(Uri.parse(key));
-    final image = FileImage(file);
-    return Image(image: image);
+    print(key);
+    return Image.network(key);
   }
 
   @override
