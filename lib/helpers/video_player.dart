@@ -2,20 +2,20 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class ChewieDemo extends StatefulWidget {
+class VideoPlayer extends StatefulWidget {
   String _videoUrl;
 
-  ChewieDemo(this._videoUrl);
+  VideoPlayer(this._videoUrl);
 
   @override
   State<StatefulWidget> createState() {
-    return _ChewieDemoState(_videoUrl);
+    return _VideoPlayerState(_videoUrl);
   }
 }
 
-class _ChewieDemoState extends State<ChewieDemo> {
+class _VideoPlayerState extends State<VideoPlayer> {
   ChewieController _chewieController;
-  _ChewieDemoState(this.videoUrl);
+  _VideoPlayerState(this.videoUrl);
   VideoPlayerController _controller;
   Future<void> _future;
 

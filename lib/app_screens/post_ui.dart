@@ -172,7 +172,7 @@ class _PostState extends State<PostUI> {
                         (mediaType == 0)
                             ? Container()
                             : (mediaType == 2)
-                                ? ChewieDemo(mediaUrl)
+                                ? VideoPlayer(mediaUrl)
                                 : Image.network(
                                     mediaUrl,
                                     width: double.infinity,
