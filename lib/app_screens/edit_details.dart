@@ -40,7 +40,7 @@ class _EditDetailsState extends State<EditDetails> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    String fileName = _auth.currentUser.displayName + '.jpg';
+    String fileName = _auth.currentUser.displayName + DateTime.now().toIso8601String() + '.jpg';
     StorageReference firebaseStorageRef =
     FirebaseStorage.instance.ref().child('profilePics/$fileName');
     StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
@@ -272,6 +272,7 @@ class _EditDetailsState extends State<EditDetails> {
                             'currentCity':currentCity,
                             'website':website
                           });
+                          Navigator.pop(context);
                         }
                     },
                   ),
