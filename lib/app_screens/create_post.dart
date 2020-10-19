@@ -66,6 +66,24 @@ class _CreatePostState extends State<CreatePost> {
         ),
       ),
     );
+    
+    _controller.document.changes.listen((NotusChange change) {
+      final undoDelta = change.change.invert(change.before);
+
+      for (final operation in undoDelta.toList()) {
+        if (operation.isInsert && operation.hasAttribute('embed')) {
+          final embedPath = operation.attributes['embed']['source'] as String;
+          print('File: $embedPath');
+          String filePath = embedPath
+              .replaceAll(new
+          RegExp(r'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/'), '');
+          filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+          filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+          StorageReference storageReference = FirebaseStorage.instance.ref();
+          storageReference.child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
+        }
+      }
+    });
 
     Firebase.initializeApp();
 
