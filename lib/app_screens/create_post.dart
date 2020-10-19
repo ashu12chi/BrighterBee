@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:brighter_bee/helpers/path_helper.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -376,12 +377,17 @@ class _CreatePostState extends State<CreatePost> {
 
   uploadMedia(String key) async {
     StorageUploadTask uploadTask;
+    String fileName = getFileName(media);
     if (mediaType == 1)
-      uploadTask =
-          FirebaseStorage.instance.ref().child('IMG_$key.jpg').putFile(media);
+      uploadTask = FirebaseStorage.instance
+          .ref()
+          .child('posts/IMG_$key$fileName')
+          .putFile(media);
     else if (mediaType == 2)
-      uploadTask =
-          FirebaseStorage.instance.ref().child('VID_$key.mp4').putFile(media);
+      uploadTask = FirebaseStorage.instance
+          .ref()
+          .child('posts/VID_$key$fileName')
+          .putFile(media);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     mediaURL = await storageSnap.ref.getDownloadURL();
     debugPrint("successful media upload!");
@@ -422,12 +428,10 @@ class _CreatePostState extends State<CreatePost> {
 
   _imageFromGallery() async {
     final file = await ImagePicker().getImage(
-        source: ImageSource.gallery,
-        maxHeight: 1024,
-        maxWidth: 1024,
-        imageQuality: 90);
+        source: ImageSource.gallery);
     if (file == null) return null;
     media = File(file.path);
+    debugPrint(file.path);
     setState(() {
       noticeText = "Image selected for upload!";
       mediaType = 1;
@@ -437,11 +441,12 @@ class _CreatePostState extends State<CreatePost> {
   _imageFromCamera() async {
     final file = await ImagePicker().getImage(
         source: ImageSource.camera,
-        maxHeight: 1024,
-        maxWidth: 1024,
+        maxHeight: 2048,
+        maxWidth: 2048,
         imageQuality: 90);
     if (file == null) return null;
     media = File(file.path);
+    debugPrint(media.path);
     setState(() {
       noticeText = "Image selected for upload!";
       mediaType = 1;
