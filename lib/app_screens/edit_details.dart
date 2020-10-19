@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:brighter_bee/widgets/edit_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 // @author: Ashutosh Chitranshi
 // 18-10-2020 17:05
@@ -19,10 +23,32 @@ class _EditDetailsState extends State<EditDetails> {
   String currentCity;
   String website;
   FirebaseAuth _auth = FirebaseAuth.instance;
+  File _imageFile;
+  String url;
   void initState() {
     super.initState();
     username = _auth.currentUser.displayName;
   }
+  final picker = ImagePicker();
+
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = File(pickedFile.path);
+    });
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = _auth.currentUser.displayName + '.jpg';
+    StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('profilePics/$fileName');
+    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    url = await taskSnapshot.ref.getDownloadURL();
+    print(url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +75,9 @@ class _EditDetailsState extends State<EditDetails> {
                 Text('Profile Picture',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                 InkWell(
                   onTap: (){
-                    
+                    print('ashu12');
+                    pickImage();
+
                   },
                   child: Container(
                     margin: EdgeInsets.only(top:20,bottom: 20,left: 40,right: 40),
@@ -58,7 +86,7 @@ class _EditDetailsState extends State<EditDetails> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: snapshot.connectionState==ConnectionState.waiting?CircularProgressIndicator():NetworkImage(snapshot.data['photoUrl']),
+                          image: _imageFile==null?NetworkImage(snapshot.data['photoUrl']):AssetImage(_imageFile.path),
                           fit: BoxFit.fill
                       ),
                     ),
@@ -223,7 +251,30 @@ class _EditDetailsState extends State<EditDetails> {
                       child: Text("Save Details"),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Colors.grey))),
+                          side: BorderSide(color: Colors.grey)),
+                    onPressed: () async {
+                        if(_imageFile != null) {
+                          await uploadImageToFirebase(context);
+                          await FirebaseFirestore.instance.collection('users').doc(username).
+                          update({
+                            'motto':motto,
+                            'homeTown':homeTown,
+                            'currentCity':currentCity,
+                            'website':website,
+                            'photoUrl':url
+                          });
+                        }
+                        else {
+                          await FirebaseFirestore.instance.collection('users').doc(username).
+                          update({
+                            'motto':motto,
+                            'homeTown':homeTown,
+                            'currentCity':currentCity,
+                            'website':website
+                          });
+                        }
+                    },
+                  ),
                 ),
               ],
             ),
