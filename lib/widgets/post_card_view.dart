@@ -5,6 +5,7 @@ import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
@@ -21,7 +22,8 @@ class PostCardView extends StatefulWidget {
 class _PostState extends State<PostCardView> {
   String community;
   String key;
-  String username = 'ashu12_chi';
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  String username;
   bool processing;
 
   FocusNode _focusNode;
@@ -32,6 +34,7 @@ class _PostState extends State<PostCardView> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    username = _auth.currentUser.displayName;
     processing = false;
   }
 
@@ -167,7 +170,112 @@ class _PostState extends State<PostCardView> {
                                         child: IconButton(
                                           icon: Icon(Icons.more_horiz),
                                           alignment: Alignment.topRight,
-                                          onPressed: showOptions,
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                                context: context,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                          top: Radius.circular(
+                                                              15.0)),
+                                                ),
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return StatefulBuilder(
+                                                      builder: (BuildContext
+                                                              context,
+                                                          StateSetter state) {
+                                                    return SingleChildScrollView(
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      child: LimitedBox(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: <Widget>[
+                                                            Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                IconButton(
+                                                                    icon: Icon(
+                                                                        Icons
+                                                                            .share,
+                                                                        size:
+                                                                            30,
+                                                                        color: Theme.of(context)
+                                                                            .buttonColor)),
+                                                                Text(
+                                                                  'Share',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                IconButton(
+                                                                    icon: Icon(
+                                                                        Icons
+                                                                            .bookmark,
+                                                                        size:
+                                                                            30,
+                                                                        color: Theme.of(context)
+                                                                            .buttonColor)),
+                                                                Text(
+                                                                  'Save article',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            username == name
+                                                                ? Column(
+                                                                    children: <
+                                                                        Widget>[
+                                                                      IconButton(
+                                                                          icon: Icon(
+                                                                              Icons.delete,
+                                                                              size: 30,
+                                                                              color: Theme.of(context).buttonColor),
+                                                                        onPressed: (){
+
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        'Delete',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                14),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : Column(
+                                                                    children: <
+                                                                        Widget>[
+                                                                      IconButton(
+                                                                          icon: Icon(
+                                                                              Icons.report,
+                                                                              size: 30,
+                                                                              color: Theme.of(context).buttonColor)),
+                                                                      Text(
+                                                                        'Report',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                14),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  });
+                                                });
+                                          },
                                         ),
                                       )
                                     ],
@@ -289,64 +397,5 @@ class _PostState extends State<PostCardView> {
             builder: (BuildContext context) =>
                 PostUI(community, key, username)));
     debugPrint('Post opened!');
-  }
-
-  showOptions() {
-    showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
-        ),
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter state) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(10),
-              child: LimitedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.share,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Share',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.bookmark,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Save article',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            );
-          });
-        });
   }
 }
