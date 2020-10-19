@@ -22,21 +22,34 @@ class _CreatePostState extends State<CreatePost> {
   FocusNode _focusNode;
   String displayName = 'Nishchal Siddharth';
   String username = 'nisiddharth';
-  String noticeText = "Add media to your post";
+  String noticeText;
   String mediaURL;
   int mediaType = 0; // 0 for none, 1 for image, 2 for video
   File media;
   QuerySnapshot result;
-  List<CheckBoxData> checkboxDataList = [];
+  List<CheckBoxData> checkboxDataList;
   List selected;
+  List listOfMedia;
+  String fileName;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  Future<void> initState() {
+  void initState() {
     super.initState();
     final document = _loadDocument();
     _controller = ZefyrController(document);
     _focusNode = FocusNode();
+    noticeText = "Add media to your post";
+    checkboxDataList = [];
+    listOfMedia = [];
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    titleController.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   initializeList() async {
@@ -69,6 +82,22 @@ class _CreatePostState extends State<CreatePost> {
 
     _controller.document.changes.listen((NotusChange change) {
       final undoDelta = change.change.invert(change.before);
+      final insertDelta = change.change;
+
+      for (final operation in insertDelta.toList()) {
+        if (operation.isInsert && operation.hasAttribute('embed')) {
+          final embedPath = operation.attributes['embed']['source'] as String;
+          print('File: $embedPath');
+          String filePath = embedPath.replaceAll(
+              new RegExp(
+                  r'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/'),
+              '');
+          filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+          filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+          print('File: $filePath');
+          listOfMedia.add(filePath);
+        }
+      }
 
       for (final operation in undoDelta.toList()) {
         if (operation.isInsert && operation.hasAttribute('embed')) {
@@ -81,8 +110,10 @@ class _CreatePostState extends State<CreatePost> {
           filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
           filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
           StorageReference storageReference = FirebaseStorage.instance.ref();
-          storageReference.child(filePath).delete().then(
-              (_) => print('Successfully deleted $filePath storage item'));
+          storageReference.child(filePath).delete().then((_) {
+            print('Successfully deleted $filePath storage item');
+            listOfMedia.remove(filePath);
+          });
         }
       }
     });
@@ -212,11 +243,13 @@ class _CreatePostState extends State<CreatePost> {
           IconButton(
             icon: Icon(Icons.cancel),
             onPressed: () {
+              listOfMedia.remove(fileName);
               setState(() {
                 noticeText = "Add media to your post";
                 mediaType = 0;
                 mediaURL = null;
                 media = null;
+                fileName = null;
               });
             },
           )
@@ -376,7 +409,8 @@ class _CreatePostState extends State<CreatePost> {
         "views": 0,
         "titleSearch": titleSearchList,
         "commentCount": 0,
-        "lastModified": time
+        "lastModified": time,
+        "listOfMedia": listOfMedia,
       }).then((action) {
         debugPrint("successful posting in community!");
 
@@ -397,20 +431,20 @@ class _CreatePostState extends State<CreatePost> {
 
   uploadMedia(String key) async {
     StorageUploadTask uploadTask;
-    String fileName = getFileName(media);
-    if (mediaType == 1)
-      uploadTask = FirebaseStorage.instance
-          .ref()
-          .child('posts/IMG_$key$fileName')
-          .putFile(media);
-    else if (mediaType == 2)
-      uploadTask = FirebaseStorage.instance
-          .ref()
-          .child('posts/VID_$key$fileName')
-          .putFile(media);
+    fileName = getFileName(media);
+    if (mediaType == 1) {
+      fileName = 'posts/IMG_$key$fileName';
+      uploadTask =
+          FirebaseStorage.instance.ref().child(fileName).putFile(media);
+    } else if (mediaType == 2) {
+      fileName = 'posts/VID_$key$fileName';
+      uploadTask =
+          FirebaseStorage.instance.ref().child(fileName).putFile(media);
+    }
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     mediaURL = await storageSnap.ref.getDownloadURL();
     debugPrint("successful media upload!");
+    listOfMedia.add(fileName);
     return mediaURL;
   }
 
@@ -460,8 +494,8 @@ class _CreatePostState extends State<CreatePost> {
   _imageFromCamera() async {
     final file = await ImagePicker().getImage(
         source: ImageSource.camera,
-        maxHeight: 2048,
-        maxWidth: 2048,
+        maxHeight: 2160,
+        maxWidth: 2160,
         imageQuality: 90);
     if (file == null) return null;
     media = File(file.path);

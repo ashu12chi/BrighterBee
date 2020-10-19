@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
-import 'package:brighter_bee/helpers/video_player.dart';
+import 'package:brighter_bee/widgets/video_player.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:brighter_bee/widgets/comments_list.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

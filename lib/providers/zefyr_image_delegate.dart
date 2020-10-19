@@ -17,7 +17,7 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
     String fileName = getFileName(media);
     uploadTask = FirebaseStorage.instance
         .ref()
-        .child('textImage/IMG_$fileName')
+        .child('posts/IMG_$fileName')
         .putFile(media);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     String url = await storageSnap.ref.getDownloadURL();
@@ -48,7 +48,7 @@ class CardZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
     String fileName = getFileName(media);
     uploadTask = FirebaseStorage.instance
         .ref()
-        .child('textImage/IMG_$fileName')
+        .child('posts/IMG_$fileName')
         .putFile(media);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     String url = await storageSnap.ref.getDownloadURL();
