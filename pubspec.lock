@@ -247,6 +247,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.1.1"
   http:
     dependency: transitive
     description:
@@ -549,11 +556,9 @@ packages:
   zefyr:
     dependency: "direct main"
     description:
-      path: "packages/zefyr"
-      ref: HEAD
-      resolved-ref: "646b3f6238bb1d9c78e1cd9f1b3fbe1d4f98b93f"
-      url: "https://github.com/memspace/zefyr.git"
-    source: git
+      name: zefyr
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.12.0"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"

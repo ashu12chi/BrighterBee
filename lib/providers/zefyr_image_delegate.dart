@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:brighter_bee/helpers/path_helper.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zefyr/zefyr.dart';
 
@@ -13,6 +14,12 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
     if (file == null) return null;
     File media = File(file.path);
 
+    Fluttertoast.showToast(
+        msg: "Uploading image...",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+    );
+
     StorageUploadTask uploadTask;
     String fileName = getFileName(media);
       uploadTask = FirebaseStorage.instance
@@ -21,6 +28,12 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
           .putFile(media);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     String url = await storageSnap.ref.getDownloadURL();
+
+    Fluttertoast.showToast(
+      msg: "Image upload complete!",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+    );
 
     return url;
   }

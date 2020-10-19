@@ -28,10 +28,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-  zefyr:
-    git:
-      url: https://github.com/memspace/zefyr.git
-      path: packages/zefyr
+#  zefyr:
+#    git:
+#      url: https://github.com/memspace/zefyr.git
+#      path: packages/zefyr
+  zefyr: ^0.12.0
   image_picker: ^0.6.7+12
   quill_delta: ^1.0.0
   firebase_core: ^0.5.0+1
@@ -46,6 +47,7 @@ dependencies:
   firebase_storage: ^4.0.1
   rxdart: ^0.24.1
   path: ^1.7.0
+  fluttertoast: ^7.1.1
 
 dev_dependencies:
   flutter_test:
