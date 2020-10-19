@@ -184,14 +184,15 @@ class _Comment extends State<Comment> {
             .doc(key);
         transaction.update(postRef, {'replyCount': FieldValue.increment(1)});
       });
-      await instance.collection('notification').add({
-        'title': "Your comment in $community has a reply",
-        'body': commentText,
-        'community': community,
-        'creator': username,
-        'postId': parentPostKey,
-        'receiver': creator,
-      });
+      if (creator.compareTo(username) != 0)
+        await instance.collection('notification').add({
+          'title': "Your comment in $community has a reply",
+          'body': commentText,
+          'community': community,
+          'creator': username,
+          'postId': parentPostKey,
+          'receiver': creator,
+        });
     } else {
       await instance
           .collection('communities/$community/posts/$parentPostKey/comments')
@@ -216,14 +217,15 @@ class _Comment extends State<Comment> {
             .doc(parentPostKey);
         transaction.update(postRef, {'commentCount': FieldValue.increment(1)});
       });
-      await instance.collection('notification').add({
-        'title': "Your post in $community has a comment",
-        'body': commentText,
-        'community': community,
-        'creator': username,
-        'postId': parentPostKey,
-        'receiver': creator,
-      });
+      if (creator.compareTo(username) != 0)
+        await instance.collection('notification').add({
+          'title': "Your post in $community has a comment",
+          'body': commentText,
+          'community': community,
+          'creator': username,
+          'postId': parentPostKey,
+          'receiver': creator,
+        });
     }
 
     await instance.collection('users/$username/comments').doc(commKey).set({
@@ -237,14 +239,15 @@ class _Comment extends State<Comment> {
     commentText.split(' ').map((w) async {
       if (w.startsWith('@') && w.length > 1) {
         w = w.replaceAll('[^A-Za-z0-9]', '');
-        await instance.collection('notification').add({
-          'title': "$username tagged you in a comment",
-          'body': commentText,
-          'community': community,
-          'creator': username,
-          'postId': parentPostKey,
-          'receiver': w,
-        });
+        if (w.compareTo(username) != 0)
+          await instance.collection('notification').add({
+            'title': "$username tagged you in a comment",
+            'body': commentText,
+            'community': community,
+            'creator': username,
+            'postId': parentPostKey,
+            'receiver': w,
+          });
       }
     });
 
