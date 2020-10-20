@@ -38,10 +38,10 @@ class _MyAppState extends State<MyApp> {
         appBarTheme: Theme.of(context)
             .appBarTheme
             .copyWith(iconTheme: Theme.of(context).iconTheme),
-        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Roboto'),
+        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Raleway'),
         primaryTextTheme: Theme.of(context)
             .primaryTextTheme
-            .apply(bodyColor: Colors.black, fontFamily: 'Roboto'),
+            .apply(bodyColor: Colors.black, fontFamily: 'OpenSans'),
       ),
       // dark theme
       darkTheme: ThemeData.dark().copyWith(
@@ -63,10 +63,10 @@ class _MyAppState extends State<MyApp> {
           cardColor: Color.fromRGBO(31, 31, 31, 1),
           textTheme: Theme.of(context).textTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
-              fontFamily: 'Roboto'),
+              fontFamily: 'Raleway'),
           primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
-              fontFamily: 'Roboto'),
+              fontFamily: 'OpenSans'),
           tabBarTheme: Theme.of(context).tabBarTheme.copyWith(
               labelColor: Colors.deepOrange,
               unselectedLabelColor: Colors.white)),

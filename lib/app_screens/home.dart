@@ -1,4 +1,7 @@
 import 'package:brighter_bee/app_screens/create_post.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -7,6 +10,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  User user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +29,7 @@ class _HomeState extends State<Home> {
             Row(
               children: <Widget>[
                 CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(user.photoURL),
                   radius: 30.0,
                   backgroundColor: Colors.grey,
                 ),
@@ -27,7 +39,7 @@ class _HomeState extends State<Home> {
                     height: 60.0,
                     child: FlatButton(
                       child: Text(
-                        'Write something here...    ',
+                        'Write something here...        ',
                         style: TextStyle(color: Colors.grey, fontSize: 18.0),
                       ),
                       onPressed: () {

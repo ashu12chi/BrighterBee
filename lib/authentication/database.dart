@@ -35,5 +35,6 @@ class DatabaseService {
       'currentCity': currentCity,
       'time': time
     });
+    await instance.collection('users/$username/posts').doc('posted').set({});
   }
 }

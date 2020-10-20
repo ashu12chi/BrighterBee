@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:brighter_bee/app_screens/feed.dart';
 import 'package:brighter_bee/authentication/register.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -190,6 +193,15 @@ class _SignInState extends State<SignIn> {
         ));
         return;
       }
+
+      String username = user.displayName;
+      await setNameInSharedPreference(username);
+
+      FirebaseFirestore instance = FirebaseFirestore.instance;
+      final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+      String deviceId = await _firebaseMessaging.getToken();
+      await instance.collection('users/$username/tokens').doc(deviceId).set({});
+
       _scaffoldKey.currentState.hideCurrentSnackBar();
       print("signed in..." + (_emailController.text));
       _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -197,11 +209,7 @@ class _SignInState extends State<SignIn> {
         content: Text('Signed in!'),
       ));
 
-      String username = user.displayName;
-      FirebaseFirestore instance = FirebaseFirestore.instance;
-      final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-      String deviceId = await _firebaseMessaging.getToken();
-      await instance.collection('users/$username/tokens').doc(deviceId).set({});
+      sleep(Duration(seconds: 2));
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => Feed(
@@ -209,12 +217,22 @@ class _SignInState extends State<SignIn> {
               )));
     } catch (e) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
-      print("sign in failed..." + (_emailController.text));
+      print("Sign in failed..." + (_emailController.text));
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
         content: Text('Sign in failed! Please check credentials.'),
       ));
     }
+  }
+
+  setNameInSharedPreference(String username) async {
+    String name = (await FirebaseFirestore.instance
+            .collection('users')
+            .doc(username)
+            .get())
+        .data()['name'];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fullName', name);
   }
 
   void _signOut() async {

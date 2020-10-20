@@ -3,12 +3,15 @@ import 'dart:io';
 
 import 'package:brighter_bee/helpers/path_helper.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quill_delta/quill_delta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zefyr/zefyr.dart';
 
 class CreatePost extends StatefulWidget {
@@ -20,8 +23,9 @@ class _CreatePostState extends State<CreatePost> {
   ZefyrController _controller;
   TextEditingController titleController = TextEditingController();
   FocusNode _focusNode;
-  String displayName = 'Nishchal Siddharth';
-  String username = 'nisiddharth';
+  User user;
+  String displayName;
+  String username;
   String noticeText;
   String mediaURL;
   int mediaType = 0; // 0 for none, 1 for image, 2 for video
@@ -32,10 +36,15 @@ class _CreatePostState extends State<CreatePost> {
   List listOfMedia;
   String fileName;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  ZefyrField editor;
 
   @override
   void initState() {
     super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    displayName = username = user.displayName;
+    getNameFromSharedPreference();
+    mediaType = 0;
     final document = _loadDocument();
     _controller = ZefyrController(document);
     _focusNode = FocusNode();
@@ -66,7 +75,7 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
-    final editor = ZefyrField(
+    editor = ZefyrField(
       focusNode: _focusNode,
       controller: _controller,
       imageDelegate: MyAppZefyrImageDelegate(),
@@ -118,8 +127,6 @@ class _CreatePostState extends State<CreatePost> {
       }
     });
 
-    Firebase.initializeApp();
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -143,12 +150,14 @@ class _CreatePostState extends State<CreatePost> {
             Row(
               children: <Widget>[
                 CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(user.photoURL),
                   radius: 30.0,
                   backgroundColor: Colors.grey,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         displayName,
@@ -559,6 +568,18 @@ class _CreatePostState extends State<CreatePost> {
     setState(() {
       noticeText = "Video selected for upload!";
       mediaType = 2;
+    });
+  }
+
+  getNameFromSharedPreference() async {
+    SharedPreferences.getInstance().then((value) => {
+          setDisplayName(value.getString('fullName')),
+        });
+  }
+
+  setDisplayName(String str) {
+    setState(() {
+      displayName = str;
     });
   }
 }

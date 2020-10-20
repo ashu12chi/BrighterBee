@@ -53,6 +53,8 @@ dependencies:
   chewie: ^0.9.10
   video_player: ^0.10.9
   progress_dialog: ^1.2.4
+  cached_network_image: ^2.3.3
+  shared_preferences: ^0.5.12+2
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +103,13 @@ flutter:
         - asset: fonts/Roboto-Italic.ttf
           style: italic
         - asset: fonts/Roboto-Bold.ttf
+          weight: 700
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-Regular.ttf
+        - asset: fonts/OpenSans-Italic.ttf
+          style: italic
+        - asset: fonts/OpenSans-Bold.ttf
           weight: 700
 
   # For details regarding fonts from package dependencies,
