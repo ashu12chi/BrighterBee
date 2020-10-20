@@ -38,7 +38,6 @@ class _PostState extends State<PostCardView> {
     _focusNode = FocusNode();
     username = _auth.currentUser.displayName;
     processing = false;
-    username = 'nisiddharth';
   }
 
   @override
