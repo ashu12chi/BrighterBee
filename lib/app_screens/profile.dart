@@ -1,19 +1,21 @@
 import 'package:brighter_bee/app_screens/edit_details.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  String username;
+  String _username;
 
-  Profile(this.username);
+  Profile(this._username);
 
   @override
-  _ProfileState createState() => _ProfileState(username);
+  _ProfileState createState() => _ProfileState(_username);
 }
 
 class _ProfileState extends State<Profile> {
   String username;
   _ProfileState(this.username);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,19 +46,18 @@ class _ProfileState extends State<Profile> {
           builder: (context, snapshot) {
             return ListView(
               children: <Widget>[
-                Container(
-                  margin:
-                      EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 40),
-                  width: 200,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image:
-                            snapshot.connectionState == ConnectionState.waiting
-                                ? CircularProgressIndicator()
-                                : NetworkImage(snapshot.data['photoUrl']),
-                        fit: BoxFit.fill),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                            snapshot.data['photoUrl']),
+                        radius: 150.0,
+                        backgroundColor: Colors.grey,
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
                   ),
                 ),
                 Padding(

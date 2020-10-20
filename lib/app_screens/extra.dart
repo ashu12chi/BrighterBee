@@ -1,9 +1,11 @@
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Extra extends StatefulWidget {
   @override
@@ -11,7 +13,20 @@ class Extra extends StatefulWidget {
 }
 
 class _ExtraState extends State<Extra> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  User user;
+  String username;
+  String displayName;
+  FirebaseAuth _auth;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth = FirebaseAuth.instance;
+    user = _auth.currentUser;
+    displayName = username = user.displayName;
+    getNameFromSharedPreference();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,27 +55,29 @@ class _ExtraState extends State<Extra> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            Profile(_auth.currentUser.displayName)));
+                        builder: (context) => Profile(user.displayName)));
               },
               child: Card(
                 child: Row(
                   children: <Widget>[
                     CircleAvatar(
+                      backgroundImage:
+                          CachedNetworkImageProvider(user.photoURL),
                       radius: 30.0,
                       backgroundColor: Colors.grey,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Ashutosh Chitranshi',
+                            displayName,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18.0),
                           ),
                           Text(
-                            'See your profile\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t',
+                            'See your profile',
                             style:
                                 TextStyle(color: Colors.grey, fontSize: 15.0),
                           )
@@ -246,6 +263,18 @@ class _ExtraState extends State<Extra> {
         ),
       ),
     );
+  }
+
+  getNameFromSharedPreference() async {
+    SharedPreferences.getInstance().then((value) => {
+          setDisplayName(value.getString('fullName')),
+        });
+  }
+
+  setDisplayName(String str) {
+    setState(() {
+      displayName = str;
+    });
   }
 
   Future _signOut() async {
