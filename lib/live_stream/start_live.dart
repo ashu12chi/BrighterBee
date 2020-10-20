@@ -118,7 +118,7 @@ class _StartLiveState extends State<StartLive> {
                   print('118 clicked');
                   Fluttertoast.showToast(
                       msg: "Wait...Live is about to start",
-                      toastLength: Toast.LENGTH_SHORT,
+                      toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.BOTTOM,
                       timeInSecForIosWeb: 1
                   );
