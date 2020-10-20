@@ -1,3 +1,4 @@
+import 'package:brighter_bee/live_stream/live_list.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class CommunityHome extends StatefulWidget {
 }
 
 class _CommunityHomeState extends State<CommunityHome> {
+  String community = 'Mathematics';
   String mediaUrl =
       'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
 
@@ -19,10 +21,19 @@ class _CommunityHomeState extends State<CommunityHome> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Mathematics',
+          community,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.ondemand_video, color: Theme.of(context).buttonColor),
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LiveList(community)));
+            },
+          ),
           IconButton(
             icon: Icon(Icons.search, color: Theme.of(context).buttonColor),
           ),
@@ -64,7 +75,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                 child: Column(
                   children: [
                     Text(
-                      'Mathematics',
+                      community,
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
@@ -119,7 +130,7 @@ class _CommunityHomeState extends State<CommunityHome> {
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('communities')
-                  .doc('Mathematics')
+                  .doc(community)
                   .collection('posts')
                   .snapshots(),
               builder: (context, snapshot) {
@@ -136,7 +147,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                               snapshot.data.docs[index];
                           return Column(
                             children: [
-                              PostCardView('Mathematics', documentSnapshot.id),
+                              PostCardView(community, documentSnapshot.id),
                             ],
                           );
                         },
