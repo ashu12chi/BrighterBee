@@ -9,6 +9,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'call.dart';
 import 'dart:io';
 
+// @author: Ashutosh Chitranshi
+// This file will be used to Start new live stream.
+// Creator of stream needs to provide title and image file for the stream
 
 class StartLive extends StatefulWidget {
   final String community;
@@ -139,6 +142,7 @@ class _StartLiveState extends State<StartLive> {
                         channelName: name,
                         role: ClientRole.Broadcaster,
                         name: _controller.text,
+                        community: community,
                       ),
                     ),
                   );

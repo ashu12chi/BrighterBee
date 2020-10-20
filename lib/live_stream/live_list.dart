@@ -1,14 +1,16 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:brighter_bee/live_stream/start_live.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'call.dart';
 
+// @author: Ashutosh Chitranshi
+// This will be used for displaying currently active live streams and navigation to them
+
 class LiveList extends StatefulWidget {
-  String community;
+  final String community;
   LiveList(this.community);
   @override
   _LiveListState createState() => _LiveListState(community);
@@ -55,6 +57,7 @@ class _LiveListState extends State<LiveList> {
                             channelName: documentSnapshot.id,
                             role: ClientRole.Audience,
                             name: documentSnapshot['title'],
+                            community: community,
                           ),
                         ),
                       );

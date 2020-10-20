@@ -7,29 +7,33 @@ import 'package:flutter/material.dart';
 
 import 'settings.dart';
 
+// @author: Anushka Srivastava
+// This will be used for Live Streaming
 class CallPage extends StatefulWidget {
   /// non-modifiable channel name of the page
   final String channelName;
-
+  final String community;
   /// non-modifiable client role of the page
   final ClientRole role;
 
   final String name;
 
   /// Creates a call page with given channel name.
-  const CallPage({Key key, this.channelName, this.role,this.name}) : super(key: key);
+  const CallPage({Key key, this.channelName, this.role,this.name,this.community}) : super(key: key);
 
   @override
-  _CallPageState createState() => _CallPageState(name);
+  _CallPageState createState() => _CallPageState(name,channelName,community);
 }
 
 class _CallPageState extends State<CallPage> {
   final name;
+  final channelName;
+  final community;
   final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
   RtcEngine _engine;
-  _CallPageState(this.name);
+  _CallPageState(this.name,this.channelName,this.community);
 
   @override
   void dispose() {
@@ -198,7 +202,7 @@ class _CallPageState extends State<CallPage> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
+            onPressed: () => _onCallEnd(context,community,channelName),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -276,7 +280,8 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
-  void _onCallEnd(BuildContext context) {
+  void _onCallEnd(BuildContext context,String community,String channelName) {
+    Navigator.pop(context);
     Navigator.pop(context);
   }
 
