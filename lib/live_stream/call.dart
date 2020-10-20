@@ -13,16 +13,19 @@ class CallPage extends StatefulWidget {
   /// non-modifiable channel name of the page
   final String channelName;
   final String community;
+
   /// non-modifiable client role of the page
   final ClientRole role;
 
   final String name;
 
   /// Creates a call page with given channel name.
-  const CallPage({Key key, this.channelName, this.role,this.name,this.community}) : super(key: key);
+  const CallPage(
+      {Key key, this.channelName, this.role, this.name, this.community})
+      : super(key: key);
 
   @override
-  _CallPageState createState() => _CallPageState(name,channelName,community);
+  _CallPageState createState() => _CallPageState(name, channelName, community);
 }
 
 class _CallPageState extends State<CallPage> {
@@ -33,7 +36,7 @@ class _CallPageState extends State<CallPage> {
   final _infoStrings = <String>[];
   bool muted = false;
   RtcEngine _engine;
-  _CallPageState(this.name,this.channelName,this.community);
+  _CallPageState(this.name, this.channelName, this.community);
 
   @override
   void dispose() {
@@ -149,32 +152,32 @@ class _CallPageState extends State<CallPage> {
       case 1:
         return Container(
             child: Column(
-              children: <Widget>[_videoView(views[0])],
-            ));
+          children: <Widget>[_videoView(views[0])],
+        ));
       case 2:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow([views[0]]),
-                _expandedVideoRow([views[1]])
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow([views[0]]),
+            _expandedVideoRow([views[1]])
+          ],
+        ));
       case 3:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 3))
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 3))
+          ],
+        ));
       case 4:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 4))
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 4))
+          ],
+        ));
       default:
     }
     return Container();
@@ -202,7 +205,7 @@ class _CallPageState extends State<CallPage> {
             padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context,community,channelName),
+            onPressed: () => _onCallEnd(context, community, channelName),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -280,7 +283,7 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
-  void _onCallEnd(BuildContext context,String community,String channelName) {
+  void _onCallEnd(BuildContext context, String community, String channelName) {
     Navigator.pop(context);
     Navigator.pop(context);
   }

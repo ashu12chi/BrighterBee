@@ -19,7 +19,7 @@ upvote(String community, String username, bool upvoted, bool downvoted,
         .collection('communities/$community/posts/$postKey/comments' +
             (isReply ? '/$commKey/replies' : ''))
         .doc(isReply ? replyKey : commKey);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'upvoters': FieldValue.arrayUnion([username]),
       'upvotes': FieldValue.increment(1),
     });
@@ -46,7 +46,7 @@ downvote(String community, String username, bool upvoted, bool downvoted,
         .collection('communities/$community/posts/$postKey/comments' +
             (isReply ? '/$commKey/replies' : ''))
         .doc(isReply ? replyKey : commKey);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'downvoters': FieldValue.arrayUnion([username]),
       'downvotes': FieldValue.increment(1),
     });
@@ -63,7 +63,7 @@ undoUpvote(String community, String username, bool upvoted, bool downvoted,
         .collection('communities/$community/posts/$postKey/comments' +
             (isReply ? '/$commKey/replies' : ''))
         .doc(isReply ? replyKey : commKey);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'upvoters': FieldValue.arrayRemove([username]),
       'upvotes': FieldValue.increment(-1),
     });
@@ -80,7 +80,7 @@ undoDownvote(String community, String username, bool upvoted, bool downvoted,
         .collection('communities/$community/posts/$postKey/comments' +
             (isReply ? '/$commKey/replies' : ''))
         .doc(isReply ? replyKey : commKey);
-    await transaction.update(postRef, {
+    transaction.update(postRef, {
       'downvoters': FieldValue.arrayRemove([username]),
       'downvotes': FieldValue.increment(-1),
     });

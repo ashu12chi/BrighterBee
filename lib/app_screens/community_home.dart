@@ -26,12 +26,11 @@ class _CommunityHomeState extends State<CommunityHome> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.ondemand_video, color: Theme.of(context).buttonColor),
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LiveList(community)));
+            icon: Icon(Icons.ondemand_video,
+                color: Theme.of(context).buttonColor),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LiveList(community)));
             },
           ),
           IconButton(

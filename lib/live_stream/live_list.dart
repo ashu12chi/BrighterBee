@@ -27,7 +27,7 @@ class _LiveListState extends State<LiveList> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add_circle),
-            onPressed: (){
+            onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -37,59 +37,66 @@ class _LiveListState extends State<LiveList> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('communities').doc(community).collection('live').snapshots(),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
-          return ListView.builder(
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (context,index) {
-              DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
-              print(documentSnapshot['photoUrl']);
-              return Column(
-                children: <Widget>[
-                  InkWell(
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CallPage(
-                            channelName: documentSnapshot.id,
-                            role: ClientRole.Audience,
-                            name: documentSnapshot['title'],
-                            community: community,
+          stream: FirebaseFirestore.instance
+              .collection('communities')
+              .doc(community)
+              .collection('live')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator();
+            return ListView.builder(
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
+                  print(documentSnapshot['photoUrl']);
+                  return Column(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CallPage(
+                                channelName: documentSnapshot.id,
+                                role: ClientRole.Audience,
+                                name: documentSnapshot['title'],
+                                community: community,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(
+                                    top: 10, bottom: 10, left: 10, right: 20),
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          documentSnapshot['photoUrl']),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                              Text(
+                                documentSnapshot['title'],
+                                style: TextStyle(fontSize: 20),
+                              )
+                            ],
                           ),
                         ),
-                      );
-                    },
-                    child: Card(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: 10, bottom: 10, left: 10, right: 20),
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                  image: NetworkImage(documentSnapshot['photoUrl']),
-                                  fit: BoxFit.fill),
-                            ),
-                          ),
-                          Text(documentSnapshot['title'],style: TextStyle(fontSize: 20),)
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              );
-            }
-          );
-        }
-      ),
+                      )
+                    ],
+                  );
+                });
+          }),
     );
   }
+
   Future<void> _handleCameraAndMic() async {
     await PermissionHandler().requestPermissions(
       [PermissionGroup.camera, PermissionGroup.microphone],

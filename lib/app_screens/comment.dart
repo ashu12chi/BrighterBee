@@ -220,15 +220,14 @@ class _Comment extends State<Comment> {
           'postId': parentPostKey,
           'receiver': creator,
         });
+      await instance.collection('users/$username/comments').doc(commKey).set({
+        'community': community,
+        'commKey': commKey,
+        'isReply': isReply,
+        'parentPost': parentPostKey,
+        'parent': key,
+      });
     }
-
-    await instance.collection('users/$username/comments').doc(commKey).set({
-      'community': community,
-      'commKey': commKey,
-      'isReply': isReply,
-      'parentPost': parentPostKey,
-      'parent': key,
-    });
 
     commentText.split(' ').map((w) async {
       if (w.startsWith('@') && w.length > 1) {

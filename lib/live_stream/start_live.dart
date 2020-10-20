@@ -39,16 +39,18 @@ class _StartLiveState extends State<StartLive> {
   Future uploadImageToFirebase(BuildContext context) async {
     String fileName = DateTime.now().toIso8601String() + '.jpg';
     StorageReference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('liveStream/$fileName');
+        FirebaseStorage.instance.ref().child('liveStream/$fileName');
     StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     url = await taskSnapshot.ref.getDownloadURL();
     print(url);
   }
+
   void initState() {
     super.initState();
     _controller = TextEditingController();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,19 +68,17 @@ class _StartLiveState extends State<StartLive> {
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                    BorderSide(color: Theme.of(context).buttonColor),
+                        BorderSide(color: Theme.of(context).buttonColor),
                   ),
                 ),
-              )
-          ),
+              )),
           InkWell(
             onTap: () {
               print('ashu12');
               pickImage();
             },
             child: Container(
-              margin: EdgeInsets.only(
-                  top: 20, bottom: 20, left: 40, right: 40),
+              margin: EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 40),
               width: 200,
               height: 250,
               decoration: BoxDecoration(
@@ -98,43 +98,38 @@ class _StartLiveState extends State<StartLive> {
                 child: Text("Start Streaming"),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(color: Colors.grey)
-                ),
+                    side: BorderSide(color: Colors.grey)),
                 onPressed: () async {
                   print('101 : clicked');
-                  if(_imageFile == null) {
+                  if (_imageFile == null) {
                     Fluttertoast.showToast(
                         msg: 'Image not selected',
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1
-                    );
+                        timeInSecForIosWeb: 1);
                   }
-                  if(_controller.text.length == 0) {
+                  if (_controller.text.length == 0) {
                     Fluttertoast.showToast(
                         msg: "Title can't be empty",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1
-                    );
+                        timeInSecForIosWeb: 1);
                   }
                   print('118 clicked');
                   Fluttertoast.showToast(
                       msg: "Wait...Live is about to start",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1
-                  );
+                      timeInSecForIosWeb: 1);
                   await uploadImageToFirebase(context);
                   await _handleCameraAndMic();
                   String name = DateTime.now().toIso8601String();
                   await FirebaseFirestore.instance
                       .collection('communities')
-                      .doc(community).collection('live').doc(name).
-                      set({
-                    'title': _controller.text,
-                    'photoUrl': url
-                  });
+                      .doc(community)
+                      .collection('live')
+                      .doc(name)
+                      .set({'title': _controller.text, 'photoUrl': url});
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -147,8 +142,7 @@ class _StartLiveState extends State<StartLive> {
                     ),
                   );
                 },
-              )
-          ),
+              )),
         ],
       ),
     );

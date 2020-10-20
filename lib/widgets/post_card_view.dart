@@ -1,34 +1,36 @@
 import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/post_ui.dart';
+import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostCardView extends StatefulWidget {
-  String community;
-  String key1;
+  String _community;
+  String _postKey;
 
-  PostCardView(this.community, this.key1);
+  PostCardView(this._community, this._postKey);
 
   @override
-  _PostState createState() => _PostState(community, key1);
+  _PostState createState() => _PostState(_community, _postKey);
 }
 
 class _PostState extends State<PostCardView> {
   String community;
-  String key;
+  String postKey;
   FirebaseAuth _auth = FirebaseAuth.instance;
   String username;
   bool processing;
 
   FocusNode _focusNode;
 
-  _PostState(this.community, this.key);
+  _PostState(this.community, this.postKey);
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _PostState extends State<PostCardView> {
     _focusNode = FocusNode();
     username = _auth.currentUser.displayName;
     processing = false;
+    username = 'nisiddharth';
   }
 
   @override
@@ -43,7 +46,7 @@ class _PostState extends State<PostCardView> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('communities/$community/posts')
-            .doc(key)
+            .doc(postKey)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
@@ -58,7 +61,7 @@ class _PostState extends State<PostCardView> {
                 Text('Loading data... Please Wait...')
               ],
             );
-          String name = snapshot.data['creator'];
+          String creator = snapshot.data['creator'];
           int mediaType = snapshot.data['mediaType'];
           int views = snapshot.data['viewers'].length;
           int downvotes = snapshot.data['downvoters'].length;
@@ -88,7 +91,7 @@ class _PostState extends State<PostCardView> {
           return StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('users')
-                  .doc(name)
+                  .doc(creator)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
@@ -232,7 +235,7 @@ class _PostState extends State<PostCardView> {
                                                                 ),
                                                               ],
                                                             ),
-                                                            username == name
+                                                            username == creator
                                                                 ? Column(
                                                                     children: <
                                                                         Widget>[
@@ -245,7 +248,12 @@ class _PostState extends State<PostCardView> {
                                                                             color:
                                                                                 Theme.of(context).buttonColor),
                                                                         onPressed:
-                                                                            () {},
+                                                                            () async {
+                                                                          await deletePostHandler(
+                                                                              context);
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
                                                                       ),
                                                                       Text(
                                                                         'Delete',
@@ -335,8 +343,8 @@ class _PostState extends State<PostCardView> {
                                         onPressed: () async {
                                           if (processing) return;
                                           processing = true;
-                                          await upvote(community, key, username,
-                                              upvoted, downvoted);
+                                          await upvote(community, postKey,
+                                              username, upvoted, downvoted);
                                           processing = false;
                                         },
                                         icon: Icon(Icons.arrow_upward),
@@ -357,7 +365,7 @@ class _PostState extends State<PostCardView> {
                                         onPressed: () async {
                                           if (processing) return;
                                           processing = true;
-                                          await downvote(community, key,
+                                          await downvote(community, postKey,
                                               username, upvoted, downvoted);
                                           processing = false;
                                         },
@@ -392,12 +400,26 @@ class _PostState extends State<PostCardView> {
         });
   }
 
+  deletePostHandler(BuildContext context) async {
+    ProgressDialog pr = ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
+    pr.style(
+      message: 'Deletion in progress...',
+      borderRadius: 8.0,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+    );
+    await pr.show();
+    await deletePost(community, postKey, username);
+    await pr.hide();
+  }
+
   openPost() {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (BuildContext context) =>
-                PostUI(community, key, username)));
+                PostUI(community, postKey, username)));
     debugPrint('Post opened!');
   }
 }

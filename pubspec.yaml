@@ -52,6 +52,7 @@ dependencies:
   path: ^1.7.0
   chewie: ^0.9.10
   video_player: ^0.10.9
+  progress_dialog: ^1.2.4
 
 dev_dependencies:
   flutter_test:
