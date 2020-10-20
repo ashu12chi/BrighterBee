@@ -237,13 +237,15 @@ class _PostState extends State<PostCardView> {
                                                                     children: <
                                                                         Widget>[
                                                                       IconButton(
-                                                                          icon: Icon(
-                                                                              Icons.delete,
-                                                                              size: 30,
-                                                                              color: Theme.of(context).buttonColor),
-                                                                        onPressed: (){
-
-                                                                        },
+                                                                        icon: Icon(
+                                                                            Icons
+                                                                                .delete,
+                                                                            size:
+                                                                                30,
+                                                                            color:
+                                                                                Theme.of(context).buttonColor),
+                                                                        onPressed:
+                                                                            () {},
                                                                       ),
                                                                       Text(
                                                                         'Delete',
