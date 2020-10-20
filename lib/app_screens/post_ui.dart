@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/comment.dart';
+import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
@@ -9,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostUI extends StatefulWidget {
@@ -24,11 +26,11 @@ class PostUI extends StatefulWidget {
 
 class _PostState extends State<PostUI> {
   String community;
-  String key;
+  String postKey;
   String username;
   bool processing;
 
-  _PostState(this.community, this.key, this.username);
+  _PostState(this.community, this.postKey, this.username);
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _PostState extends State<PostUI> {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('communities/$community/posts')
-              .doc(key)
+              .doc(postKey)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData)
@@ -68,7 +70,7 @@ class _PostState extends State<PostUI> {
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
             if (!snapshot.data['viewers'].contains(username))
-              addToViewers(community, key, username);
+              addToViewers(community, postKey, username);
             String mediaUrl;
             if (mediaType > 0) mediaUrl = snapshot.data['mediaUrl'];
             String content = snapshot.data['content'];
@@ -141,7 +143,17 @@ class _PostState extends State<PostUI> {
                           IconButton(
                             icon: Icon(Icons.more_horiz),
                             alignment: Alignment.topRight,
-                            onPressed: showOptions,
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(15.0)),
+                                  ),
+                                  builder: (BuildContext context) {
+                                    return buildBottomSheet(creator);
+                                  });
+                            },
                           )
                         ],
                       ),
@@ -195,7 +207,7 @@ class _PostState extends State<PostUI> {
                             ),
                           ),
                         ),
-                        CommentsList(community, key, username),
+                        CommentsList(community, postKey, username),
                       ]))),
                       Padding(
                           padding: EdgeInsets.only(left: 15, right: 15),
@@ -214,7 +226,7 @@ class _PostState extends State<PostUI> {
                                 onPressed: () async {
                                   if (processing) return;
                                   processing = true;
-                                  await upvote(community, key, username,
+                                  await upvote(community, postKey, username,
                                       upvoted, downvoted);
                                   processing = false;
                                 },
@@ -236,7 +248,7 @@ class _PostState extends State<PostUI> {
                                 onPressed: () async {
                                   if (processing) return;
                                   processing = true;
-                                  await downvote(community, key, username,
+                                  await downvote(community, postKey, username,
                                       upvoted, downvoted);
                                   processing = false;
                                 },
@@ -262,8 +274,8 @@ class _PostState extends State<PostUI> {
                               ),
                               FlatButton(
                                 onPressed: () {
-                                  comment(community, dateLong, key, username,
-                                      title, creator, false);
+                                  comment(community, dateLong, postKey,
+                                      username, title, creator, false);
                                 },
                                 child: Text(
                                   'Comment',
@@ -349,5 +361,74 @@ class _PostState extends State<PostUI> {
             );
           });
         });
+  }
+
+  buildBottomSheet(String creator) {
+    return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
+      return SingleChildScrollView(
+        padding: EdgeInsets.all(10),
+        child: LimitedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.share,
+                          size: 30, color: Theme.of(context).buttonColor)),
+                  Text(
+                    'Share',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.bookmark,
+                          size: 30, color: Theme.of(context).buttonColor)),
+                  Text(
+                    'Save article',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+              username == creator
+                  ? Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.delete,
+                              size: 30, color: Theme.of(context).buttonColor),
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => DeletePost(
+                                        community, postKey, username)));
+                          },
+                        ),
+                        Text(
+                          'Delete',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.report,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Report',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

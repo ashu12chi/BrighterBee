@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:icon="@mipmap/honey"
+        android:icon="@mipmap/ic_launcher"
         android:label="BrighterBee">
         <activity
             android:name=".MainActivity"

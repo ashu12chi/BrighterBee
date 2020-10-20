@@ -423,6 +423,7 @@ class _CreatePostState extends State<CreatePost> {
             behavior: SnackBarBehavior.floating,
             content: Text('Upload complete!'),
           ));
+          sleep(Duration(seconds: 2));
           Navigator.pop(context);
         });
       });

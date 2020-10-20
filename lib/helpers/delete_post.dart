@@ -3,14 +3,43 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class DeletePost extends StatefulWidget {
+  String _community;
+  String _postKey;
+  String _creator;
+
+  DeletePost(this._community, this._postKey, this._creator);
+
   @override
-  _DeletePostState createState() => _DeletePostState();
+  _DeletePostState createState() =>
+      _DeletePostState(_community, _postKey, _creator);
 }
 
 class _DeletePostState extends State<DeletePost> {
+  String community;
+  String postKey;
+  String creator;
+
+  _DeletePostState(this.community, this.postKey, this.creator);
+
   @override
   Widget build(BuildContext context) {
-    return null;
+    deletePost(community, postKey, creator)
+        .then((value) => Navigator.of(context).pop());
+    return Center(
+        child: Row(
+      children: <Widget>[
+        CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+        ),
+        SizedBox(
+          width: 15,
+        ),
+        Text(
+          "Deleting Post...",
+          style: TextStyle(fontSize: 15),
+        )
+      ],
+    ));
   }
 }
 
