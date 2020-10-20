@@ -184,106 +184,8 @@ class _PostState extends State<PostCardView> {
                                                 ),
                                                 builder:
                                                     (BuildContext context) {
-                                                  return StatefulBuilder(
-                                                      builder: (BuildContext
-                                                              context,
-                                                          StateSetter state) {
-                                                    return SingleChildScrollView(
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: LimitedBox(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: <Widget>[
-                                                            Column(
-                                                              children: <
-                                                                  Widget>[
-                                                                IconButton(
-                                                                    icon: Icon(
-                                                                        Icons
-                                                                            .share,
-                                                                        size:
-                                                                            30,
-                                                                        color: Theme.of(context)
-                                                                            .buttonColor)),
-                                                                Text(
-                                                                  'Share',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          14),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Column(
-                                                              children: <
-                                                                  Widget>[
-                                                                IconButton(
-                                                                    icon: Icon(
-                                                                        Icons
-                                                                            .bookmark,
-                                                                        size:
-                                                                            30,
-                                                                        color: Theme.of(context)
-                                                                            .buttonColor)),
-                                                                Text(
-                                                                  'Save article',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          14),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            username == creator
-                                                                ? Column(
-                                                                    children: <
-                                                                        Widget>[
-                                                                      IconButton(
-                                                                        icon: Icon(
-                                                                            Icons
-                                                                                .delete,
-                                                                            size:
-                                                                                30,
-                                                                            color:
-                                                                                Theme.of(context).buttonColor),
-                                                                        onPressed:
-                                                                            () async {
-                                                                          await deletePostHandler(
-                                                                              context);
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                      ),
-                                                                      Text(
-                                                                        'Delete',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                14),
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                                : Column(
-                                                                    children: <
-                                                                        Widget>[
-                                                                      IconButton(
-                                                                          icon: Icon(
-                                                                              Icons.report,
-                                                                              size: 30,
-                                                                              color: Theme.of(context).buttonColor)),
-                                                                      Text(
-                                                                        'Report',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                14),
-                                                                      ),
-                                                                    ],
-                                                                  )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  });
+                                                  return buildBottomSheet(
+                                                      creator);
                                                 });
                                           },
                                         ),
@@ -421,5 +323,71 @@ class _PostState extends State<PostCardView> {
             builder: (BuildContext context) =>
                 PostUI(community, postKey, username)));
     debugPrint('Post opened!');
+  }
+
+  buildBottomSheet(String creator) {
+    return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
+      return SingleChildScrollView(
+        padding: EdgeInsets.all(10),
+        child: LimitedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.share,
+                          size: 30, color: Theme.of(context).buttonColor)),
+                  Text(
+                    'Share',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.bookmark,
+                          size: 30, color: Theme.of(context).buttonColor)),
+                  Text(
+                    'Save article',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+              username == creator
+                  ? Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.delete,
+                              size: 30, color: Theme.of(context).buttonColor),
+                          onPressed: () async {
+                            await deletePostHandler(context);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        Text(
+                          'Delete',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.report,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Report',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
