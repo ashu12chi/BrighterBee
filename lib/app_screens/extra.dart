@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
+import 'package:brighter_bee/user_app_screens/user_communities.dart';
+import 'package:brighter_bee/user_app_screens/user_following.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -103,40 +105,49 @@ class _ExtraState extends State<Extra> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width / 2 - 10,
-                  child: Card(
-                    elevation: 8,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.people),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text('Communities'),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width / 2 - 10,
-                  child: Card(
-                    elevation: 8,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.person),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text('Following'),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  UserCommunities()));
+                    },
+                    child: SizedBox(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width / 2 - 10,
+                        child: Card(
+                            elevation: 8,
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.people),
+                                  Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text('Communities'))
+                                ])))),
+                InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  UserFollowing(username)));
+                    },
+                    child: SizedBox(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width / 2 - 10,
+                        child: Card(
+                            elevation: 8,
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.person),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text('Following'),
+                                  )
+                                ]))))
               ],
             ),
             Row(

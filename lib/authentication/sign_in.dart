@@ -8,6 +8,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'forgot_password.dart';
+
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
@@ -162,6 +164,17 @@ class _SignInState extends State<SignIn> {
               ),
               alignment: Alignment.center,
             ),
+            Container(
+              child: FlatButton(
+                child: Text(
+                  "Forgot password?",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                textColor: Theme.of(context).accentColor,
+                onPressed: () => _pushPage(context, ForgotPassword()),
+              ),
+              alignment: Alignment.center,
+            )
           ],
         ),
       ),
@@ -199,8 +212,6 @@ class _SignInState extends State<SignIn> {
 
       FirebaseFirestore instance = FirebaseFirestore.instance;
       final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-      String deviceId = await _firebaseMessaging.getToken();
-      await instance.collection('users/$username/tokens').doc(deviceId).set({});
 
       _scaffoldKey.currentState.hideCurrentSnackBar();
       print("signed in..." + (_emailController.text));
@@ -209,7 +220,8 @@ class _SignInState extends State<SignIn> {
         content: Text('Signed in!'),
       ));
 
-      sleep(Duration(seconds: 2));
+      String deviceId = await _firebaseMessaging.getToken();
+      await instance.collection('users/$username/tokens').doc(deviceId).set({});
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => Feed(

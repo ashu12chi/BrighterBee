@@ -32,14 +32,13 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
                   print(documentSnapshot.id);
-                  print(documentSnapshot['about']);
-                  print(documentSnapshot['photoUrl']);
                   return InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CommunityHome(documentSnapshot.id)));
+                              builder: (context) =>
+                                  CommunityHome(documentSnapshot.id)));
                     },
                     child: Card(
                       elevation: 8,
