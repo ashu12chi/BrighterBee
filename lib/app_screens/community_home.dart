@@ -9,22 +9,31 @@ import 'community_profile.dart';
 class CommunityHome extends StatefulWidget {
   final community;
   final mediaUrl;
-  int privacy;
-  int members;
+  final about;
+  final int privacy;
+  final int members;
+  final int visibility;
+  final int posts;
+  final int verification;
 
-  CommunityHome(this.community,this.mediaUrl,this.privacy,this.members);
+
+  CommunityHome(this.community,this.mediaUrl,this.privacy,this.members,this.visibility,this.posts,this.verification,this.about);
 
   @override
-  _CommunityHomeState createState() => _CommunityHomeState(community,mediaUrl,privacy,members);
+  _CommunityHomeState createState() => _CommunityHomeState(community,mediaUrl,privacy,members,visibility,posts,verification,about);
 }
 
 class _CommunityHomeState extends State<CommunityHome> {
   final community;
   final mediaUrl;
+  final about;
   int privacy;
   int members;
+  int visibility;
+  int posts;
+  int verification;
 
-  _CommunityHomeState(this.community,this.mediaUrl,this.privacy,this.members);
+  _CommunityHomeState(this.community,this.mediaUrl,this.privacy,this.members,this.visibility,this.posts,this.verification,this.about);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +88,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CommunityProfile()));
+                          builder: (context) => CommunityProfile(community,mediaUrl,privacy,members,visibility,posts,verification,about)));
                 },
                 child: Column(
                   children: [

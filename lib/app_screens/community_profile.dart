@@ -4,15 +4,41 @@ import 'package:brighter_bee/app_screens/verify_user.dart';
 import 'package:flutter/material.dart';
 
 class CommunityProfile extends StatefulWidget {
+
+  final community;
+  final mediaUrl;
+  final about;
+  final int privacy;
+  final int members;
+  final int visibility;
+  final int posts;
+  final int verification;
+
+
+  CommunityProfile(this.community,this.mediaUrl,this.privacy,this.members,this.visibility,this.posts,this.verification,this.about);
+
   @override
-  _CommunityProfileState createState() => _CommunityProfileState();
+  _CommunityProfileState createState() => _CommunityProfileState(community,mediaUrl,privacy,members,visibility,posts,verification,about);
 }
 
 class _CommunityProfileState extends State<CommunityProfile> {
+
+  final community;
+  final mediaUrl;
+  final about;
+  final int privacy;
+  final int members;
+  final int visibility;
+  final int posts;
+  final int verification;
+
+
+  _CommunityProfileState(this.community,this.mediaUrl,this.privacy,this.members,this.visibility,this.posts,this.verification,this.about);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Mathematics')),
+      appBar: AppBar(title: Text(community)),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
@@ -22,7 +48,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
-                "This group is for propagating information regarding Mathematics and it's changing word.",
+                about,
                 style: TextStyle(fontSize: 16),
               ),
             ),
@@ -30,7 +56,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.public),
+                  Icon(privacy==0?Icons.public:Icons.cancel),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
@@ -45,7 +71,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.visibility),
+                  Icon(visibility==0?Icons.visibility:Icons.visibility_off),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
@@ -60,7 +86,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.people),
+                  Icon(posts==1?Icons.people:Icons.person),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
@@ -75,7 +101,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.person),
+                  Icon(verification==1?Icons.people:Icons.person),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(

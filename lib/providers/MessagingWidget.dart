@@ -221,6 +221,6 @@ class _DetailPageState extends State<DetailPage> {
 //        child: Center(child: Text("Item status: ${_item.status}")),
 //      ),
 //    );
-    return CommunityHome();
+    return Container();
   }
 }

@@ -31,7 +31,9 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                 print(documentSnapshot['photoUrl']);
                 return InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityHome(documentSnapshot.id,documentSnapshot['photoUrl'],documentSnapshot['privacy'],documentSnapshot['memberCount'])));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityHome(documentSnapshot.id,documentSnapshot['photoUrl'],
+                        documentSnapshot['privacy'],documentSnapshot['memberCount'],documentSnapshot['visibility'],documentSnapshot['posts'],
+                        documentSnapshot['verification'],documentSnapshot['about'])));
                   },
                   child: Card(
                     child: Row(
