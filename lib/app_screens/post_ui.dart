@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/comment.dart';
+import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
@@ -185,11 +186,19 @@ class _PostState extends State<PostUI> {
                             ? Container()
                             : (mediaType == 2)
                                 ? VideoPlayer(mediaUrl)
-                                : Image.network(
-                                    mediaUrl,
-                                    width: double.infinity,
-                                    height: 250,
-                                  ),
+                                : InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  PhotoViewer(mediaUrl)));
+                                    },
+                                    child: Image.network(
+                                      mediaUrl,
+                                      width: double.infinity,
+                                      height: 250,
+                                    )),
                         Divider(
                           color: Theme.of(context).buttonColor,
                         ),

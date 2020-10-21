@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:brighter_bee/widgets/edit_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -84,21 +85,20 @@ class _EditDetailsState extends State<EditDetails> {
                   ),
                   InkWell(
                     onTap: () {
-                      print('ashu12');
                       pickImage();
                     },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          top: 20, bottom: 20, left: 40, right: 40),
-                      width: 200,
-                      height: 250,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: _imageFile == null
-                                ? NetworkImage(snapshot.data['photoUrl'])
-                                : AssetImage(_imageFile.path),
-                            fit: BoxFit.fill),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: CachedNetworkImageProvider(
+                                snapshot.data['photoUrl']),
+                            radius: 110.0,
+                            backgroundColor: Colors.grey,
+                          )
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.center,
                       ),
                     ),
                   ),

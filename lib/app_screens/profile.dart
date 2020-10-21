@@ -1,4 +1,5 @@
 import 'package:brighter_bee/app_screens/edit_details.dart';
+import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -46,18 +47,27 @@ class _ProfileState extends State<Profile> {
           builder: (context, snapshot) {
             return ListView(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: CachedNetworkImageProvider(
-                            snapshot.data['photoUrl']),
-                        radius: 150.0,
-                        backgroundColor: Colors.grey,
-                      )
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PhotoViewer(snapshot.data['photoUrl'])));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage: CachedNetworkImageProvider(
+                              snapshot.data['photoUrl']),
+                          radius: 150.0,
+                          backgroundColor: Colors.grey,
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    ),
                   ),
                 ),
                 Padding(
