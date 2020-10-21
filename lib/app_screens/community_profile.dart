@@ -56,7 +56,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: <Widget>[
-                  Icon(privacy==0?Icons.public:Icons.cancel),
+                  Icon(privacy==0?Icons.public:Icons.lock),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
@@ -135,7 +135,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => EditCommunityDetails()));
+                          builder: (context) => EditCommunityDetails(community)));
                 },
               ),
             ),

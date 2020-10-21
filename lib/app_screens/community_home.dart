@@ -101,7 +101,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          privacy==0?Icons.public:Icons.cancel,
+                          privacy==0?Icons.public:Icons.lock,
                           color: Colors.grey,
                           size: 15,
                         ),

@@ -92,8 +92,8 @@ class _EditDetailsState extends State<EditDetails> {
                       child: Row(
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
-                                snapshot.data['photoUrl']),
+                            backgroundImage: _imageFile==null?CachedNetworkImageProvider(
+                                snapshot.data['photoUrl']):FileImage(_imageFile),
                             radius: 110.0,
                             backgroundColor: Colors.grey,
                           )
@@ -321,8 +321,8 @@ class _EditDetailsState extends State<EditDetails> {
                             'currentCity': currentCity,
                             'website': website
                           });
-                          Navigator.pop(context);
                         }
+                        Navigator.pop(context);
                       },
                     ),
                   ),
