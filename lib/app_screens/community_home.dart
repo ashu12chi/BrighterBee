@@ -7,14 +7,24 @@ import 'package:flutter/rendering.dart';
 import 'community_profile.dart';
 
 class CommunityHome extends StatefulWidget {
+  final community;
+  final mediaUrl;
+  int privacy;
+  int members;
+
+  CommunityHome(this.community,this.mediaUrl,this.privacy,this.members);
+
   @override
-  _CommunityHomeState createState() => _CommunityHomeState();
+  _CommunityHomeState createState() => _CommunityHomeState(community,mediaUrl,privacy,members);
 }
 
 class _CommunityHomeState extends State<CommunityHome> {
-  String community = 'Mathematics';
-  String mediaUrl =
-      'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
+  final community;
+  final mediaUrl;
+  int privacy;
+  int members;
+
+  _CommunityHomeState(this.community,this.mediaUrl,this.privacy,this.members);
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +92,16 @@ class _CommunityHomeState extends State<CommunityHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.public,
+                          privacy==0?Icons.public:Icons.cancel,
                           color: Colors.grey,
                           size: 15,
                         ),
                         Text(
-                          ' Public group  ',
+                          privacy==0?' Public group  ':' Private group ',
                           style: TextStyle(color: Colors.grey, fontSize: 15),
                         ),
                         Text(
-                          '12 Members',
+                          '$members Members',
                           style: TextStyle(color: Colors.grey, fontSize: 15),
                         )
                       ],
@@ -106,24 +116,6 @@ class _CommunityHomeState extends State<CommunityHome> {
                 height: 5.0,
                 width: double.infinity,
                 color: Colors.black12,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-              child: SizedBox(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Write something here...',
-                    style: TextStyle(color: Colors.grey, fontSize: 18),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Colors.grey),
-                  ),
-                  onPressed: () {},
-                ),
               ),
             ),
             StreamBuilder(

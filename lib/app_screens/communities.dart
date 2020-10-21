@@ -3,6 +3,7 @@ import 'package:brighter_bee/app_screens/create_community.dart';
 import 'package:flutter/material.dart';
 
 import 'community_search.dart';
+import 'discover_community.dart';
 
 class Communities extends StatefulWidget {
   @override
@@ -57,7 +58,7 @@ class _CommunitiesState extends State<Communities> {
                       // TODO: Change this
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext) => CommunityHome()));
+                          builder: (BuildContext) => DiscoverCommunity()));
                 },
                 child: Row(
                   children: <Widget>[
