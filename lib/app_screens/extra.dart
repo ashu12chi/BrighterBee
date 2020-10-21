@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,7 +51,7 @@ class _ExtraState extends State<Extra> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: ListView(
           children: <Widget>[
             InkWell(
@@ -236,18 +237,16 @@ class _ExtraState extends State<Extra> {
               child: Card(
                 elevation: 8,
                 child: InkWell(
-                    onTap: () {
-                      clearCache(context).whenComplete(() {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => SignIn()));
-                      });
+                    onTap: () async {
+                      await clearCache(context);
+                      Fluttertoast.showToast(msg: "Cache cleared");
                     },
                     child: Row(
                       children: <Widget>[
                         SizedBox(
                           width: 8,
                         ),
-                        Icon(Icons.exit_to_app),
+                        Icon(Icons.delete),
                         Padding(
                           padding: const EdgeInsets.only(left: 4.0),
                           child: Text(
@@ -324,15 +323,14 @@ class _ExtraState extends State<Extra> {
         child: Text("Clear"),
         onPressed: () async {
           String appDir = (await getTemporaryDirectory()).path;
-          new Directory(appDir).delete(recursive: true);
+          Directory(appDir).delete(recursive: true);
           Navigator.pop(context);
         });
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Delete cache?"),
-      content: Text(
-          "Doing this might slow down loading of some images..."),
+      content: Text("Doing this might slow down loading of some images..."),
       actions: [
         cancelButton,
         continueButton,

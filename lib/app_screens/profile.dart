@@ -2,6 +2,7 @@ import 'package:brighter_bee/app_screens/edit_details.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -98,7 +99,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.home),
@@ -116,7 +117,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.location_on),
@@ -135,7 +136,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.access_time),
@@ -153,7 +154,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.check_box),
@@ -172,7 +173,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.link),
@@ -190,23 +191,46 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                  child: FlatButton(
-                    child: Text(
-                      'Edit details',
-                      style: TextStyle(
-                          fontSize: 18, color: Theme.of(context).accentColor),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Theme.of(context).accentColor)),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditDetails()));
-                    },
-                  ),
+                  padding: const EdgeInsets.only(
+                      left: 8.0, right: 8.0, top: 8, bottom: 8),
+                  child: (username ==
+                          FirebaseAuth.instance.currentUser.displayName)
+                      ? FlatButton(
+                          child: Text(
+                            'Edit details',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).accentColor),
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                  color: Theme.of(context).accentColor)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditDetails()));
+                          },
+                        )
+                      : FlatButton(
+                          child: Text(
+                            'Follow $username',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).accentColor),
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                  color: Theme.of(context).accentColor)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditDetails()));
+                          },
+                        ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
@@ -216,14 +240,19 @@ class _ProfileState extends State<Profile> {
                     color: Theme.of(context).dividerColor,
                   ),
                 ),
-                Text(
-                  'Communities',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '23 communities',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
-                ),
+                Padding(
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
+                    child: Text(
+                      'Communities',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    )),
+                Padding(
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8),
+                    child: Text(
+                      '23 communities',
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[

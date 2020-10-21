@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 /* @author: Ashutosh Chitranshi
    21-10-2020 14:31
-   This will be used for discovering communities from commmunity tab
+   This will be used for discovering communities from community tab
 */
 
 class DiscoverCommunity extends StatefulWidget {

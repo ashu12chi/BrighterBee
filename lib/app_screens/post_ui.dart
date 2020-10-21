@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
+import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:brighter_bee/widgets/comments_list.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +104,8 @@ class _PostState extends State<PostUI> {
                             Text('Loading data... Please Wait...')
                           ],
                         ));
-                  String name1 = snapshot.data['name'];
+                  String fullName = snapshot.data['name'];
+                  String profilePicUrl = snapshot.data['photoUrl'];
 
                   return SafeArea(
                       child: Column(
@@ -111,22 +114,44 @@ class _PostState extends State<PostUI> {
                         children: <Widget>[
                           Padding(
                               padding: EdgeInsets.only(left: 15),
-                              child: CircleAvatar(
-                                radius: 18.0,
-                                backgroundColor: Colors.grey,
+                              child: InkWell(
+                                child: CircleAvatar(
+                                  backgroundImage:
+                                      CachedNetworkImageProvider(profilePicUrl),
+                                  radius: 16.0,
+                                  backgroundColor: Colors.grey,
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              Profile(creator)));
+                                },
                               )),
                           Padding(
                               padding: const EdgeInsets.only(left: 5.0),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
                                     children: [
-                                      Text(
-                                          name1.substring(
-                                              0, name1.indexOf(' ')),
-                                          style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold)),
+                                      InkWell(
+                                        child: Text(
+                                            fullName.substring(
+                                                0, fullName.indexOf(' ')),
+                                            style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold)),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          Profile(creator)));
+                                        },
+                                      ),
                                       Icon(Icons.arrow_right),
                                       Text(community,
                                           style: TextStyle(

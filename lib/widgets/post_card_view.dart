@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/post_ui.dart';
+import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
@@ -124,7 +125,7 @@ class _PostState extends State<PostCardView> {
                       ),
                     ],
                   );
-                String name1 = snapshot.data['name'];
+                String fullName = snapshot.data['name'];
                 String profilePicUrl = snapshot.data['photoUrl'];
                 //return Text('Loading data.. Please Wait..');
                 return Padding(
@@ -143,12 +144,22 @@ class _PostState extends State<PostCardView> {
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundImage:
-                                            CachedNetworkImageProvider(
-                                                profilePicUrl),
-                                        radius: 16.0,
-                                        backgroundColor: Colors.grey,
+                                      InkWell(
+                                        child: CircleAvatar(
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                                  profilePicUrl),
+                                          radius: 16.0,
+                                          backgroundColor: Colors.grey,
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          Profile(creator)));
+                                        },
                                       ),
                                       Padding(
                                           padding:
@@ -159,13 +170,27 @@ class _PostState extends State<PostCardView> {
                                             children: <Widget>[
                                               Row(
                                                 children: [
-                                                  Text(
-                                                      name1.substring(0,
-                                                          name1.indexOf(' ')),
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 16.0)),
+                                                  InkWell(
+                                                    child: Text(
+                                                        fullName.substring(
+                                                            0,
+                                                            fullName
+                                                                .indexOf(' ')),
+                                                        style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  Profile(
+                                                                      creator)));
+                                                    },
+                                                  ),
                                                   Icon(Icons.arrow_right),
                                                   Text(community,
                                                       style: TextStyle(
