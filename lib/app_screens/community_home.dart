@@ -1,3 +1,4 @@
+
 import 'package:brighter_bee/live_stream/live_list.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,32 +9,25 @@ import 'community_profile.dart';
 
 class CommunityHome extends StatefulWidget {
   final community;
-  final mediaUrl;
-  final about;
-  final int privacy;
-  final int members;
-  final int visibility;
-  final int posts;
-  final int verification;
 
 
-  CommunityHome(this.community,this.mediaUrl,this.privacy,this.members,this.visibility,this.posts,this.verification,this.about);
+  CommunityHome(this.community);
 
   @override
-  _CommunityHomeState createState() => _CommunityHomeState(community,mediaUrl,privacy,members,visibility,posts,verification,about);
+  _CommunityHomeState createState() => _CommunityHomeState(community);
 }
 
 class _CommunityHomeState extends State<CommunityHome> {
   final community;
-  final mediaUrl;
-  final about;
+  String mediaUrl;
+  String about;
   int privacy;
   int members;
   int visibility;
   int posts;
   int verification;
 
-  _CommunityHomeState(this.community,this.mediaUrl,this.privacy,this.members,this.visibility,this.posts,this.verification,this.about);
+  _CommunityHomeState(this.community);
 
   @override
   Widget build(BuildContext context) {
@@ -64,98 +58,112 @@ class _CommunityHomeState extends State<CommunityHome> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.network(
-                    mediaUrl,
-                    fit: BoxFit.fill,
-                    height: 200,
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection('communities').doc(community).snapshots(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting)
+            return CircularProgressIndicator();
+          mediaUrl = snapshot.data['photoUrl'];
+          about = snapshot.data['about'];
+          privacy = snapshot.data['privacy'];
+          posts = snapshot.data['posts'];
+          visibility = snapshot.data['visibility'];
+          members = snapshot.data['memberCount'];
+          verification = snapshot.data['verification'];
+          return SingleChildScrollView(
+            physics: ScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.network(
+                        mediaUrl,
+                        fit: BoxFit.fill,
+                        height: 200,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Center(
-                child: Card(
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CommunityProfile(community,mediaUrl,privacy,members,visibility,posts,verification,about)));
-                },
-                child: Column(
-                  children: [
-                    Text(
-                      community,
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          privacy==0?Icons.public:Icons.lock,
-                          color: Colors.grey,
-                          size: 15,
-                        ),
+                ),
+                Center(
+                    child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CommunityProfile(community,mediaUrl,privacy,members,visibility,posts,verification,about)));
+                    },
+                    child: Column(
+                      children: [
                         Text(
-                          privacy==0?' Public group  ':' Private group ',
-                          style: TextStyle(color: Colors.grey, fontSize: 15),
+                          community,
+                          style:
+                              TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          '$members Members',
-                          style: TextStyle(color: Colors.grey, fontSize: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              privacy==0?Icons.public:Icons.lock,
+                              color: Colors.grey,
+                              size: 15,
+                            ),
+                            Text(
+                              privacy==0?' Public group  ':' Private group ',
+                              style: TextStyle(color: Colors.grey, fontSize: 15),
+                            ),
+                            Text(
+                              '$members Members',
+                              style: TextStyle(color: Colors.grey, fontSize: 15),
+                            )
+                          ],
                         )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
+                )),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  child: Container(
+                    height: 5.0,
+                    width: double.infinity,
+                    color: Colors.black12,
+                  ),
                 ),
-              ),
-            )),
-            Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-              child: Container(
-                height: 5.0,
-                width: double.infinity,
-                color: Colors.black12,
-              ),
-            ),
-            StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('communities')
-                  .doc(community)
-                  .collection('posts')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                return snapshot.connectionState == ConnectionState.waiting
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.docs.length,
-                        itemBuilder: (context, index) {
-                          DocumentSnapshot documentSnapshot =
-                              snapshot.data.docs[index];
-                          return Column(
-                            children: [
-                              PostCardView(community, documentSnapshot.id),
-                            ],
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('communities')
+                      .doc(community)
+                      .collection('posts')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    return snapshot.connectionState == ConnectionState.waiting
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot documentSnapshot =
+                                  snapshot.data.docs[index];
+                              return Column(
+                                children: [
+                                  PostCardView(community, documentSnapshot.id),
+                                ],
+                              );
+                            },
                           );
-                        },
-                      );
-              },
-            )
-          ],
-        ),
+                  },
+                )
+              ],
+            ),
+          );
+        }
       ),
     );
   }

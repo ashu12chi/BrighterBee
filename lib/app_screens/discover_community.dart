@@ -39,15 +39,7 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CommunityHome(
-                                  documentSnapshot.id,
-                                  documentSnapshot['photoUrl'],
-                                  documentSnapshot['privacy'],
-                                  documentSnapshot['memberCount'],
-                                  documentSnapshot['visibility'],
-                                  documentSnapshot['posts'],
-                                  documentSnapshot['verification'],
-                                  documentSnapshot['about'])));
+                              builder: (context) => CommunityHome(documentSnapshot.id)));
                     },
                     child: Card(
                       elevation: 8,
