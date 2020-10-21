@@ -4,7 +4,9 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'settings.dart';
 
@@ -289,10 +291,23 @@ class _CallPageState extends State<CallPage> {
 
   Future<void> _onCallEnd(
       BuildContext context, String community, String channelName) async {
-    await FirebaseFirestore.instance
+    Fluttertoast.showToast(msg: "Ending broadcast...");
+    DocumentReference doc = FirebaseFirestore.instance
         .collection('communities/$community/live')
-        .doc(channelName)
-        .delete();
+        .doc(channelName);
+    String fileUrl = (await doc.get()).data()['photoUrl'];
+    debugPrint('NSP url: $fileUrl');
+    String filePath = fileUrl.replaceAll(
+        new RegExp(
+            r'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/'),
+        '');
+    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+    filePath = filePath.replaceAll(new RegExp(r'%3A'), ':');
+    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+    debugPrint('NSP file: $filePath');
+    await FirebaseStorage.instance.ref().child(filePath).delete();
+    await doc.delete();
+    debugPrint(filePath);
     Navigator.pop(context);
     Navigator.pop(context);
   }

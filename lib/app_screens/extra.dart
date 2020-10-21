@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
@@ -5,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Extra extends StatefulWidget {
@@ -234,6 +237,38 @@ class _ExtraState extends State<Extra> {
                 elevation: 8,
                 child: InkWell(
                     onTap: () {
+                      clearCache(context).whenComplete(() {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => SignIn()));
+                      });
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Icon(Icons.exit_to_app),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            'Clear cached data',
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                        )
+                      ],
+                    )),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 67,
+              child: Card(
+                elevation: 8,
+                child: InkWell(
+                    onTap: () {
                       _signOut().whenComplete(() {
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (context) => SignIn()));
@@ -275,6 +310,42 @@ class _ExtraState extends State<Extra> {
     setState(() {
       displayName = str;
     });
+  }
+
+  clearCache(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+        child: Text("Clear"),
+        onPressed: () async {
+          String appDir = (await getTemporaryDirectory()).path;
+          new Directory(appDir).delete(recursive: true);
+          Navigator.pop(context);
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete cache?"),
+      content: Text(
+          "Doing this might slow down loading of some images..."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Future _signOut() async {
