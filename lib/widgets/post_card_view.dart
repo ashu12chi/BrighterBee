@@ -4,6 +4,7 @@ import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -124,6 +125,7 @@ class _PostState extends State<PostCardView> {
                     ],
                   );
                 String name1 = snapshot.data['name'];
+                String profilePicUrl = snapshot.data['photoUrl'];
                 //return Text('Loading data.. Please Wait..');
                 return Padding(
                   padding:
@@ -142,13 +144,18 @@ class _PostState extends State<PostCardView> {
                                   Row(
                                     children: <Widget>[
                                       CircleAvatar(
-                                        radius: 18.0,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                                profilePicUrl),
+                                        radius: 16.0,
                                         backgroundColor: Colors.grey,
                                       ),
                                       Padding(
                                           padding:
                                               const EdgeInsets.only(left: 5.0),
                                           child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Row(
                                                 children: [
@@ -213,11 +220,12 @@ class _PostState extends State<PostCardView> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 105,
-                                    child: ZefyrScaffold(
-                                      child: editor,
-                                    ),
-                                  ),
+                                      height: 105,
+                                      child: IgnorePointer(
+                                        child: ZefyrScaffold(
+                                          child: editor,
+                                        ),
+                                      )),
                                   mediaType == 0
                                       ? Container()
                                       : Padding(

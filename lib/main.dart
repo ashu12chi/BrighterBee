@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /*
 * @author: Ashutosh Chitranshi, Nishchal Siddharth Pandey
 * 1 October, 2020
-* This file is entry point to the app, themes and home screens declared here.
+* This file is entry point to the app: themes and home screens declared here.
 */
 
 Future<void> main() async {

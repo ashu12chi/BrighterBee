@@ -121,9 +121,7 @@ class _CommentWidget extends State<CommentWidget> {
                               style: TextStyle(
                                   color: Theme.of(context).accentColor),
                               recognizer: new TapGestureRecognizer()
-                                ..onTap = () => openProfile(
-                                    w.replaceAll('[^A-Za-z0-9]', '')),
-                            )
+                                ..onTap = () => openProfile(w))
                           : TextSpan(
                               text: ' ' + w, style: TextStyle(fontSize: 14));
                     }).toList())),
@@ -231,9 +229,12 @@ class _CommentWidget extends State<CommentWidget> {
                 parentPostKey, username, title, creator, isReply)));
   }
 
-  openProfile(String tag) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => Profile(tag)));
+  openProfile(String userTag) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Profile(userTag.replaceAll(RegExp('[^A-Za-z0-9]'), ''))));
     debugPrint('Profile opened!');
   }
 }

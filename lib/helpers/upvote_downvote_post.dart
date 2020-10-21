@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 upvote(String community, String key, String username, bool upvoted,
     bool downvoted) async {
+  debugPrint('Check');
   if (upvoted) {
     await undoUpvote(community, key, username, upvoted, downvoted);
     return;

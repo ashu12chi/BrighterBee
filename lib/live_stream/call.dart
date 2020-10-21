@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'settings.dart';
@@ -286,7 +287,12 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
-  void _onCallEnd(BuildContext context, String community, String channelName) {
+  Future<void> _onCallEnd(
+      BuildContext context, String community, String channelName) async {
+    await FirebaseFirestore.instance
+        .collection('communities/$community/live')
+        .doc(channelName)
+        .delete();
     Navigator.pop(context);
     Navigator.pop(context);
   }
