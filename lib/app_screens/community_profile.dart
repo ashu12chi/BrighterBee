@@ -1,6 +1,6 @@
 import 'package:brighter_bee/app_screens/edit_community_details.dart';
-import 'package:brighter_bee/app_screens/verify_post.dart';
-import 'package:brighter_bee/app_screens/verify_user.dart';
+import 'package:brighter_bee/admin_screens/verify_post.dart';
+import 'package:brighter_bee/admin_screens/verify_user.dart';
 import 'package:flutter/material.dart';
 
 class CommunityProfile extends StatefulWidget {

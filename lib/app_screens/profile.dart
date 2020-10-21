@@ -1,4 +1,4 @@
-import 'package:brighter_bee/app_screens/edit_details.dart';
+import 'package:brighter_bee/user_app_screens/edit_details.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                PhotoViewer(snapshot.data['photoUrl'])));
+                                PhotoViewerCached(snapshot.data['photoUrl'])));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -175,7 +175,7 @@ class _ProfileState extends State<Profile> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: Text(
-                            'Followed by 108 people',
+                            'Followed by ${snapshot.data['followersCount']} people',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
