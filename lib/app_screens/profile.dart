@@ -1,5 +1,6 @@
 import 'package:brighter_bee/app_screens/edit_details.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
+import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,8 +16,18 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  User user;
   String username;
+  bool processing;
+
   _ProfileState(this.username);
+
+  @override
+  void initState() {
+    super.initState();
+    processing = false;
+    user = FirebaseAuth.instance.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,8 +204,7 @@ class _ProfileState extends State<Profile> {
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 8.0, right: 8.0, top: 8, bottom: 8),
-                  child: (username ==
-                          FirebaseAuth.instance.currentUser.displayName)
+                  child: (username == user.displayName)
                       ? FlatButton(
                           child: Text(
                             'Edit details',
@@ -213,24 +223,45 @@ class _ProfileState extends State<Profile> {
                                     builder: (context) => EditDetails()));
                           },
                         )
-                      : FlatButton(
-                          child: Text(
-                            'Follow $username',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Theme.of(context).accentColor),
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(
-                                  color: Theme.of(context).accentColor)),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EditDetails()));
-                          },
-                        ),
+                      : (snapshot.data['followersList']
+                              .contains(user.displayName))
+                          ? FlatButton(
+                              child: Text(
+                                'Unfollow $username',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Theme.of(context).accentColor),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: BorderSide(
+                                      color: Theme.of(context).accentColor)),
+                              onPressed: () async {
+                                if (processing) return;
+                                processing = true;
+                                await handleUnfollow(
+                                    user.displayName, username);
+                                processing = false;
+                              },
+                            )
+                          : FlatButton(
+                              child: Text(
+                                'Follow $username',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Theme.of(context).accentColor),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: BorderSide(
+                                      color: Theme.of(context).accentColor)),
+                              onPressed: () async {
+                                if (processing) return;
+                                processing = true;
+                                await handleFollow(user.displayName, username);
+                                processing = false;
+                              },
+                            ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8.0, bottom: 4.0),

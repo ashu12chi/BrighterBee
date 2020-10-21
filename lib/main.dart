@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
         appBarTheme: Theme.of(context)
             .appBarTheme
             .copyWith(iconTheme: Theme.of(context).iconTheme),
-        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Raleway'),
+        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'OpenSans'),
         primaryTextTheme: Theme.of(context)
             .primaryTextTheme
             .apply(bodyColor: Colors.black, fontFamily: 'OpenSans'),
@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
           cardColor: Color.fromRGBO(31, 31, 31, 1),
           textTheme: Theme.of(context).textTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
-              fontFamily: 'Raleway'),
+              fontFamily: 'OpenSans'),
           primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
               fontFamily: 'OpenSans'),

@@ -15,9 +15,8 @@ class _CommunitiesState extends State<Communities> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Communities',
-        ),
+        title:
+            Text('Communities', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: <Widget>[
           IconButton(
             icon: Icon(

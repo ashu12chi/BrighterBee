@@ -35,7 +35,7 @@ class _ExtraState extends State<Extra> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menu'),
+        title: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: <Widget>[
           IconButton(
             icon: Icon(

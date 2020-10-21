@@ -38,7 +38,14 @@ class DatabaseService {
       'website': website,
       'homeTown': homeTown,
       'currentCity': currentCity,
-      'time': time
+      'time': time,
+      'email': email,
+      'followersList': [],
+      'followingList': [],
+      'communityList': [],
+      'followersCount': 0,
+      'followingCount': 0,
+      'communityCount': 0,
     });
     await instance.collection('users/$username/posts').doc('posted').set({});
     await instance.collection('users/$username/posts').doc('upvoted').set({});
