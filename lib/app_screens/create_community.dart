@@ -485,6 +485,7 @@ class _CreateGroupState extends State<CreateGroup> {
         'verification': _radioVerification,
         'nameSearch': nameSearchList,
         'creationTime': time,
+        'memberCount': 0,
       });
 
       instance.collection('communities/$commName/admins').doc(username).set({});

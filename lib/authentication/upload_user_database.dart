@@ -41,5 +41,7 @@ class DatabaseService {
       'time': time
     });
     await instance.collection('users/$username/posts').doc('posted').set({});
+    await instance.collection('users/$username/posts').doc('upvoted').set({});
+    await instance.collection('users/$username/posts').doc('downvoted').set({});
   }
 }
