@@ -1,4 +1,5 @@
 import 'package:brighter_bee/app_screens/community_home.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -17,64 +18,84 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Discover communities',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'Discover communities',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('communities').snapshots(),
-        builder: (context, snapshot) {
-          return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context,index) {
-                DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
-                print(documentSnapshot.id);
-                print(documentSnapshot['about']);
-                print(documentSnapshot['photoUrl']);
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityHome(documentSnapshot.id,documentSnapshot['photoUrl'],
-                        documentSnapshot['privacy'],documentSnapshot['memberCount'],documentSnapshot['visibility'],documentSnapshot['posts'],
-                        documentSnapshot['verification'],documentSnapshot['about'])));
-                  },
-                  child: Card(
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(
-                              top: 10, bottom: 10, left: 10, right: 20),
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            image: DecorationImage(
-                                image: documentSnapshot['photoUrl'] == null?AssetImage('assets/empty.jpg')
-                                    :NetworkImage(documentSnapshot['photoUrl']),
-                                fit: BoxFit.fill),
+          stream:
+              FirebaseFirestore.instance.collection('communities').snapshots(),
+          builder: (context, snapshot) {
+            return ListView.builder(
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
+                  print(documentSnapshot.id);
+                  print(documentSnapshot['about']);
+                  print(documentSnapshot['photoUrl']);
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CommunityHome(
+                                  documentSnapshot.id,
+                                  documentSnapshot['photoUrl'],
+                                  documentSnapshot['privacy'],
+                                  documentSnapshot['memberCount'],
+                                  documentSnapshot['visibility'],
+                                  documentSnapshot['posts'],
+                                  documentSnapshot['verification'],
+                                  documentSnapshot['about'])));
+                    },
+                    child: Card(
+                      elevation: 8,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(
+                                top: 10, bottom: 10, left: 10, right: 20),
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              image: DecorationImage(
+                                  image: documentSnapshot['photoUrl'] == null
+                                      ? AssetImage('assets/empty.jpg')
+                                      : CachedNetworkImageProvider(
+                                          documentSnapshot.data()['photoUrl'],
+                                        ),
+                                  fit: BoxFit.fill),
+                            ),
                           ),
-                        ),
-                        Flexible(
-                          child: Column(
-                            children: [
-                              Text(
-                                documentSnapshot.id,
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              Text(
-                                documentSnapshot['about'],
-                                style: TextStyle(fontSize: 15,color: Colors.grey),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  documentSnapshot.id,
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                Text(
+                                  documentSnapshot['about'],
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.grey),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }
-          );
-        }
-      ),
+                  );
+                });
+          }),
     );
   }
 }
