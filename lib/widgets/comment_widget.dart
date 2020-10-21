@@ -6,6 +6,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /*
 * @author: Nishchal Siddharth Pandey
@@ -229,12 +230,21 @@ class _CommentWidget extends State<CommentWidget> {
                 parentPostKey, username, title, creator, isReply)));
   }
 
-  openProfile(String userTag) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Profile(userTag.replaceAll(RegExp('[^A-Za-z0-9]'), ''))));
+  openProfile(String userTag) async {
+    Fluttertoast.showToast(
+        msg: "Loading...!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER);
+    userTag = userTag.replaceAll(RegExp('[^A-Za-z0-9]'), '');
+    DocumentSnapshot doc =
+        await FirebaseFirestore.instance.collection('users').doc(userTag).get();
+    if (doc == null || !doc.exists) {
+      Fluttertoast.showToast(
+          msg: "User doesn't exist!", toastLength: Toast.LENGTH_LONG);
+      return;
+    }
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => Profile(userTag)));
     debugPrint('Profile opened!');
   }
 }
