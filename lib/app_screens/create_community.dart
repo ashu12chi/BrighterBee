@@ -6,6 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey, Ashutosh Chitranshi
+* 4 October, 2020
+* This file has UI and code for creating a new community.
+*/
+
 class CreateGroup extends StatefulWidget {
   @override
   _CreateGroupState createState() => _CreateGroupState();

@@ -2,6 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 20 October, 2020
+* This file has UI and code for post deletion.
+*/
+
 class DeletePost extends StatefulWidget {
   String _community;
   String _postKey;

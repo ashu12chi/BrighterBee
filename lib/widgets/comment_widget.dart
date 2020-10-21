@@ -7,6 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 14 October, 2020
+* This file returns widget to be used in cards for comments and replies.
+*/
+
 class CommentWidget extends StatefulWidget {
   String _username;
   String _community;

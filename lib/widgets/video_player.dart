@@ -2,6 +2,12 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 20 October, 2020
+* This file returns widget containing Chewie Video Player to be used to play videos present in posts.
+*/
+
 class VideoPlayer extends StatefulWidget {
   String _videoUrl;
 

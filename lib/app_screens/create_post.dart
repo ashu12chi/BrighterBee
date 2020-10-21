@@ -14,6 +14,12 @@ import 'package:quill_delta/quill_delta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zefyr/zefyr.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 1 October, 2020
+* This file has UI and code for creating a new post.
+*/
+
 class CreatePost extends StatefulWidget {
   @override
   _CreatePostState createState() => _CreatePostState();

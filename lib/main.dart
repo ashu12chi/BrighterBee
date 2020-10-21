@@ -4,6 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+/*
+* @author: Ashutosh Chitranshi, Nishchal Siddharth Pandey
+* 1 October, 2020
+* This file is entry point to the app, themes and home screens declared here.
+*/
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

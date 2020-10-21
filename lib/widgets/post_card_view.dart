@@ -11,6 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:zefyr/zefyr.dart';
 
+/*
+* @author: Ashutosh Chitranshi, Nishchal Siddharth Pandey
+* 13 October, 2020
+* This file returns widget to be placed in Card for use in feeds.
+*/
+
 class PostCardView extends StatefulWidget {
   String _community;
   String _postKey;

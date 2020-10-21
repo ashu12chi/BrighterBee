@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-// @author : Ashutosh Chitranshi
-// 19-10-2020 08:28
-// This widget will be helpful in editing text
+/*
+* @author : Ashutosh Chitranshi
+* 19-10-2020 08:28
+* This widget will be helpful in editing text
+*/
 
 class EditText extends StatefulWidget {
   String startValue;

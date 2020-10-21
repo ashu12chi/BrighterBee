@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 14 October, 2020
+* This file has code for managing upvote/ downvote actions on a post..
+*/
+
 upvote(String community, String key, String username, bool upvoted,
     bool downvoted) async {
   if (upvoted) {

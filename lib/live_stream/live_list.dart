@@ -6,8 +6,10 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'call.dart';
 
-// @author: Ashutosh Chitranshi
-// This will be used for displaying currently active live streams and navigation to them
+/*
+* @author: Ashutosh Chitranshi
+* This will be used for displaying currently active live streams and navigation to them
+*/
 
 class LiveList extends StatefulWidget {
   final String community;

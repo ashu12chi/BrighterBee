@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 14 October, 2020
+* This file has code for managing upvotes, downvotes and comments on a post.
+*/
+
 upvote(String community, String username, bool upvoted, bool downvoted,
     String postKey, String commKey, String replyKey, bool isReply) async {
   if (upvoted) {

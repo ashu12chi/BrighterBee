@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 12 October, 2020
+* This file has UI and code for commenting on a post or replying to a comment.
+*/
+
 class Comment extends StatefulWidget {
   String community;
   String dateLong;
@@ -9,7 +15,7 @@ class Comment extends StatefulWidget {
   String username;
   String title;
   String creator;
-  bool isReply;
+  bool isReply; // whether parent to this comment will be a comment or a post.
 
   Comment(this.community, this.dateLong, this.postKey, this.parentPostKey,
       this.username, this.title, this.creator, this.isReply);

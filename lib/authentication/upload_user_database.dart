@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
+/*
+* @author: Nishchal Siddharth Pandey
+* 17 October, 2020
+* This file has code for uploading user data to firestore.
+*/
 
 class DatabaseService {
   final String uid;

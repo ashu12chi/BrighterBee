@@ -7,9 +7,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-// @author: Ashutosh Chitranshi
-// 18-10-2020 17:05
-// This will be used for editing details of the user
+/*
+* @author: Ashutosh Chitranshi
+* 18-10-2020 17:05
+* This will be used for editing details of the user
+*/
 
 class EditDetails extends StatefulWidget {
   @override

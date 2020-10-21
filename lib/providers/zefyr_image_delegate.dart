@@ -6,7 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zefyr/zefyr.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 1 October, 2020
+* This file has implementations of ZefyrImageDelegate interface for image handling in ZefyrField and ZefyrView.
+*/
+
 class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
+  // to be used in ZefyrField
   @override
   Future<String> pickImage(ImageSource source) async {
     final PickedFile file = await ImagePicker().getImage(source: source);
@@ -38,6 +45,7 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
 }
 
 class CardZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
+  // To be used in ZefyrView
   @override
   Future<String> pickImage(ImageSource source) async {
     final PickedFile file = await ImagePicker().getImage(source: source);

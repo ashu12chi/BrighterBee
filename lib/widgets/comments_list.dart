@@ -7,6 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 13 October, 2020
+* This file returns list of comments to be used below posts (for placing in ExpandingTile).
+*/
+
 class CommentsList extends StatefulWidget {
   String _community;
   String _postKey;

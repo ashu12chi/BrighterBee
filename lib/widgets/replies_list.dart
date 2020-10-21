@@ -6,6 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 14 October, 2020
+* This file has returns list of replies to be placed under comments in ExpandingTile.
+*/
+
 class RepliesList extends StatefulWidget {
   String community;
   String postKey;

@@ -7,8 +7,11 @@ import 'package:flutter/material.dart';
 
 import 'settings.dart';
 
-// @author: Anushka Srivastava
-// This will be used for Live Streaming
+/*
+* @author: Anushka Srivastava
+* This will be used for Live Streaming
+*/
+
 class CallPage extends StatefulWidget {
   /// non-modifiable channel name of the page
   final String channelName;
