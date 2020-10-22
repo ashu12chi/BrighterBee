@@ -14,6 +14,12 @@ handleFollow(String me, String user) async {
       'followingCount': FieldValue.increment(1)
     });
   });
+
+  await instance.collection('notification').add({
+    'title': "$me started following you!",
+    'creator': me,
+    'receiver': user,
+  });
 }
 
 handleUnfollow(String me, String user) async {

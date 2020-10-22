@@ -486,9 +486,11 @@ class _CreateGroupState extends State<CreateGroup> {
         'nameSearch': nameSearchList,
         'creationTime': time,
         'memberCount': 0,
+        'admin': [],
+        'creator': username,
+        'members': [],
+        'pendingMembers': [],
       });
-
-      instance.collection('communities/$commName/admins').doc(username).set({});
 
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
