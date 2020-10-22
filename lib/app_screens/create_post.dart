@@ -426,21 +426,23 @@ class _CreatePostState extends State<CreatePost> {
         "commentCount": 0,
         "lastModified": time,
         "listOfMedia": listOfMedia,
-      }).then((action) {
+      }).then((action) async {
         debugPrint("successful posting in community!");
 
-        instance.collection('users/$username/posts').doc('posted').update({
+        debugPrint('successful posting in user');
+        _scaffoldKey.currentState.hideCurrentSnackBar();
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Upload complete!'),
+        ));
+
+        await instance
+            .collection('users/$username/posts')
+            .doc('posted')
+            .update({
           community: FieldValue.arrayUnion([key])
-        }).then((value) {
-          debugPrint('successful posting in user');
-          _scaffoldKey.currentState.hideCurrentSnackBar();
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text('Upload complete!'),
-          ));
-          sleep(Duration(seconds: 2));
-          Navigator.pop(context);
         });
+        Navigator.pop(context);
       });
     });
   }

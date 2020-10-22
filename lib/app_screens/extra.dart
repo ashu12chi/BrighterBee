@@ -322,7 +322,7 @@ class _ExtraState extends State<Extra> {
     });
   }
 
-  clearCache(BuildContext context) {
+  clearCache(BuildContext context) async {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
@@ -349,7 +349,7 @@ class _ExtraState extends State<Extra> {
     );
 
     // show the dialog
-    showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return alert;

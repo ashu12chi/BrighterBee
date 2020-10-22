@@ -340,18 +340,52 @@ class _PostState extends State<PostCardView> {
         });
   }
 
-  deletePostHandler(BuildContext context) async {
-    ProgressDialog pr = ProgressDialog(context,
-        type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
-    pr.style(
-      message: 'Deletion in progress...',
-      borderRadius: 8.0,
-      progressWidget: CircularProgressIndicator(),
-      elevation: 10.0,
+  deletePostHandler() async {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
     );
-    await pr.show();
-    await deletePost(community, postKey, username);
-    await pr.hide();
+    Widget continueButton = FlatButton(
+        child: Text("Delete"),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          ProgressDialog pr = ProgressDialog(context,
+              type: ProgressDialogType.Normal,
+              isDismissible: false,
+              showLogs: true);
+          pr.style(
+            message: 'Deleting Post...',
+            messageTextStyle: TextStyle(fontSize: 18),
+            borderRadius: 2.0,
+            progressWidget: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+            ),
+            elevation: 8.0,
+          );
+          await pr.show();
+          await deletePost(community, postKey, username);
+          await pr.hide();
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete post?"),
+      content: Text("Doing this will remove all records of this post!"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   openPost() {
@@ -400,8 +434,8 @@ class _PostState extends State<PostCardView> {
                           icon: Icon(Icons.delete,
                               size: 30, color: Theme.of(context).buttonColor),
                           onPressed: () async {
-                            await deletePostHandler(context);
                             Navigator.of(context).pop();
+                            await deletePostHandler();
                           },
                         ),
                         Text(

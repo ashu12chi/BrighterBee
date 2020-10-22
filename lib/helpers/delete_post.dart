@@ -31,8 +31,10 @@ class _DeletePostState extends State<DeletePost> {
   Widget build(BuildContext context) {
     deletePost(community, postKey, creator)
         .then((value) => Navigator.of(context).pop());
-    return Center(
-        child: Row(
+    return Scaffold(
+        body: Center(
+            child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
@@ -42,10 +44,10 @@ class _DeletePostState extends State<DeletePost> {
         ),
         Text(
           "Deleting Post...",
-          style: TextStyle(fontSize: 15),
+          style: TextStyle(fontSize: 18),
         )
       ],
-    ));
+    )));
   }
 }
 

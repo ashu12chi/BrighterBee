@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
   String _username;
@@ -183,24 +185,30 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.link),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: Text(
-                            snapshot.data['website'],
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                InkWell(
+                    onTap: () async {
+                      if (await canLaunch(snapshot.data['website']))
+                        await launch(snapshot.data['website']);
+                      else
+                        Fluttertoast.showToast(msg: snapshot.data['website']);
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8.0, top: 8),
+                        child: Row(children: <Widget>[
+                          Icon(Icons.link),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 8.0),
+                              child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 100,
+                                  child: Text(snapshot.data['website'],
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          decoration:
+                                              TextDecoration.underline))))
+                        ]))),
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 8.0, right: 8.0, top: 8, bottom: 8),

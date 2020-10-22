@@ -435,10 +435,7 @@ class _PostState extends State<PostUI> {
                               size: 30, color: Theme.of(context).buttonColor),
                           onPressed: () async {
                             Navigator.of(context).pop();
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => DeletePost(
-                                        community, postKey, username)));
+                            await showDeletionConfirmation();
                           },
                         ),
                         Text(
@@ -464,5 +461,39 @@ class _PostState extends State<PostUI> {
         ),
       );
     });
+  }
+
+  showDeletionConfirmation() async {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+        child: Text("Delete"),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => DeletePost(community, postKey, username)));
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete post?"),
+      content: Text("Doing this will remove all records of this post!"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
