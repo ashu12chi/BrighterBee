@@ -110,7 +110,7 @@ class _CreatePostState extends State<CreatePost> {
           filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
           filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
           print('File: $filePath');
-          listOfMedia.add(filePath);
+          if (!listOfMedia.contains(filePath)) listOfMedia.add(filePath);
         }
       }
 
@@ -136,15 +136,15 @@ class _CreatePostState extends State<CreatePost> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(
-          'Create Post',
-        ),
+        title:
+            Text('Create Post', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: <Widget>[
           FlatButton(
-            child: Text(
-              'Post',
-              style: TextStyle(fontSize: 18),
-            ),
+            child: Text('Post',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).accentColor)),
             onPressed: checkPostableAndPost,
           ),
         ],
@@ -462,7 +462,7 @@ class _CreatePostState extends State<CreatePost> {
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     mediaURL = await storageSnap.ref.getDownloadURL();
     debugPrint("successful media upload!");
-    listOfMedia.add(fileName);
+    if (!listOfMedia.contains(fileName)) listOfMedia.add(fileName);
     return mediaURL;
   }
 

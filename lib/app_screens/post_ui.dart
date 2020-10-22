@@ -5,6 +5,7 @@ import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
+import 'package:brighter_bee/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:brighter_bee/widgets/comments_list.dart';
@@ -32,6 +33,7 @@ class _PostState extends State<PostUI> {
   String postKey;
   String username;
   bool processing;
+  int num = 0;
 
   _PostState(this.community, this.postKey, this.username);
 
@@ -64,12 +66,14 @@ class _PostState extends State<PostUI> {
               );
             String creator = snapshot.data['creator'];
             var time = snapshot.data['time'];
+            var lastModified = snapshot.data['lastModified'];
             int upvotes = snapshot.data['upvotes'];
             int downvotes = snapshot.data['downvotes'];
             String title = snapshot.data['title'];
             int views = snapshot.data['viewers'].length;
             int commentCount = snapshot.data['commentCount'];
             int mediaType = snapshot.data['mediaType'];
+            List listOfMedia = snapshot.data['listOfMedia'];
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
             if (!snapshot.data['viewers'].contains(username))
@@ -166,21 +170,34 @@ class _PostState extends State<PostUI> {
                                 ],
                               )),
                           Spacer(),
-                          IconButton(
-                            icon: Icon(Icons.more_horiz),
-                            alignment: Alignment.topRight,
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(15.0)),
-                                  ),
-                                  builder: (BuildContext context) {
-                                    return buildBottomSheet(creator);
-                                  });
-                            },
-                          )
+                          Column(children: [
+                            IconButton(
+                              icon: Icon(Icons.more_horiz),
+                              alignment: Alignment.topRight,
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(15.0)),
+                                    ),
+                                    builder: (BuildContext context) {
+                                      return buildBottomSheet(
+                                          creator,
+                                          fullName,
+                                          mediaUrl,
+                                          mediaType,
+                                          listOfMedia,
+                                          title,
+                                          content);
+                                    });
+                              },
+                            ),
+                            (lastModified != time)
+                                ? Text('Edited  ',
+                                    style: TextStyle(color: Colors.grey))
+                                : Container()
+                          ])
                         ],
                       ),
                       Align(
@@ -227,21 +244,7 @@ class _PostState extends State<PostUI> {
                         Divider(
                           color: Theme.of(context).buttonColor,
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8, bottom: 15, left: 15),
-                              child: Text(
-                                'Comments',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ),
-                        CommentsList(community, postKey, username),
+                        CommentsList(community, postKey, username)
                       ]))),
                       Padding(
                           padding: EdgeInsets.only(left: 15, right: 15),
@@ -397,7 +400,8 @@ class _PostState extends State<PostUI> {
         });
   }
 
-  buildBottomSheet(String creator) {
+  buildBottomSheet(String creator, String displayName, String mediaURL,
+      int mediaType, List listOfMedia, String oldTitle, String content) {
     return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
       return SingleChildScrollView(
         padding: EdgeInsets.all(10),
@@ -416,17 +420,45 @@ class _PostState extends State<PostUI> {
                   ),
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.bookmark,
-                          size: 30, color: Theme.of(context).buttonColor)),
-                  Text(
-                    'Save article',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
+              (creator == username)
+                  ? Column(
+                      children: <Widget>[
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditPost(
+                                      community,
+                                      postKey,
+                                      username,
+                                      displayName,
+                                      mediaURL,
+                                      mediaType,
+                                      listOfMedia,
+                                      oldTitle,
+                                      content)));
+                            },
+                            icon: Icon(Icons.edit,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Edit post',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.bookmark,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Save article',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
               username == creator
                   ? Column(
                       children: <Widget>[

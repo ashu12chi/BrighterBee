@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:brighter_bee/app_screens/feed.dart';
 import 'package:brighter_bee/authentication/register.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,27 +30,20 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      body: Builder(builder: (BuildContext context) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            withEmailPassword(),
-          ],
-        );
-      }),
-    );
+        key: _scaffoldKey,
+        body:
+            SafeArea(child: SingleChildScrollView(child: withEmailPassword())));
   }
 
   Widget withEmailPassword() {
-    return SingleChildScrollView(
-        child: Form(
+    return Form(
       key: _formKey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            SizedBox(height: 100),
             Container(
               child: const Text(
                 'Log in to BrighterBee',
@@ -178,7 +169,7 @@ class _SignInState extends State<SignIn> {
           ],
         ),
       ),
-    ));
+    );
   }
 
   @override

@@ -75,6 +75,10 @@ Future<void> deletePost(
         .collection('users/$creator/comments')
         .doc(element.id)
         .delete();
+    await instance
+        .collection('communities/$community/posts/$postKey/comments')
+        .doc(element.id)
+        .delete();
   });
   List upvoters = postDoc.data()['upvoters'];
   upvoters.forEach((element) {

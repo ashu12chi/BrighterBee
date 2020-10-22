@@ -28,6 +28,8 @@ class _EditDetailsState extends State<EditDetails> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   File _imageFile;
   String url;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   void initState() {
     super.initState();
     username = _auth.currentUser.displayName;
@@ -58,6 +60,7 @@ class _EditDetailsState extends State<EditDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
           'Edit profile',
@@ -92,8 +95,10 @@ class _EditDetailsState extends State<EditDetails> {
                       child: Row(
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundImage: _imageFile==null?CachedNetworkImageProvider(
-                                snapshot.data['photoUrl']):FileImage(_imageFile),
+                            backgroundImage: _imageFile == null
+                                ? CachedNetworkImageProvider(
+                                    snapshot.data['photoUrl'])
+                                : FileImage(_imageFile),
                             radius: 110.0,
                             backgroundColor: Colors.grey,
                           )
@@ -299,6 +304,22 @@ class _EditDetailsState extends State<EditDetails> {
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(color: Colors.grey)),
                       onPressed: () async {
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          duration: Duration(hours: 1),
+                          content: Row(
+                            children: <Widget>[
+                              CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.grey),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text("Updating...")
+                            ],
+                          ),
+                        ));
                         if (_imageFile != null) {
                           await uploadImageToFirebase(context);
                           await FirebaseFirestore.instance
@@ -322,6 +343,11 @@ class _EditDetailsState extends State<EditDetails> {
                             'website': website
                           });
                         }
+                        _scaffoldKey.currentState.hideCurrentSnackBar();
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text('Update complete.'),
+                        ));
                         Navigator.pop(context);
                       },
                     ),

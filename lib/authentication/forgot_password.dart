@@ -6,6 +6,7 @@
  */
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -49,11 +50,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
                         child: const Text(
                           'Enter your email and press continue',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),

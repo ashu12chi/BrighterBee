@@ -187,10 +187,16 @@ class _ProfileState extends State<Profile> {
                 ),
                 InkWell(
                     onTap: () async {
-                      if (await canLaunch(snapshot.data['website']))
-                        await launch(snapshot.data['website']);
-                      else
-                        Fluttertoast.showToast(msg: snapshot.data['website']);
+                      String url = snapshot.data['website']
+                          .replaceAll('https://', '')
+                          .replaceAll('http://', '');
+                      url = Uri.https('', url).toString();
+                      try {
+                        await launch(url);
+                      } catch (e) {
+                        Fluttertoast.showToast(msg: 'Cannot launch: $url');
+                        debugPrint(e);
+                      }
                     },
                     child: Padding(
                         padding: const EdgeInsets.only(

@@ -52,34 +52,57 @@ class _CommentsList extends State<CommentsList> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<DocumentSnapshot>>(
-      stream: commentListBloc.commentStream,
-      builder: (context, snapshot) {
-        if (snapshot.data != null) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            shrinkWrap: true,
-            controller: controller,
-            itemBuilder: (context, index) {
-              debugPrint('NSP');
-              return ExpansionTile(
-                backgroundColor: Theme.of(context).buttonColor.withOpacity(0.2),
-                title: CommentWidget(community, postKey,
-                    snapshot.data[index]['commKey'], postKey, username, false),
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(left: 20, bottom: 15),
-                      child: RepliesList(community, postKey,
-                          snapshot.data[index]['commKey'], username))
-                ],
-              );
-            },
-          );
-        } else {
-          return CircularProgressIndicator();
-        }
-      },
-    );
+    return Column(children: [
+      Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 15, left: 15),
+            child: Text(
+              'Comments',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.refresh),
+          )
+        ],
+      ),
+      StreamBuilder<List<DocumentSnapshot>>(
+        stream: commentListBloc.commentStream,
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              shrinkWrap: true,
+              controller: controller,
+              itemBuilder: (context, index) {
+                return ExpansionTile(
+                  backgroundColor:
+                  Theme.of(context).buttonColor.withOpacity(0.2),
+                  title: CommentWidget(
+                      community,
+                      postKey,
+                      snapshot.data[index]['commKey'],
+                      postKey,
+                      username,
+                      false),
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.only(left: 20, bottom: 15),
+                        child: RepliesList(community, postKey,
+                            snapshot.data[index]['commKey'], username))
+                  ],
+                );
+              },
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
+      )
+    ]);
   }
 }
 
