@@ -1,4 +1,5 @@
 
+import 'package:brighter_bee/app_screens/admin_screens/admin_control_pannel.dart';
 import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:brighter_bee/live_stream/live_list.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
@@ -139,7 +140,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                   padding: const EdgeInsets.only(left:8.0,right:8.0),
                   child: FirebaseAuth.instance.currentUser.displayName == creator?FlatButton(
                     child: Text(
-                      'Control Admins',
+                      'Control Panel',
                       style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).accentColor),
@@ -150,7 +151,10 @@ class _CommunityHomeState extends State<CommunityHome> {
                             color: Theme.of(context).accentColor)),
                     minWidth: double.infinity,
                     onPressed: () {
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminControlPanel(community)));
                     },
                   ):(snapshot.data['pendingMembers']
               .contains(FirebaseAuth.instance.currentUser.displayName))?FlatButton(

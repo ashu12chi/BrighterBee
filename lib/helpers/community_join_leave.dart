@@ -53,4 +53,24 @@ handleLeave(String community,String user) async {
   });
 }
 
+handleAddAdmin(String community,String user) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async{
+    DocumentReference communityRef = instance.collection('communities').doc(community);
+    transaction.update(communityRef,{
+      'admin':FieldValue.arrayUnion([user])
+    });
+  });
+}
+
+handleRemoveAdmin(String community,String user) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async{
+    DocumentReference communityRef = instance.collection('communities').doc(community);
+    transaction.update(communityRef,{
+      'admin':FieldValue.arrayRemove([user])
+    });
+  });
+}
+
 

@@ -1,0 +1,112 @@
+import 'package:brighter_bee/helpers/community_join_leave.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+import '../../user_card.dart';
+import '../profile.dart';
+
+class AddAdmins extends StatefulWidget {
+  final community;
+  AddAdmins(this.community);
+  @override
+  _AddAdminsState createState() => _AddAdminsState(community);
+}
+
+class _AddAdminsState extends State<AddAdmins> {
+  final community;
+  _AddAdminsState(this.community);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Add Admins',style: TextStyle(fontWeight: FontWeight.bold),),),
+      body: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance.collection('communities').doc(community).snapshots(),
+          builder: (context, snapshot) {
+            if(snapshot.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator();
+            print('28: ashu12_chi');
+            print(snapshot.data['members'].length);
+            return ListView.builder(
+              itemCount: snapshot.data['members'].length,
+              itemBuilder: (context,index) {
+                print(snapshot.data['members'][index]);
+                return (snapshot.data['admin'].contains(snapshot.data['members'][index]))?Container():Dismissible(
+                  key: Key(snapshot.data['members'][index]),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Profile(snapshot.data['members'][index])));
+                    },
+                    child: UserCard(snapshot.data['members'][index]),
+                  ),
+                  background: slideRightBackground(),
+                  confirmDismiss: (direction) async {
+                    final bool res = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                                "Are you sure you want to add this member as Admin ?"),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              FlatButton(
+                                child: Text(
+                                  "Accept",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                                onPressed: () async {
+                                  await handleAddAdmin(community,snapshot.data['members'][index]);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                    return res;
+                  },
+                );
+              },
+            );
+          }
+      ),
+    );
+  }
+  Widget slideRightBackground() {
+    return Container(
+      color: Colors.green,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: 20,
+            ),
+            Icon(
+              Icons.person_add,
+              color: Colors.white,
+            ),
+            Text(
+              " Accept",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ),
+        alignment: Alignment.centerLeft,
+      ),
+    );
+  }
+}
