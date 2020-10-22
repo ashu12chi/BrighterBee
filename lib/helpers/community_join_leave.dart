@@ -11,7 +11,8 @@ handleJoinAccept(String community,String user) async {
     DocumentReference communityRef = instance.collection('communities').doc(community);
     transaction.update(communityRef,{
       'members':FieldValue.arrayUnion([user]),
-      'pendingMembers':FieldValue.arrayRemove([user])
+      'pendingMembers':FieldValue.arrayRemove([user]),
+      'memberCount':FieldValue.increment(1)
     });
   });
 }
@@ -47,6 +48,7 @@ handleLeave(String community,String user) async {
     DocumentReference communityRef = instance.collection('communities').doc(community);
     transaction.update(communityRef,{
       'members':FieldValue.arrayRemove([user]),
+    'memberCount':FieldValue.increment(-1)
     });
   });
 }
