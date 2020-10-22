@@ -104,7 +104,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CommunityProfile(community,mediaUrl,privacy,members,visibility,posts,verification,about)));
+                              builder: (context) => CommunityProfile(community)));
                     },
                     child: Column(
                       children: [
