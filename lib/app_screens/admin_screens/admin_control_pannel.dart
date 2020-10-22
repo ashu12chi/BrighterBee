@@ -147,7 +147,7 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                               children: <Widget>[
                                 Padding(
                                   padding: const EdgeInsets.only(top:8.0,bottom: 8.0,left: 20,right: 20),
-                                  child: Text('Delete Community',style: TextStyle(fontSize: 16)),
+                                  child: Text('Delete Community',style: TextStyle(fontSize: 16),textAlign: TextAlign.center,),
                                 ),
                                 Icon(Icons.delete_forever)
                               ],

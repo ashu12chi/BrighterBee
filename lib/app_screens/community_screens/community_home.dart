@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'community_profile.dart';
 
@@ -183,7 +184,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                             color: Theme.of(context).accentColor)),
                     minWidth: double.infinity,
                     onPressed: () {
-
+                      handleRemoveAdmin(community, FirebaseAuth.instance.currentUser.displayName);
                     },
                   ):(snapshot.data['members']
                       .contains(FirebaseAuth.instance.currentUser.displayName))?Container():FlatButton(
@@ -279,9 +280,17 @@ class _CommunityHomeState extends State<CommunityHome> {
                     Column(
                       children: <Widget>[
                         IconButton(
+                          onPressed: () async {
+                            if(FirebaseAuth.instance.currentUser.displayName == creator) {
+                              Fluttertoast.showToast(msg: 'Creator can not leave their community');
+                              return;
+                            }
+                            await handleLeave(community, FirebaseAuth.instance.currentUser.displayName);
+                          },
                             icon: Icon(Icons.exit_to_app,
                                 size: 30,
-                                color: Theme.of(context).buttonColor)),
+                                color: Theme.of(context).buttonColor)
+                        ),
                         Text(
                           'Leave Community',
                           style: TextStyle(fontSize: 14),

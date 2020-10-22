@@ -48,7 +48,8 @@ handleLeave(String community,String user) async {
     DocumentReference communityRef = instance.collection('communities').doc(community);
     transaction.update(communityRef,{
       'members':FieldValue.arrayRemove([user]),
-    'memberCount':FieldValue.increment(-1)
+    'memberCount':FieldValue.increment(-1),
+      'admin':FieldValue.arrayRemove([user])
     });
   });
 }
