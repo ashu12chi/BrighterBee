@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:brighter_bee/app_screens/community_home.dart';
+import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 

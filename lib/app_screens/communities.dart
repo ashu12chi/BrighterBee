@@ -1,9 +1,9 @@
-import 'package:brighter_bee/app_screens/community_home.dart';
-import 'package:brighter_bee/app_screens/create_community.dart';
+import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
+import 'package:brighter_bee/app_screens/community_screens/create_community.dart';
 import 'package:flutter/material.dart';
 
-import 'community_search.dart';
-import 'discover_community.dart';
+import 'community_screens/community_search.dart';
+import 'community_screens/discover_community.dart';
 
 class Communities extends StatefulWidget {
   @override

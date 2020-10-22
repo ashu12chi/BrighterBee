@@ -1,7 +1,7 @@
 
-import 'package:brighter_bee/app_screens/edit_community_details.dart';
-import 'package:brighter_bee/admin_screens/verify_post.dart';
-import 'package:brighter_bee/admin_screens/verify_user.dart';
+import 'package:brighter_bee/app_screens/admin_screens/verify_post.dart';
+import 'package:brighter_bee/app_screens/admin_screens/verify_user.dart';
+import 'package:brighter_bee/app_screens/community_screens/edit_community_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
