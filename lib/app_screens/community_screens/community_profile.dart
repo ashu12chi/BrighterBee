@@ -176,7 +176,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                         side: BorderSide(color: Theme.of(context).accentColor)),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => VerifyUser()));
+                          MaterialPageRoute(builder: (context) => VerifyUser(community)));
                     },
                   ),
                 ):((verification==1 && (snapshot.data['members']).contains(FirebaseAuth.instance.currentUser.displayName))|| snapshot.data['admin'].contains(FirebaseAuth.instance.currentUser.displayName))?
@@ -193,7 +193,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                         side: BorderSide(color: Theme.of(context).accentColor)),
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => VerifyUser()));
+                          MaterialPageRoute(builder: (context) => VerifyUser(community)));
                     },
                   ),
                 ):Container(),
