@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UserCard extends StatefulWidget {
-  final username;
-  UserCard(this.username);
+  final _username;
+  UserCard(this._username);
   @override
-  _UserCardState createState() => _UserCardState(username);
+  _UserCardState createState() => _UserCardState(_username);
 }
 
 class _UserCardState extends State<UserCard> {

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:brighter_bee/helpers/path_helper.dart';
+import 'package:brighter_bee/helpers/send_verification_notifications.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,9 +37,9 @@ class _CreatePostState extends State<CreatePost> {
   String mediaURL;
   int mediaType = 0; // 0 for none, 1 for image, 2 for video
   File media;
-  QuerySnapshot result;
-  List<CheckBoxData> checkboxDataList;
-  List selected;
+  List<RadioButtonData> radioButtonDataList;
+  String community;
+  int selectedId = -1;
   List listOfMedia;
   String fileName;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -55,7 +56,7 @@ class _CreatePostState extends State<CreatePost> {
     _controller = ZefyrController(document);
     _focusNode = FocusNode();
     noticeText = "Add media to your post";
-    checkboxDataList = [];
+    radioButtonDataList = [];
     listOfMedia = [];
   }
 
@@ -68,15 +69,17 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   initializeList() async {
-    result = await FirebaseFirestore.instance.collection('communities').get();
-    final List<DocumentSnapshot> documents = result.docs;
+    DocumentSnapshot result = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(username)
+        .get();
     int i = 0;
-    documents.forEach((element) {
-      checkboxDataList.add(CheckBoxData(
-          id: i.toString(), displayId: element.id, checked: false));
+    result.data()['communityList'].forEach((element) {
+      radioButtonDataList.add(RadioButtonData(
+          id: i.toString(), displayId: element, selected: false));
       ++i;
     });
-    selected = List();
+    community = null;
   }
 
   @override
@@ -174,11 +177,11 @@ class _CreatePostState extends State<CreatePost> {
                         child: Row(
                           children: <Widget>[
                             Icon(Icons.people),
-                            Text('Communities'),
+                            SizedBox(width: 8),
+                            Text(community == null ? 'Communities' : community),
                             Icon(Icons.arrow_drop_down)
                           ],
                         ),
-                        textColor: Colors.grey,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                             side: BorderSide(color: Colors.grey)),
@@ -274,7 +277,7 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   showCommunities() {
-    if (checkboxDataList.length == 0) {
+    if (radioButtonDataList.length == 0) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
         duration: Duration(hours: 1),
@@ -294,54 +297,34 @@ class _CreatePostState extends State<CreatePost> {
     } else {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       showModalBottomSheet<void>(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
-        ),
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter state) {
-              return SingleChildScrollView(
-                child: LimitedBox(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: checkboxDataList.map<Widget>(
-                      (data) {
-                        return Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              CheckboxListTile(
-                                value: data.checked,
-                                title: Text(data.displayId),
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                onChanged: (bool val) {
-                                  if (val) {
-                                    selected.add(data.displayId);
-                                  } else {
-                                    selected.remove(data.displayId);
-                                  }
-                                  state(() {
-                                    data.checked = !data.checked;
-                                  });
-                                },
-                                activeColor: Theme.of(context).buttonColor,
-                                checkColor: Theme.of(context).primaryColor,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ).toList(),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      );
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
+          ),
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter state) {
+              return LimitedBox(
+                  child: ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return RadioListTile(
+                    activeColor: Theme.of(context).accentColor,
+                    value: index,
+                    groupValue: selectedId,
+                    onChanged: (ind) => setState(() {
+                      selectedId = ind;
+                      community = radioButtonDataList[index].displayId;
+                      debugPrint('selected: $community');
+                      Navigator.pop(context);
+                    }),
+                    title: Text(radioButtonDataList[index].displayId),
+                  );
+                },
+                itemCount: radioButtonDataList.length,
+              ));
+            });
+          });
     }
   }
 
@@ -351,7 +334,7 @@ class _CreatePostState extends State<CreatePost> {
   }
 
   checkPostableAndPost() {
-    if (selected == null || selected.length == 0) {
+    if (community == null || community.length == 0) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -408,42 +391,40 @@ class _CreatePostState extends State<CreatePost> {
       temp = temp + titleController.text[i];
       titleSearchList.add(temp);
     }
-    selected.forEach((community) {
-      instance.collection('communities/$community/posts').doc(key).set({
-        "creator": username,
-        "mediaType": mediaType,
-        "mediaUrl": mediaURL,
-        "title": titleController.text,
-        "content": jsonEncode(_controller.document),
-        "viewers": [],
-        "time": time,
-        "upvoters": [],
-        "downvoters": [],
-        "downvotes": 0,
-        "upvotes": 0,
-        "views": 0,
-        "titleSearch": titleSearchList,
-        "commentCount": 0,
-        "lastModified": time,
-        "listOfMedia": listOfMedia,
-      }).then((action) async {
-        debugPrint("successful posting in community!");
+    instance.collection('communities/$community/posts').doc(key).set({
+      "creator": username,
+      "mediaType": mediaType,
+      "mediaUrl": mediaURL,
+      "title": titleController.text,
+      "content": jsonEncode(_controller.document),
+      "viewers": [],
+      "time": time,
+      "upvoters": [],
+      "downvoters": [],
+      "downvotes": 0,
+      "upvotes": 0,
+      "views": 0,
+      "titleSearch": titleSearchList,
+      "commentCount": 0,
+      "lastModified": time,
+      "listOfMedia": listOfMedia,
+      "isVerified": false
+    }).then((action) async {
+      debugPrint("successful posting in community!");
 
-        debugPrint('successful posting in user');
-        _scaffoldKey.currentState.hideCurrentSnackBar();
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text('Upload complete!'),
-        ));
+      await sendVerificationNotifications(community, key, username);
 
-        await instance
-            .collection('users/$username/posts')
-            .doc('posted')
-            .update({
-          community: FieldValue.arrayUnion([key])
-        });
-        Navigator.pop(context);
+      debugPrint('successful posting in user');
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('Upload complete!'),
+      ));
+
+      await instance.collection('users/$username/posts').doc('posted').update({
+        community: FieldValue.arrayUnion([key])
       });
+      Navigator.pop(context);
     });
   }
 
@@ -592,26 +573,27 @@ class _CreatePostState extends State<CreatePost> {
   }
 }
 
-class CheckBoxData {
+class RadioButtonData {
   String id;
   String displayId;
-  bool checked;
+  bool selected;
 
-  CheckBoxData({
+  RadioButtonData({
     this.id,
     this.displayId,
-    this.checked,
+    this.selected,
   });
 
-  factory CheckBoxData.fromJson(Map<String, dynamic> json) => CheckBoxData(
+  factory RadioButtonData.fromJson(Map<String, dynamic> json) =>
+      RadioButtonData(
         id: json["id"] == null ? null : json["id"],
         displayId: json["displayId"] == null ? null : json["displayId"],
-        checked: json["checked"] == null ? null : json["checked"],
+        selected: json["selected"] == null ? null : json["selected"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "displayId": displayId == null ? null : displayId,
-        "checked": checked == null ? null : checked,
+        "selected": selected == null ? null : selected,
       };
 }

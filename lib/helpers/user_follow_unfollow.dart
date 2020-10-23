@@ -15,16 +15,18 @@ handleFollow(String me, String user) async {
     });
   });
 
-  String notificationId = (await instance.collection('notification').add({
-    'title': "$me started following you!",
-    'creator': me,
-    'receiver': user,
-  }))
-      .id;
-  await instance
-      .collection('users/$user/notifications')
-      .doc(notificationId)
-      .set({});
+  // TODO user follow notifications
+
+  // String notificationId = (await instance.collection('notification').add({
+  //   'title': "$me started following you!",
+  //   'creator': me,
+  //   'receiver': user,
+  // }))
+  //     .id;
+  // await instance
+  //     .collection('users/$user/notifications')
+  //     .doc(notificationId)
+  //     .set({});
 }
 
 handleUnfollow(String me, String user) async {

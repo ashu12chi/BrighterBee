@@ -12,13 +12,16 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-
   bool adminNotification = true;
   int feedOrder = 0; // 0 for time,1 for upvotes, 2 for views
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings and Privacy',style: TextStyle(fontWeight: FontWeight.bold),)),
+      appBar: AppBar(
+          title: Text(
+        'Settings and Privacy',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      )),
       body: ListView(
         children: <Widget>[
           Padding(
@@ -29,18 +32,27 @@ class _SettingsState extends State<Settings> {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right:8.0),
-                      child: Icon(Icons.notifications_active,color: Colors.grey,),
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        Icons.notifications_active,
+                        color: Colors.grey,
+                      ),
                     ),
-                    Text('Allow admin notification',style: TextStyle(fontSize: 18),),
+                    Text(
+                      'Allow admin notifications',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
-                Switch(value: adminNotification,activeColor: Colors.deepOrange ,onChanged: (value){
-                  setState(() {
-                    adminNotification = value;
-                    print(adminNotification);
-                  });
-                })
+                Switch(
+                    value: adminNotification,
+                    activeColor: Theme.of(context).accentColor,
+                    onChanged: (value) {
+                      setState(() {
+                        adminNotification = value;
+                        print(adminNotification);
+                      });
+                    })
               ],
             ),
           ),
@@ -57,15 +69,22 @@ class _SettingsState extends State<Settings> {
               await clearCache(context);
             },
             child: Padding(
-              padding: const EdgeInsets.only(left:8.0,right:8.0,top:12.0,bottom: 12.0),
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
               child: Container(
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right:8.0),
-                      child: Icon(Icons.delete,color: Colors.grey,),
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.grey,
+                      ),
                     ),
-                    Text('Clear cached data',style: TextStyle(fontSize: 18),),
+                    Text(
+                      'Clear cached data',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
               ),
@@ -80,17 +99,24 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           InkWell(
-            onTap:showOptions,
+            onTap: showOptions,
             child: Padding(
-              padding: const EdgeInsets.only(left:8.0,right:8.0,top:12.0,bottom: 12.0),
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
               child: Container(
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right:8.0),
-                      child: Icon(Icons.calendar_today,color: Colors.grey,),
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        Icons.calendar_today,
+                        color: Colors.grey,
+                      ),
                     ),
-                    Text('News Feed Preference',style: TextStyle(fontSize: 18),),
+                    Text(
+                      'News Feed Preference',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
               ),
@@ -106,21 +132,29 @@ class _SettingsState extends State<Settings> {
           ),
           InkWell(
             onTap: () async {
-              const url = 'https://github.com/NPDevs/BrighterBee/blob/master/LICENSE';
+              const url =
+                  'https://github.com/NPDevs/BrighterBee/blob/master/LICENSE';
               if (await canLaunch(url)) {
-              await launch(url);
+                await launch(url);
               }
             },
             child: Padding(
-              padding: const EdgeInsets.only(left:8.0,right:8.0,top:12.0,bottom: 12.0),
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
               child: Container(
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right:8.0),
-                      child: Icon(Icons.policy,color: Colors.grey,),
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        Icons.policy,
+                        color: Colors.grey,
+                      ),
                     ),
-                    Text('Licence',style: TextStyle(fontSize: 18),),
+                    Text(
+                      'Licence',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
               ),
@@ -135,23 +169,29 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          About()));
+                      builder: (BuildContext context) => About()));
             },
             child: Padding(
-              padding: const EdgeInsets.only(left:8.0,right:8.0,top:12.0,bottom: 12.0),
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
               child: Container(
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right:8.0),
-                      child: Icon(Icons.info_outline,color: Colors.grey,),
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                        Icons.info_outline,
+                        color: Colors.grey,
+                      ),
                     ),
-                    Text('About',style: TextStyle(fontSize: 18),),
+                    Text(
+                      'About',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ],
                 ),
               ),
@@ -169,6 +209,7 @@ class _SettingsState extends State<Settings> {
       ),
     );
   }
+
   showOptions() {
     showModalBottomSheet(
         context: context,
@@ -178,55 +219,67 @@ class _SettingsState extends State<Settings> {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter state) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.all(10),
-                  child: LimitedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(10),
+              child: LimitedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
                       children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.access_time,
-                                    size: 30,color: feedOrder==0?Colors.deepOrange:Colors.grey,)
-                            ),
-                            Text(
-                              'Time',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
+                        IconButton(
+                            icon: Icon(
+                          Icons.access_time,
+                          size: 30,
+                          color: feedOrder == 0
+                              ? Theme.of(context).accentColor
+                              : Colors.grey,
+                        )),
+                        Text(
+                          'Time',
+                          style: TextStyle(fontSize: 14),
                         ),
-                        Column(children: <Widget>[
-                          IconButton(
-                              icon: Icon(Icons.arrow_upward,
-                                  size: 30, color: feedOrder==1?Colors.deepOrange:Colors.grey,),
-                              onPressed: () {
-
-                              }),
-                          Text(
-                            'Upvotes',
-                            style: TextStyle(fontSize: 14),
-                          )
-                        ]),
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.visibility,
-                                    size: 30,
-                                  color: feedOrder==2?Colors.deepOrange:Colors.grey,)),
-                            Text(
-                              'Views',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        )
                       ],
                     ),
-                  ),
-                );
-              });
+                    Column(children: <Widget>[
+                      IconButton(
+                          icon: Icon(
+                            Icons.arrow_upward,
+                            size: 30,
+                            color: feedOrder == 1
+                                ? Theme.of(context).accentColor
+                                : Colors.grey,
+                          ),
+                          onPressed: () {}),
+                      Text(
+                        'Upvotes',
+                        style: TextStyle(fontSize: 14),
+                      )
+                    ]),
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(
+                          Icons.visibility,
+                          size: 30,
+                          color: feedOrder == 2
+                              ? Theme.of(context).accentColor
+                              : Colors.grey,
+                        )),
+                        Text(
+                          'Views',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
         });
   }
+
   clearCache(BuildContext context) async {
     // set up the buttons
     Widget cancelButton = FlatButton(

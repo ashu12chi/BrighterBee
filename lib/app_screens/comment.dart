@@ -195,6 +195,7 @@ class _Comment extends State<Comment> {
           'creator': username,
           'postId': parentPostKey,
           'receiver': creator,
+          'time': time
         }))
             .id;
         await instance
@@ -231,12 +232,13 @@ class _Comment extends State<Comment> {
           'creator': username,
           'postId': parentPostKey,
           'receiver': creator,
+          'time': time
         }))
             .id;
         await instance
             .collection('users/$creator/notifications')
             .doc(notificationId)
-            .set({});
+            .set({'postRelated': 1});
       }
       await instance.collection('users/$username/comments').doc(commKey).set({
         'community': community,
@@ -259,12 +261,13 @@ class _Comment extends State<Comment> {
             'creator': username,
             'postId': parentPostKey,
             'receiver': w,
+            'time': time
           }))
                   .id;
           await instance
               .collection('users/$w/notifications')
               .doc(notificationId)
-              .set({});
+              .set({'postRelated': 1});
         }
       }
     });

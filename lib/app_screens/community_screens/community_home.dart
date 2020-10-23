@@ -244,6 +244,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                         .collection('communities')
                         .doc(community)
                         .collection('posts')
+                        .where('isVerified', isEqualTo: true)
                         .snapshots(),
                     builder: (context, snapshot) {
                       return snapshot.connectionState == ConnectionState.waiting

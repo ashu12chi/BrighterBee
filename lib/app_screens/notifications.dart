@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Notifications extends StatefulWidget {
@@ -6,6 +7,14 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+  String username;
+
+  @override
+  void initState() {
+    super.initState();
+    username = FirebaseAuth.instance.currentUser.displayName;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

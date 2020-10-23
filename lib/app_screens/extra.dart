@@ -1,17 +1,18 @@
 import 'dart:io';
 
 import 'package:brighter_bee/app_screens/profile.dart';
-import 'package:brighter_bee/app_screens/settings.dart';
+import 'package:brighter_bee/app_screens/settings.dart' as settings;
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_communities.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_following.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Extra extends StatefulWidget {
@@ -222,12 +223,12 @@ class _ExtraState extends State<Extra> {
               width: double.infinity,
               height: 67,
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              Settings()));
+                              settings.Settings()));
                 },
                 child: Card(
                   elevation: 8,
@@ -303,6 +304,12 @@ class _ExtraState extends State<Extra> {
   }
 
   Future _signOut() async {
+    Fluttertoast.showToast(msg: 'Signing you out...');
+    String deviceId = await FirebaseMessaging().getToken();
+    await FirebaseFirestore.instance
+        .collection('users/$username/tokens')
+        .doc(deviceId)
+        .delete();
     await _auth.signOut();
   }
 }
