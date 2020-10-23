@@ -74,6 +74,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/empty.jpg
+    - assets/ashutosh.jpeg
+    - assets/nishchal.jpeg
+    - assets/anushka.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

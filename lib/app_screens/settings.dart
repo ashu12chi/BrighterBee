@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:brighter_bee/app_screens/about.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -135,7 +136,11 @@ class _SettingsState extends State<Settings> {
           ),
           InkWell(
             onTap: (){
-              print(42);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          About()));
             },
             child: Padding(
               padding: const EdgeInsets.only(left:8.0,right:8.0,top:12.0,bottom: 12.0),
