@@ -4,6 +4,7 @@ import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
+import 'package:brighter_bee/helpers/save_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:zefyr/zefyr.dart';
 
@@ -452,18 +454,23 @@ class _PostState extends State<PostCardView> {
                         ),
                       ],
                     )
-                  : Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.bookmark,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Save article',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+                  : Column(children: <Widget>[
+                      IconButton(
+                          icon: Icon(Icons.bookmark,
+                              size: 30, color: Theme.of(context).buttonColor),
+                          onPressed: () async {
+                            bool result =
+                                await savePost(username, community, postKey);
+                            Fluttertoast.showToast(
+                                msg: result
+                                    ? 'Post saved'
+                                    : 'Post removed from save list');
+                          }),
+                      Text(
+                        'Save post',
+                        style: TextStyle(fontSize: 14),
+                      )
+                    ]),
               username == creator
                   ? Column(
                       children: <Widget>[

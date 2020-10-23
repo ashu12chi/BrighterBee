@@ -187,15 +187,21 @@ class _Comment extends State<Comment> {
             .doc(key);
         transaction.update(postRef, {'replyCount': FieldValue.increment(1)});
       });
-      if (creator.compareTo(username) != 0)
-        await instance.collection('notification').add({
+      if (creator.compareTo(username) != 0) {
+        String notificationId = (await instance.collection('notification').add({
           'title': "Your comment in $community has a reply",
           'body': commentText,
           'community': community,
           'creator': username,
           'postId': parentPostKey,
           'receiver': creator,
-        });
+        }))
+            .id;
+        await instance
+            .collection('users/$creator/notifications')
+            .doc(notificationId)
+            .set({});
+      }
     } else {
       await instance
           .collection('communities/$community/posts/$parentPostKey/comments')
@@ -217,15 +223,21 @@ class _Comment extends State<Comment> {
             .doc(parentPostKey);
         transaction.update(postRef, {'commentCount': FieldValue.increment(1)});
       });
-      if (creator.compareTo(username) != 0)
-        await instance.collection('notification').add({
+      if (creator.compareTo(username) != 0) {
+        String notificationId = (await instance.collection('notification').add({
           'title': "Your post in $community has a comment",
           'body': commentText,
           'community': community,
           'creator': username,
           'postId': parentPostKey,
           'receiver': creator,
-        });
+        }))
+            .id;
+        await instance
+            .collection('users/$creator/notifications')
+            .doc(notificationId)
+            .set({});
+      }
       await instance.collection('users/$username/comments').doc(commKey).set({
         'community': community,
         'commKey': commKey,
@@ -238,15 +250,22 @@ class _Comment extends State<Comment> {
     commentText.split(' ').map((w) async {
       if (w.startsWith('@') && w.length > 1) {
         w = w.replaceAll('[^A-Za-z0-9]', '');
-        if (w.compareTo(username) != 0)
-          await instance.collection('notification').add({
+        if (w.compareTo(username) != 0) {
+          String notificationId =
+              (await instance.collection('notification').add({
             'title': "$username tagged you in a comment",
             'body': commentText,
             'community': community,
             'creator': username,
             'postId': parentPostKey,
             'receiver': w,
-          });
+          }))
+                  .id;
+          await instance
+              .collection('users/$w/notifications')
+              .doc(notificationId)
+              .set({});
+        }
       }
     });
 

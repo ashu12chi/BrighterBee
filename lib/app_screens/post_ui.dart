@@ -4,6 +4,7 @@ import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
+import 'package:brighter_bee/helpers/save_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
@@ -14,6 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostUI extends StatefulWidget {
@@ -367,18 +369,23 @@ class _PostState extends State<PostUI> {
                         ),
                       ],
                     ),
-                    Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.bookmark,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Save article',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+                    Column(children: <Widget>[
+                      IconButton(
+                          icon: Icon(Icons.bookmark,
+                              size: 30, color: Theme.of(context).buttonColor),
+                          onPressed: () async {
+                            bool result =
+                                await savePost(username, community, postKey);
+                            Fluttertoast.showToast(
+                                msg: result
+                                    ? 'Post saved'
+                                    : 'Post removed from save list');
+                          }),
+                      Text(
+                        'Save article',
+                        style: TextStyle(fontSize: 14),
+                      )
+                    ]),
                     Column(
                       children: <Widget>[
                         IconButton(
