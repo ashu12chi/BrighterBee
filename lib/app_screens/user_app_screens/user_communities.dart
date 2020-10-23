@@ -5,6 +5,9 @@
 * This file shows list of communities current user is member of.
  */
 
+import 'package:brighter_bee/app_screens/community_screens/community_profile.dart';
+import 'package:brighter_bee/helpers/community_join_leave.dart';
+import 'package:brighter_bee/widgets/community_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,14 +43,84 @@ class _UserCommunitiesState extends State<UserCommunities> {
               return ListView.builder(
                   itemCount: snapshot.data['communityCount'],
                   itemBuilder: (context, index) {
-                    String community = snapshot.data['communityList'][index];
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(community, style: TextStyle(fontSize: 18)),
-                          Divider()
-                        ]);
+                    return Dismissible(
+                      key: Key(snapshot.data['communityList'][index]),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CommunityProfile(
+                                      snapshot.data['communityList'][index])));
+                        },
+                        child: CommunityCard(snapshot.data['communityList'][index]),
+                      ),
+                      background: slideRightBackground(),
+                      confirmDismiss: (direction) async {
+                        final bool res = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Text(
+                                    "Are you sure you want to leave ${snapshot.data['communityList'][index]} community?"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  FlatButton(
+                                    child: Text(
+                                      "Leave",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    onPressed: () async {
+                                      await handleLeave(
+                                          snapshot.data['communityList'][index],
+                                          user.displayName);
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
+                        return res;
+                      },
+                    );
                   });
             }));
+  }
+
+  Widget slideRightBackground() {
+    return Container(
+      color: Colors.red,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: 20,
+            ),
+            Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+            ),
+            Text(
+              " Leave",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ),
+        alignment: Alignment.centerLeft,
+      ),
+    );
   }
 }

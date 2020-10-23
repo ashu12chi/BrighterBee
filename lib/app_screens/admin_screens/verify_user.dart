@@ -3,7 +3,7 @@ import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../user_card.dart';
+import '../../widgets/user_card.dart';
 
 class VerifyUser extends StatefulWidget {
   final community;
