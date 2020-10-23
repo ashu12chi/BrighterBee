@@ -80,7 +80,7 @@ class _CommentsList extends State<CommentsList> {
               itemBuilder: (context, index) {
                 return ExpansionTile(
                   backgroundColor:
-                  Theme.of(context).buttonColor.withOpacity(0.2),
+                      Theme.of(context).buttonColor.withOpacity(0.2),
                   title: CommentWidget(
                       community,
                       postKey,

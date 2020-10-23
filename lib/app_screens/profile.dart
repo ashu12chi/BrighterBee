@@ -1,4 +1,4 @@
-import 'package:brighter_bee/user_app_screens/edit_details.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/edit_details.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
 import 'package:cached_network_image/cached_network_image.dart';

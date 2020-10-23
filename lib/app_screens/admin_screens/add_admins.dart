@@ -18,69 +18,82 @@ class _AddAdminsState extends State<AddAdmins> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Admins',style: TextStyle(fontWeight: FontWeight.bold),),),
+      appBar: AppBar(
+        title: Text(
+          'Add Admins',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance.collection('communities').doc(community).snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('communities')
+              .doc(community)
+              .snapshots(),
           builder: (context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting)
+            if (snapshot.connectionState == ConnectionState.waiting)
               return CircularProgressIndicator();
             print('28: ashu12_chi');
             print(snapshot.data['members'].length);
             return ListView.builder(
               itemCount: snapshot.data['members'].length,
-              itemBuilder: (context,index) {
+              itemBuilder: (context, index) {
                 print(snapshot.data['members'][index]);
-                return (snapshot.data['admin'].contains(snapshot.data['members'][index]))?Container():Dismissible(
-                  key: Key(snapshot.data['members'][index]),
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Profile(snapshot.data['members'][index])));
-                    },
-                    child: UserCard(snapshot.data['members'][index]),
-                  ),
-                  background: slideRightBackground(),
-                  confirmDismiss: (direction) async {
-                    final bool res = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Text(
-                                "Are you sure you want to add this member as Admin ?"),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              FlatButton(
-                                child: Text(
-                                  "Accept",
-                                  style: TextStyle(color: Colors.green),
-                                ),
-                                onPressed: () async {
-                                  await handleAddAdmin(community,snapshot.data['members'][index]);
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        });
-                    return res;
-                  },
-                );
+                return (snapshot.data['admin']
+                        .contains(snapshot.data['members'][index]))
+                    ? Container()
+                    : Dismissible(
+                        key: Key(snapshot.data['members'][index]),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Profile(
+                                        snapshot.data['members'][index])));
+                          },
+                          child: UserCard(snapshot.data['members'][index]),
+                        ),
+                        background: slideRightBackground(),
+                        confirmDismiss: (direction) async {
+                          final bool res = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text(
+                                      "Are you sure you want to add this member as Admin ?"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(color: Colors.green),
+                                      ),
+                                      onPressed: () async {
+                                        await handleAddAdmin(community,
+                                            snapshot.data['members'][index]);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                          return res;
+                        },
+                      );
               },
             );
-          }
-      ),
+          }),
     );
   }
+
   Widget slideRightBackground() {
     return Container(
       color: Colors.green,

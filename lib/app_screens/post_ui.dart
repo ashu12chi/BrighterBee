@@ -5,7 +5,7 @@ import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
-import 'package:brighter_bee/user_app_screens/edit_post.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:brighter_bee/widgets/comments_list.dart';
@@ -14,7 +14,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostUI extends StatefulWidget {

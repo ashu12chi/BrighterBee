@@ -18,26 +18,35 @@ class _ViewAdminsState extends State<ViewAdmins> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('View Admins',style: TextStyle(fontWeight: FontWeight.bold),),),
+      appBar: AppBar(
+        title: Text(
+          'View Admins',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance.collection('communities').doc(community).snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('communities')
+              .doc(community)
+              .snapshots(),
           builder: (context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting)
+            if (snapshot.connectionState == ConnectionState.waiting)
               return CircularProgressIndicator();
             print('28: ashu12_chi');
             print(snapshot.data['admin'].length);
             return ListView.builder(
               itemCount: snapshot.data['admin'].length,
-              itemBuilder: (context,index) {
+              itemBuilder: (context, index) {
                 print(snapshot.data['admin'][index]);
                 return Dismissible(
                   key: Key(snapshot.data['admin'][index]),
                   child: InkWell(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Profile(snapshot.data['admin'][index])));
+                              builder: (context) =>
+                                  Profile(snapshot.data['admin'][index])));
                     },
                     child: UserCard(snapshot.data['admin'][index]),
                   ),
@@ -65,7 +74,8 @@ class _ViewAdminsState extends State<ViewAdmins> {
                                   style: TextStyle(color: Colors.red),
                                 ),
                                 onPressed: () async {
-                                  await handleRemoveAdmin(community,snapshot.data['admin'][index]);
+                                  await handleRemoveAdmin(
+                                      community, snapshot.data['admin'][index]);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -77,10 +87,10 @@ class _ViewAdminsState extends State<ViewAdmins> {
                 );
               },
             );
-          }
-      ),
+          }),
     );
   }
+
   Widget slideRightBackground() {
     return Container(
       color: Colors.red,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
@@ -77,6 +78,7 @@ class _PostState extends State<PostCardView> {
           bool downvoted = snapshot.data['downvoters'].contains(username);
           int commentCount = snapshot.data['commentCount'];
           String title = snapshot.data['title'];
+          List listOfMedia = snapshot.data['listOfMedia'];
           String mediaUrl =
               'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
           if (mediaType == 1) mediaUrl = snapshot.data['mediaUrl'];
@@ -222,7 +224,13 @@ class _PostState extends State<PostCardView> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return buildBottomSheet(
-                                                      creator);
+                                                      creator,
+                                                      fullName,
+                                                      mediaUrl,
+                                                      mediaType,
+                                                      listOfMedia,
+                                                      title,
+                                                      content);
                                                 });
                                           },
                                         ),
@@ -397,7 +405,8 @@ class _PostState extends State<PostCardView> {
     debugPrint('Post opened!');
   }
 
-  buildBottomSheet(String creator) {
+  buildBottomSheet(String creator, String displayName, String mediaURL,
+      int mediaType, List listOfMedia, String oldTitle, String content) {
     return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
       return SingleChildScrollView(
         padding: EdgeInsets.all(10),
@@ -416,17 +425,45 @@ class _PostState extends State<PostCardView> {
                   ),
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.bookmark,
-                          size: 30, color: Theme.of(context).buttonColor)),
-                  Text(
-                    'Save article',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
+              (creator == username)
+                  ? Column(
+                      children: <Widget>[
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditPost(
+                                      community,
+                                      postKey,
+                                      username,
+                                      displayName,
+                                      mediaURL,
+                                      mediaType,
+                                      listOfMedia,
+                                      oldTitle,
+                                      content)));
+                            },
+                            icon: Icon(Icons.edit,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Edit post',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.bookmark,
+                                size: 30,
+                                color: Theme.of(context).buttonColor)),
+                        Text(
+                          'Save article',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
               username == creator
                   ? Column(
                       children: <Widget>[

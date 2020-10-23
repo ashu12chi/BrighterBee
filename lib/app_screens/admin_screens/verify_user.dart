@@ -19,6 +19,7 @@ class _VerifyUserState extends State<VerifyUser> {
     super.initState();
     processing = false;
   }
+
   _VerifyUserState(this.community);
   @override
   Widget build(BuildContext context) {
@@ -30,37 +31,75 @@ class _VerifyUserState extends State<VerifyUser> {
         ),
       ),
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection('communities').doc(community).snapshots(),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
-          print('28: ashu12_chi');
-          print(snapshot.data['pendingMembers'].length);
-          return ListView.builder(
-            itemCount: snapshot.data['pendingMembers'].length,
-            itemBuilder: (context,index) {
-              print(snapshot.data['pendingMembers'][index]);
-              return Dismissible(
-                key: Key(snapshot.data['pendingMembers'][index]),
-                child: InkWell(
-                  onTap: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Profile(snapshot.data['pendingMembers'][index])));
-                  },
-                  child: UserCard(snapshot.data['pendingMembers'][index]),
-                ),
-                background: slideRightBackground(),
-                secondaryBackground: slideLeftBackground(),
-                confirmDismiss: (direction) async {
-                  if (direction == DismissDirection.endToStart) {
+          stream: FirebaseFirestore.instance
+              .collection('communities')
+              .doc(community)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator();
+            print('28: ashu12_chi');
+            print(snapshot.data['pendingMembers'].length);
+            return ListView.builder(
+              itemCount: snapshot.data['pendingMembers'].length,
+              itemBuilder: (context, index) {
+                print(snapshot.data['pendingMembers'][index]);
+                return Dismissible(
+                  key: Key(snapshot.data['pendingMembers'][index]),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Profile(
+                                  snapshot.data['pendingMembers'][index])));
+                    },
+                    child: UserCard(snapshot.data['pendingMembers'][index]),
+                  ),
+                  background: slideRightBackground(),
+                  secondaryBackground: slideLeftBackground(),
+                  confirmDismiss: (direction) async {
+                    if (direction == DismissDirection.endToStart) {
+                      final bool res = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content:
+                                  Text("Are you sure you want to reject ?"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text(
+                                    "Reject",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  onPressed: () async {
+                                    //if(processing)
+                                    //return;
+                                    await handleJoinReject(community,
+                                        snapshot.data['pendingMembers'][index]);
+                                    //processing = false;
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                      return res;
+                    }
                     final bool res = await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            content: Text(
-                                "Are you sure you want to reject ?"),
+                            content: Text("Are you sure you want to accept ?"),
                             actions: <Widget>[
                               FlatButton(
                                 child: Text(
@@ -73,14 +112,12 @@ class _VerifyUserState extends State<VerifyUser> {
                               ),
                               FlatButton(
                                 child: Text(
-                                  "Reject",
-                                  style: TextStyle(color: Colors.red),
+                                  "Accept",
+                                  style: TextStyle(color: Colors.green),
                                 ),
                                 onPressed: () async {
-                                  //if(processing)
-                                    //return;
-                                  await handleJoinReject(community,snapshot.data['pendingMembers'][index]);
-                                  //processing = false;
+                                  await handleJoinAccept(community,
+                                      snapshot.data['pendingMembers'][index]);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -88,43 +125,11 @@ class _VerifyUserState extends State<VerifyUser> {
                           );
                         });
                     return res;
-                  }
-                  final bool res = await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Text(
-                              "Are you sure you want to accept ?"),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            FlatButton(
-                              child: Text(
-                                "Accept",
-                                style: TextStyle(color: Colors.green),
-                              ),
-                              onPressed: () async {
-                                await handleJoinAccept(community,snapshot.data['pendingMembers'][index]);
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                  return res;
-                },
-              );
-            },
-          );
-        }
-      ),
+                  },
+                );
+              },
+            );
+          }),
     );
   }
 

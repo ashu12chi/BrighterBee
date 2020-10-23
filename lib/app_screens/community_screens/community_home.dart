@@ -1,8 +1,8 @@
-
 import 'package:brighter_bee/app_screens/admin_screens/admin_control_pannel.dart';
 import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:brighter_bee/live_stream/live_list.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,6 @@ import 'community_profile.dart';
 
 class CommunityHome extends StatefulWidget {
   final community;
-
 
   CommunityHome(this.community);
 
@@ -70,183 +69,208 @@ class _CommunityHomeState extends State<CommunityHome> {
         ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection('communities').doc(community).snapshots(),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
-          mediaUrl = snapshot.data['photoUrl'];
-          about = snapshot.data['about'];
-          privacy = snapshot.data['privacy'];
-          posts = snapshot.data['posts'];
-          visibility = snapshot.data['visibility'];
-          members = snapshot.data['memberCount'];
-          verification = snapshot.data['verification'];
-          creator = snapshot.data['creator'];
-          return SingleChildScrollView(
-            physics: ScrollPhysics(),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Column(
+          stream: FirebaseFirestore.instance
+              .collection('communities')
+              .doc(community)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator();
+            mediaUrl = snapshot.data['photoUrl'];
+            about = snapshot.data['about'];
+            privacy = snapshot.data['privacy'];
+            posts = snapshot.data['posts'];
+            visibility = snapshot.data['visibility'];
+            members = snapshot.data['memberCount'];
+            verification = snapshot.data['verification'];
+            creator = snapshot.data['creator'];
+            return SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(
+                children: <Widget>[
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Image.network(
-                        mediaUrl,
-                        fit: BoxFit.fill,
+                      CachedNetworkImage(
+                        imageUrl: mediaUrl,
                         height: 200,
+                        fit: BoxFit.fill,
                       ),
                     ],
                   ),
-                ),
-                Center(
-                    child: Card(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CommunityProfile(community)));
-                    },
-                    child: Column(
-                      children: [
-                        Text(
-                          community,
-                          style:
-                              TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              privacy==0?Icons.public:Icons.lock,
-                              color: Colors.grey,
-                              size: 15,
-                            ),
-                            Text(
-                              privacy==0?' Public group  ':' Private group ',
-                              style: TextStyle(color: Colors.grey, fontSize: 15),
-                            ),
-                            Text(
-                              '$members Members',
-                              style: TextStyle(color: Colors.grey, fontSize: 15),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                )),
-                Padding(
-                  padding: const EdgeInsets.only(left:8.0,right:8.0),
-                  child: FirebaseAuth.instance.currentUser.displayName == creator?FlatButton(
-                    child: Text(
-                      'Control Panel',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).accentColor),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(
-                            color: Theme.of(context).accentColor)),
-                    minWidth: double.infinity,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AdminControlPanel(community)));
-                    },
-                  ):(snapshot.data['pendingMembers']
-              .contains(FirebaseAuth.instance.currentUser.displayName))?FlatButton(
-                    child: Text(
-                      'Pending request',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).accentColor),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(
-                            color: Theme.of(context).accentColor)),
-                    minWidth: double.infinity,
-                  ):(snapshot.data['admin']
-              .contains(FirebaseAuth.instance.currentUser.displayName))?FlatButton(
-                    child: Text(
-                      'Leave as Admin',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).accentColor),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(
-                            color: Theme.of(context).accentColor)),
-                    minWidth: double.infinity,
-                    onPressed: () {
-                      handleRemoveAdmin(community, FirebaseAuth.instance.currentUser.displayName);
-                    },
-                  ):(snapshot.data['members']
-                      .contains(FirebaseAuth.instance.currentUser.displayName))?Container():FlatButton(
-                    child: Text(
-                      'Join Community',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).accentColor),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(
-                            color: Theme.of(context).accentColor)),
-                    minWidth: double.infinity,
-                    onPressed: () async {
-                      if(processing)
-                        return;
-                      await handleJoinRequest(community,FirebaseAuth.instance.currentUser.displayName);
-                      processing = false;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                  child: Container(
-                    height: 5.0,
-                    width: double.infinity,
-                    color: Colors.black12,
-                  ),
-                ),
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('communities')
-                      .doc(community)
-                      .collection('posts')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    return snapshot.connectionState == ConnectionState.waiting
-                        ? Center(
-                            child: CircularProgressIndicator(),
+                  Center(
+                      child: Card(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CommunityProfile(community)));
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            community,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                privacy == 0 ? Icons.public : Icons.lock,
+                                color: Colors.grey,
+                                size: 15,
+                              ),
+                              Text(
+                                privacy == 0
+                                    ? ' Public group  '
+                                    : ' Private group ',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              ),
+                              Text(
+                                '$members Members',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              )
+                            ],
                           )
-                        : ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot documentSnapshot =
-                                  snapshot.data.docs[index];
-                              return Column(
-                                children: [
-                                  PostCardView(community, documentSnapshot.id),
-                                ],
-                              );
+                        ],
+                      ),
+                    ),
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: FirebaseAuth.instance.currentUser.displayName ==
+                            creator
+                        ? FlatButton(
+                            child: Text(
+                              'Control Panel',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Theme.of(context).accentColor),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                side: BorderSide(
+                                    color: Theme.of(context).accentColor)),
+                            minWidth: double.infinity,
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AdminControlPanel(community)));
                             },
-                          );
-                  },
-                )
-              ],
-            ),
-          );
-        }
-      ),
+                          )
+                        : (snapshot.data['pendingMembers'].contains(
+                                FirebaseAuth.instance.currentUser.displayName))
+                            ? FlatButton(
+                                child: Text(
+                                  'Pending request',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Theme.of(context).accentColor),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    side: BorderSide(
+                                        color: Theme.of(context).accentColor)),
+                                minWidth: double.infinity,
+                              )
+                            : (snapshot.data['admin'].contains(FirebaseAuth
+                                    .instance.currentUser.displayName))
+                                ? FlatButton(
+                                    child: Text(
+                                      'Leave as Admin',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Theme.of(context).accentColor),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        side: BorderSide(
+                                            color:
+                                                Theme.of(context).accentColor)),
+                                    minWidth: double.infinity,
+                                    onPressed: () {
+                                      handleRemoveAdmin(
+                                          community,
+                                          FirebaseAuth.instance.currentUser
+                                              .displayName);
+                                    },
+                                  )
+                                : (snapshot.data['members'].contains(
+                                        FirebaseAuth
+                                            .instance.currentUser.displayName))
+                                    ? Container()
+                                    : FlatButton(
+                                        child: Text(
+                                          'Join Community',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Theme.of(context)
+                                                  .accentColor),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            side: BorderSide(
+                                                color: Theme.of(context)
+                                                    .accentColor)),
+                                        minWidth: double.infinity,
+                                        onPressed: () async {
+                                          if (processing) return;
+                                          await handleJoinRequest(
+                                              community,
+                                              FirebaseAuth.instance.currentUser
+                                                  .displayName);
+                                          processing = false;
+                                        },
+                                      ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                    child: Container(
+                      height: 5.0,
+                      width: double.infinity,
+                      color: Colors.black12,
+                    ),
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('communities')
+                        .doc(community)
+                        .collection('posts')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return snapshot.connectionState == ConnectionState.waiting
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.docs.length,
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot documentSnapshot =
+                                    snapshot.data.docs[index];
+                                return Column(
+                                  children: [
+                                    PostCardView(
+                                        community, documentSnapshot.id),
+                                  ],
+                                );
+                              },
+                            );
+                    },
+                  )
+                ],
+              ),
+            );
+          }),
     );
   }
 
@@ -280,17 +304,23 @@ class _CommunityHomeState extends State<CommunityHome> {
                     Column(
                       children: <Widget>[
                         IconButton(
-                          onPressed: () async {
-                            if(FirebaseAuth.instance.currentUser.displayName == creator) {
-                              Fluttertoast.showToast(msg: 'Creator can not leave their community');
-                              return;
-                            }
-                            await handleLeave(community, FirebaseAuth.instance.currentUser.displayName);
-                          },
+                            onPressed: () async {
+                              if (FirebaseAuth
+                                      .instance.currentUser.displayName ==
+                                  creator) {
+                                Fluttertoast.showToast(
+                                    msg:
+                                        'Creator can not leave their community');
+                                return;
+                              }
+                              await handleLeave(
+                                  community,
+                                  FirebaseAuth
+                                      .instance.currentUser.displayName);
+                            },
                             icon: Icon(Icons.exit_to_app,
                                 size: 30,
-                                color: Theme.of(context).buttonColor)
-                        ),
+                                color: Theme.of(context).buttonColor)),
                         Text(
                           'Leave Community',
                           style: TextStyle(fontSize: 14),
