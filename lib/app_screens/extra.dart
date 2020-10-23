@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:brighter_bee/app_screens/profile.dart';
+import 'package:brighter_bee/app_screens/settings.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_communities.dart';
@@ -220,55 +221,34 @@ class _ExtraState extends State<Extra> {
             SizedBox(
               width: double.infinity,
               height: 67,
-              child: Card(
-                elevation: 8,
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Icon(Icons.settings),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: Text(
-                        'Settings and Privacy',
-                        style: TextStyle(fontSize: 18.0),
+              child: InkWell(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              Settings()));
+                },
+                child: Card(
+                  elevation: 8,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 8,
                       ),
-                    )
-                  ],
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 67,
-              child: Card(
-                elevation: 8,
-                child: InkWell(
-                    onTap: () async {
-                      await clearCache(context);
-                      Fluttertoast.showToast(msg: "Cache cleared");
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 8,
+                      Icon(Icons.settings),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Text(
+                          'Settings and Privacy',
+                          style: TextStyle(fontSize: 18.0),
                         ),
-                        Icon(Icons.delete),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Text(
-                            'Clear cached data',
-                            style: TextStyle(fontSize: 18.0),
-                          ),
-                        )
-                      ],
-                    )),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
+                      )
+                    ],
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
                 ),
               ),
             ),
@@ -320,41 +300,6 @@ class _ExtraState extends State<Extra> {
     setState(() {
       displayName = str;
     });
-  }
-
-  clearCache(BuildContext context) async {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = FlatButton(
-        child: Text("Clear"),
-        onPressed: () async {
-          String appDir = (await getTemporaryDirectory()).path;
-          Directory(appDir).delete(recursive: true);
-          Navigator.pop(context);
-        });
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Delete cache?"),
-      content: Text("Doing this might slow down loading of some images..."),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 
   Future _signOut() async {
