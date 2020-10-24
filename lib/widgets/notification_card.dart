@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class NotificationCard extends StatefulWidget {
   final String _key;
-  final bool _postRelated;
+  final int _postRelated;
 
   NotificationCard(this._key, this._postRelated);
 
@@ -15,7 +15,7 @@ class NotificationCard extends StatefulWidget {
 
 class _NotificationCardState extends State<NotificationCard> {
   final String key;
-  final bool postRelated;
+  final int postRelated;
   _NotificationCardState(this.key, this.postRelated);
 
   @override
@@ -23,7 +23,7 @@ class _NotificationCardState extends State<NotificationCard> {
     return StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection(
-                postRelated ? 'notification' : 'pendingUserNotification')
+                postRelated == 1 ? 'notification' : 'pendingUserNotification')
             .doc(key)
             .snapshots(),
         builder: (context, snapshot) {
@@ -38,14 +38,14 @@ class _NotificationCardState extends State<NotificationCard> {
                     children: [
                       Text(
                         snapshot.data['title'],
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(
                         height: 3,
                       ),
                       Text(
                         snapshot.data['body'],
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -69,7 +69,7 @@ class _NotificationCardState extends State<NotificationCard> {
                               ' ',
                               am
                             ]),
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       )
