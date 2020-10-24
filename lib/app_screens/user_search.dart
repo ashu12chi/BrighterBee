@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -69,20 +70,36 @@ class _UserSearchState extends State<UserSearch> {
                         DocumentSnapshot documentSnapshot =
                             snapshot.data.docs[index];
                         print(documentSnapshot['name']);
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, top: 8.0),
-                          child: SizedBox(
-                            height: 50,
-                            child: Card(
-                                child: Center(
-                              child: Text(
-                                documentSnapshot['name'],
-                                style: TextStyle(fontSize: 18),
-                                overflow: TextOverflow.ellipsis,
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8.0, right: 8.0, top: 8.0),
+                              child: SizedBox(
+                                height: 40,
+                                child: InkWell(
+                                  onTap: (){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => Profile(documentSnapshot.id)));
+                                  },
+                                  child: Text(
+                                  documentSnapshot['name'],
+                                  style: TextStyle(fontSize: 18),
+                                  textAlign: TextAlign.start,
+                                  overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                               ),
-                            )),
-                          ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
+                              child: Container(
+                                height: 1.0,
+                                width: double.infinity,
+                                color: Theme.of(context).dividerColor,
+                              ),
+                            )
+                          ],
                         );
                       },
                     );

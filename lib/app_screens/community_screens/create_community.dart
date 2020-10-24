@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -474,8 +475,7 @@ class _CreateGroupState extends State<CreateGroup> {
         temp = temp + commName[i];
         nameSearchList.add(temp);
       }
-
-      instance.collection('communities').doc(commName).set({
+      await instance.collection('communities').doc(commName).set({
         'name': commName,
         'about': about,
         'photoUrl': photoUrl,
@@ -491,7 +491,7 @@ class _CreateGroupState extends State<CreateGroup> {
         'members': [],
         'pendingMembers': [],
       });
-
+      await handleCommunityCreate(commName,FirebaseAuth.instance.currentUser.displayName);
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -505,6 +505,7 @@ class _CreateGroupState extends State<CreateGroup> {
         content: Text('Community creation failed.'),
       ));
     }
+    Navigator.pop(context);
   }
 
   _showImagePicker(context) {

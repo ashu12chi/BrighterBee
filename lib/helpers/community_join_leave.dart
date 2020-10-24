@@ -79,3 +79,20 @@ handleRemoveAdmin(String community, String user) async {
     });
   });
 }
+
+handleCommunityCreate(String community, String user) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference userRef = instance.collection('users').doc(user);
+    transaction.update(userRef, {
+      'communityCount': FieldValue.increment(1),
+      'communityList': FieldValue.arrayUnion([community])
+    });
+    DocumentReference communityRef =
+    instance.collection('communities').doc(community);
+    transaction.update(communityRef, {
+      'memberCount': FieldValue.increment(1)
+    });
+  });
+}
+

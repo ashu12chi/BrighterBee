@@ -101,7 +101,7 @@ class _ExtraState extends State<Extra> {
               child: Container(
                 height: 1.0,
                 width: double.infinity,
-                color: Colors.grey,
+                color: Theme.of(context).dividerColor,
               ),
             ),
             Row(
