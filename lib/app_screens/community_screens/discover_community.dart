@@ -2,6 +2,7 @@ import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 /* @author: Ashutosh Chitranshi
    21-10-2020 14:31
@@ -27,6 +28,7 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
           stream:
               FirebaseFirestore.instance.collection('communities').snapshots(),
           builder: (context, snapshot) {
+            if(snapshot.hasData && snapshot.data.docs.isNotEmpty)
             return ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
@@ -86,6 +88,54 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                     ),
                   );
                 });
+            return ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context,index) {
+                  return Card(
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Shimmer.fromColors(
+                            child: Card(
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                              ),
+                            ),
+                            baseColor: Colors.grey,
+                            highlightColor: Colors.black12,
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Shimmer.fromColors(
+                              child: Card(
+                                child: Text('Name of User'),
+                                shape: RoundedRectangleBorder(
+
+                                ),
+                              ),
+                              baseColor: Colors.grey,
+                              highlightColor: Colors.black12,
+                            ),
+                            Shimmer.fromColors(
+                              child: Card(
+                                child: Text('Name of User name of user'),
+                                shape: RoundedRectangleBorder(
+
+                                ),
+                              ),
+                              baseColor: Colors.grey,
+                              highlightColor: Colors.black12,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                }
+            );
           }),
     );
   }

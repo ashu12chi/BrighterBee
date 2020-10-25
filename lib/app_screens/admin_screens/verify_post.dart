@@ -1,6 +1,7 @@
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class VerifyPost extends StatefulWidget {
@@ -31,7 +32,7 @@ class _VerifyPostState extends State<VerifyPost> {
             itemCount: snapshot.data.docs.length,
             itemBuilder: (context,index){
               DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
-              if(documentSnapshot['isVerified']== false) {
+              if(documentSnapshot['isVerified']== false && documentSnapshot['creator'] != FirebaseAuth.instance.currentUser.displayName) {
                 return Dismissible(
                   key: Key(documentSnapshot.id),
                   child: InkWell(

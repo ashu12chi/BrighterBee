@@ -1,6 +1,7 @@
 import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../widgets/user_card.dart';
 import '../profile.dart';
@@ -30,65 +31,96 @@ class _AddAdminsState extends State<AddAdmins> {
               .doc(community)
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return CircularProgressIndicator();
+            if (snapshot.hasData && snapshot.data.exists) {
             print('28: ashu12_chi');
             print(snapshot.data['members'].length);
             return ListView.builder(
-              itemCount: snapshot.data['members'].length,
-              itemBuilder: (context, index) {
-                print(snapshot.data['members'][index]);
-                return (snapshot.data['admin']
-                        .contains(snapshot.data['members'][index]))
-                    ? Container()
-                    : Dismissible(
-                        key: Key(snapshot.data['members'][index]),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Profile(
-                                        snapshot.data['members'][index])));
-                          },
-                          child: UserCard(snapshot.data['members'][index]),
+            itemCount: snapshot.data['members'].length,
+            itemBuilder: (context, index) {
+            print(snapshot.data['members'][index]);
+            return (snapshot.data['admin']
+                .contains(snapshot.data['members'][index]))
+            ? Container()
+                : Dismissible(
+            key: Key(snapshot.data['members'][index]),
+            child: InkWell(
+            onTap: () {
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) => Profile(
+            snapshot.data['members'][index])));
+            },
+            child: UserCard(snapshot.data['members'][index]),
+            ),
+            background: slideRightBackground(),
+            confirmDismiss: (direction) async {
+            final bool res = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+            return AlertDialog(
+            content: Text(
+            "Are you sure you want to add this member as Admin ?"),
+            actions: <Widget>[
+            FlatButton(
+            child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.black),
+            ),
+            onPressed: () {
+            Navigator.of(context).pop();
+            },
+            ),
+            FlatButton(
+            child: Text(
+            "Accept",
+            style: TextStyle(color: Colors.green),
+            ),
+            onPressed: () async {
+            await handleAddAdmin(community,
+            snapshot.data['members'][index]);
+            Navigator.of(context).pop();
+            },
+            ),
+            ],
+            );
+            });
+            return res;
+            },
+            );
+            },
+            );
+            }
+            return ListView.builder(
+            itemCount: 10,
+            itemBuilder: (context,index) {
+              return Card(
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Shimmer.fromColors(
+                        child: CircleAvatar(
+                          radius: 30,
                         ),
-                        background: slideRightBackground(),
-                        confirmDismiss: (direction) async {
-                          final bool res = await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text(
-                                      "Are you sure you want to add this member as Admin ?"),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                    FlatButton(
-                                      child: Text(
-                                        "Accept",
-                                        style: TextStyle(color: Colors.green),
-                                      ),
-                                      onPressed: () async {
-                                        await handleAddAdmin(community,
-                                            snapshot.data['members'][index]);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                          return res;
-                        },
-                      );
-              },
+                        baseColor: Colors.grey,
+                        highlightColor: Colors.black12,
+                      ),
+                    ),
+                    Shimmer.fromColors(
+                      child: Card(
+                        child: Text('Name of User Name of User '),
+                        shape: RoundedRectangleBorder(
+
+                        ),
+                      ),
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.black12,
+                    )
+                  ],
+                ),
+              );
+            }
             );
           }),
     );
