@@ -225,8 +225,14 @@ class _PostState extends State<PostUI> {
                             imageDelegate: MyAppZefyrImageDelegate(),
                           ),
                         ),
+                        Row(children: [
+                          SizedBox(width: 15),
+                          (mediaType == 0)
+                              ? SizedBox()
+                              : Text('Attached media:')
+                        ]),
                         (mediaType == 0)
-                            ? Container()
+                            ? SizedBox()
                             : (mediaType == 2)
                                 ? VideoPlayer(mediaUrl)
                                 : InkWell(
@@ -235,13 +241,16 @@ class _PostState extends State<PostUI> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  PhotoViewer(mediaUrl)));
+                                                  PhotoViewerCached(mediaUrl)));
                                     },
-                                    child: Image.network(
-                                      mediaUrl,
-                                      width: double.infinity,
-                                      height: 250,
-                                    )),
+                                    child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 15.0, right: 15.0),
+                                        child: CachedNetworkImage(
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(),
+                                          imageUrl: mediaUrl,
+                                        ))),
                         Divider(
                           color: Theme.of(context).buttonColor,
                         ),

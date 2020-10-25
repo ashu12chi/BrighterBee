@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:zefyr/zefyr.dart';
@@ -266,18 +267,11 @@ class _PostState extends State<PostCardView> {
                                       : Padding(
                                           padding:
                                               const EdgeInsets.only(top: 8.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              Image.network(
-                                                mediaUrl,
-                                                fit: BoxFit.fill,
-                                                height: 200,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                          child: CachedNetworkImage(
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            imageUrl: mediaUrl,
+                                          )),
                                   Row(
                                     children: <Widget>[
                                       Text(

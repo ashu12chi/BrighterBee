@@ -1,5 +1,6 @@
 import 'package:brighter_bee/app_screens/feed.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,7 @@ class _MyAppState extends State<MyApp> {
       home: (FirebaseAuth.instance.currentUser == null ||
               !FirebaseAuth.instance.currentUser.emailVerified)
           ? SignIn()
-          : Feed(user: FirebaseAuth.instance.currentUser),
+          : Feed(FirebaseAuth.instance.currentUser),
       themeMode: ThemeMode.system,
     );
   }

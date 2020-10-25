@@ -1,4 +1,3 @@
-import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
 import 'package:brighter_bee/app_screens/community_screens/create_community.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +9,11 @@ class Communities extends StatefulWidget {
   _CommunitiesState createState() => _CommunitiesState();
 }
 
-class _CommunitiesState extends State<Communities> {
+class _CommunitiesState extends State<Communities>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title:
@@ -99,4 +100,7 @@ class _CommunitiesState extends State<Communities> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

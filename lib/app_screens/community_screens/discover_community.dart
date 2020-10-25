@@ -28,69 +28,66 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
           stream:
               FirebaseFirestore.instance.collection('communities').snapshots(),
           builder: (context, snapshot) {
-            if(snapshot.hasData && snapshot.data.docs.isNotEmpty)
-            return ListView.builder(
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
-                  print(documentSnapshot.id);
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CommunityHome(documentSnapshot.id)));
-                    },
-                    child: Card(
-                      elevation: 8,
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: 10, bottom: 10, left: 10, right: 20),
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                  image: documentSnapshot['photoUrl'] == null
-                                      ? AssetImage('assets/empty.jpg')
-                                      : CachedNetworkImageProvider(
-                                          documentSnapshot.data()['photoUrl'],
-                                        ),
-                                  fit: BoxFit.fill),
+            if (snapshot.hasData && snapshot.data.docs.isNotEmpty)
+              return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot documentSnapshot =
+                        snapshot.data.docs[index];
+                    print(documentSnapshot.id);
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CommunityHome(documentSnapshot.id)));
+                      },
+                      child: Card(
+                        elevation: 8,
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: 10, bottom: 10, left: 10, right: 20),
+                              width: 100,
+                              height: 100,
+                              child: CachedNetworkImage(
+                                placeholder: (context, url) => Image(
+                                    image: AssetImage('assets/empty.jpg')),
+                                imageUrl: documentSnapshot.data()['photoUrl'],
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  documentSnapshot.id,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                SizedBox(
-                                  height: 3,
-                                ),
-                                Text(
-                                  documentSnapshot['about'],
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.grey),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                )
-                              ],
-                            ),
-                          )
-                        ],
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    documentSnapshot.id,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  Text(
+                                    documentSnapshot['about'],
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                });
+                    );
+                  });
             return ListView.builder(
                 itemCount: 10,
-                itemBuilder: (context,index) {
+                itemBuilder: (context, index) {
                   return Card(
                     child: Row(
                       children: <Widget>[
@@ -112,9 +109,7 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                             Shimmer.fromColors(
                               child: Card(
                                 child: Text('Name of User'),
-                                shape: RoundedRectangleBorder(
-
-                                ),
+                                shape: RoundedRectangleBorder(),
                               ),
                               baseColor: Colors.grey,
                               highlightColor: Colors.black12,
@@ -122,9 +117,7 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                             Shimmer.fromColors(
                               child: Card(
                                 child: Text('Name of User name of user'),
-                                shape: RoundedRectangleBorder(
-
-                                ),
+                                shape: RoundedRectangleBorder(),
                               ),
                               baseColor: Colors.grey,
                               highlightColor: Colors.black12,
@@ -134,8 +127,7 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                       ],
                     ),
                   );
-                }
-            );
+                });
           }),
     );
   }

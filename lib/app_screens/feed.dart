@@ -11,16 +11,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Feed extends StatefulWidget {
-  final User user;
+  final User _user;
 
-  const Feed({Key key, this.user}) : super(key: key);
+  Feed(this._user);
 
   @override
-  _FeedState createState() => _FeedState(user);
+  _FeedState createState() => _FeedState(_user);
 }
 
-class _FeedState extends State<Feed> with TickerProviderStateMixin {
-  TabController _controller;
+class _FeedState extends State<Feed> with AutomaticKeepAliveClientMixin {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   User user;
   String username;
@@ -31,9 +30,6 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
 
   void initState() {
     super.initState();
-    // _firebaseMessaging.getToken().then((value) => print("Device token: $value"));
-    _controller = TabController(initialIndex: 0, length: 4, vsync: this);
-    _controller.addListener(_handleTabSelection);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -64,67 +60,48 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
     });
   }
 
-  void _handleTabSelection() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    debugPrint("Got: $username");
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.grey,
-            ),
-            iconSize: 30.0,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PostSearch()));
-            },
-          ),
-        ],
-        bottom: TabBar(
-          controller: _controller,
-          indicator: UnderlineTabIndicator(
-              borderSide:
-                  BorderSide(width: 3, color: Theme.of(context).accentColor)),
-          tabs: <Widget>[
-            new Tab(
+    super.build(context);
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
               icon: Icon(
-                Icons.home,
+                Icons.search,
+                color: Colors.grey,
               ),
+              iconSize: 30.0,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PostSearch()));
+              },
             ),
-            new Tab(
-              icon: Icon(
-                Icons.people,
-              ),
-            ),
-            new Tab(
-              icon: Icon(
-                Icons.notifications,
-              ),
-            ),
-            new Tab(
-              icon: Icon(
-                Icons.view_headline,
-              ),
-            )
           ],
+          bottom: TabBar(
+            indicator: UnderlineTabIndicator(
+                borderSide:
+                    BorderSide(width: 3, color: Theme.of(context).accentColor)),
+            tabs: [
+              Tab(icon: Icon(Icons.home)),
+              Tab(icon: Icon(Icons.people)),
+              Tab(icon: Icon(Icons.notifications)),
+              Tab(icon: Icon(Icons.view_headline)),
+            ],
+          ),
+          title: Text(
+            'BrighterBee',
+            style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).accentColor),
+          ),
         ),
-        title: Text(
-          'BrighterBee',
-          style: TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).accentColor),
+        body: TabBarView(
+          children: [Home(), Communities(), Notifications(), Extra()],
         ),
-      ),
-      body: TabBarView(
-        children: <Widget>[Home(), Communities(), Notifications(), Extra()],
-        controller: _controller,
       ),
     );
   }
@@ -149,6 +126,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
       ..status = data['status'];
     return item;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class MessageBean {

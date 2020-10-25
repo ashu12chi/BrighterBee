@@ -243,7 +243,8 @@ class _CommunityHomeState extends State<CommunityHome> {
                     stream: FirebaseFirestore.instance
                         .collection('communities')
                         .doc(community)
-                        .collection('posts').orderBy(FieldPath.documentId,descending: true)
+                        .collection('posts')
+                        .orderBy(FieldPath.documentId, descending: true)
                         .where('isVerified', isEqualTo: true)
                         .snapshots(),
                     builder: (context, snapshot) {
@@ -258,12 +259,8 @@ class _CommunityHomeState extends State<CommunityHome> {
                               itemBuilder: (context, index) {
                                 DocumentSnapshot documentSnapshot =
                                     snapshot.data.docs[index];
-                                return Column(
-                                  children: [
-                                    PostCardView(
-                                        community, documentSnapshot.id),
-                                  ],
-                                );
+                                return PostCardView(
+                                    community, documentSnapshot.id);
                               },
                             );
                     },

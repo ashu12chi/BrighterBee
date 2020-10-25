@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:brighter_bee/helpers/path_helper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,7 +35,10 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
 
   @override
   Widget buildImage(BuildContext context, String key) {
-    return Image.network(key);
+    return CachedNetworkImage(
+      placeholder: (context, url) => CircularProgressIndicator(),
+      imageUrl: key,
+    );
   }
 
   @override
@@ -66,7 +70,8 @@ class CardZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
 
   @override
   Widget buildImage(BuildContext context, String key) {
-    return null;
+    return Text('[Image here, open post to view]',
+        style: TextStyle(color: Colors.grey));
   }
 
   @override

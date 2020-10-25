@@ -214,10 +214,8 @@ class _SignInState extends State<SignIn> {
       String deviceId = await _firebaseMessaging.getToken();
       await instance.collection('users/$username/tokens').doc(deviceId).set({});
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => Feed(
-                user: user,
-              )));
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Feed(user)));
     } catch (e) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       print("Sign in failed..." + (_emailController.text));

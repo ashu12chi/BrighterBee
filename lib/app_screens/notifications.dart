@@ -1,4 +1,3 @@
-import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/widgets/notification_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +8,8 @@ class Notifications extends StatefulWidget {
   _NotificationsState createState() => _NotificationsState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _NotificationsState extends State<Notifications>
+    with AutomaticKeepAliveClientMixin {
   String username;
   FirebaseFirestore instance;
 
@@ -22,6 +22,7 @@ class _NotificationsState extends State<Notifications> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications',
@@ -58,11 +59,10 @@ class _NotificationsState extends State<Notifications> {
     );
   }
 
-  getProfileObject() {
+  getProfileObject() {}
 
-  }
+  getPostObject() {}
 
-  getPostObject() {
-
-  }
+  @override
+  bool get wantKeepAlive => true;
 }
