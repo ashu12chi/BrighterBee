@@ -408,7 +408,8 @@ class _CreatePostState extends State<CreatePost> {
       "commentCount": 0,
       "lastModified": time,
       "listOfMedia": listOfMedia,
-      "isVerified": false
+      "isVerified": false,
+      "community": community,
     }).then((action) async {
       debugPrint("successful posting in community!");
 
