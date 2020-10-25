@@ -243,7 +243,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                     stream: FirebaseFirestore.instance
                         .collection('communities')
                         .doc(community)
-                        .collection('posts')
+                        .collection('posts').orderBy(FieldPath.documentId,descending: true)
                         .where('isVerified', isEqualTo: true)
                         .snapshots(),
                     builder: (context, snapshot) {
