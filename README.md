@@ -41,3 +41,6 @@ Articles and comments will be lazily loaded.
 1. [Ashutosh Chitranshi](https://github.com/ashu12chi)
 2. [Nishchal Siddharth Pandey](https://github.com/nisiddharth)
 3. [Anushka Srivastava](https://github.com/Anushkaa-Srivastava)
+
+## Downloads
+APK: https://bit.ly/35uR0uy
