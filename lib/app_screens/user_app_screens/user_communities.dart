@@ -53,7 +53,8 @@ class _UserCommunitiesState extends State<UserCommunities> {
                                   builder: (context) => CommunityProfile(
                                       snapshot.data['communityList'][index])));
                         },
-                        child: CommunityCard(snapshot.data['communityList'][index]),
+                        child: CommunityCard(
+                            snapshot.data['communityList'][index]),
                       ),
                       background: slideRightBackground(),
                       confirmDismiss: (direction) async {

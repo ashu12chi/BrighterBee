@@ -89,10 +89,7 @@ handleCommunityCreate(String community, String user) async {
       'communityList': FieldValue.arrayUnion([community])
     });
     DocumentReference communityRef =
-    instance.collection('communities').doc(community);
-    transaction.update(communityRef, {
-      'memberCount': FieldValue.increment(1)
-    });
+        instance.collection('communities').doc(community);
+    transaction.update(communityRef, {'memberCount': FieldValue.increment(1)});
   });
 }
-

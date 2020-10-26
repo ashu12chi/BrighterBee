@@ -57,7 +57,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
         controller.addListener(scrollListener);
         return Scaffold(
             body: SingleChildScrollView(
-              controller: controller,
+                controller: controller,
                 physics: ScrollPhysics(),
                 child: Column(children: [
                   Padding(

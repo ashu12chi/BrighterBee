@@ -4,8 +4,7 @@ Future<bool> savePost(String username, String community, String postKey) async {
   if (await doesSaveExist(username, community, postKey)) {
     undoSavePost(username, community, postKey);
     return false;
-  }
-  else {
+  } else {
     int time = DateTime.now().millisecondsSinceEpoch;
     await FirebaseFirestore.instance
         .collection('users/$username/posts/saved/$community')

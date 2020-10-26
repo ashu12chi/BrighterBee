@@ -78,15 +78,18 @@ class _UserSearchState extends State<UserSearch> {
                               child: SizedBox(
                                 height: 40,
                                 child: InkWell(
-                                  onTap: (){
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => Profile(documentSnapshot.id)));
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Profile(documentSnapshot.id)));
                                   },
                                   child: Text(
-                                  documentSnapshot['name'],
-                                  style: TextStyle(fontSize: 18),
-                                  textAlign: TextAlign.start,
-                                  overflow: TextOverflow.ellipsis,
+                                    documentSnapshot['name'],
+                                    style: TextStyle(fontSize: 18),
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ),

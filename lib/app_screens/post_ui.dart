@@ -4,7 +4,7 @@ import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
-import 'package:brighter_bee/helpers/save_post.dart';
+import 'package:brighter_bee/helpers/post_share.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
@@ -351,70 +351,6 @@ class _PostState extends State<PostUI> {
                 username, title, creator, isReply)));
   }
 
-  showOptions() {
-    showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
-        ),
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter state) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(10),
-              child: LimitedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.share,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Share',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    Column(children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.bookmark,
-                              size: 30, color: Theme.of(context).buttonColor),
-                          onPressed: () async {
-                            bool result =
-                                await savePost(username, community, postKey);
-                            Fluttertoast.showToast(
-                                msg: result
-                                    ? 'Post saved'
-                                    : 'Post removed from save list');
-                          }),
-                      Text(
-                        'Save article',
-                        style: TextStyle(fontSize: 14),
-                      )
-                    ]),
-                    Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            );
-          });
-        });
-  }
-
   buildBottomSheet(String creator, String displayName, String mediaURL,
       int mediaType, List listOfMedia, String oldTitle, String content) {
     return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
@@ -427,6 +363,12 @@ class _PostState extends State<PostUI> {
               Column(
                 children: <Widget>[
                   IconButton(
+                      onPressed: () async {
+                        Fluttertoast.showToast(msg: 'Please wait...');
+                        await postShareWeb(community, postKey, oldTitle,
+                            mediaType, mediaURL, content);
+                        Navigator.pop(context);
+                      },
                       icon: Icon(Icons.share,
                           size: 30, color: Theme.of(context).buttonColor)),
                   Text(

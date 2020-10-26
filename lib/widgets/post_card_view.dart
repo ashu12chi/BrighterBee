@@ -4,6 +4,7 @@ import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
+import 'package:brighter_bee/helpers/post_share.dart';
 import 'package:brighter_bee/helpers/save_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
@@ -84,7 +85,8 @@ class _PostState extends State<PostCardView> {
           List listOfMedia = snapshot.data['listOfMedia'];
           String mediaUrl =
               'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
-          if (mediaType == 1) mediaUrl = snapshot.data['mediaUrl'];
+          String mediaUrlOriginal = snapshot.data['mediaUrl'];
+          if (mediaType == 1) mediaUrl = mediaUrlOriginal;
           var time = snapshot.data['time'];
           String dateLong = formatDate(
               DateTime.fromMillisecondsSinceEpoch(time),
@@ -229,7 +231,7 @@ class _PostState extends State<PostCardView> {
                                                   return buildBottomSheet(
                                                       creator,
                                                       fullName,
-                                                      mediaUrl,
+                                                      mediaUrlOriginal,
                                                       mediaType,
                                                       listOfMedia,
                                                       title,
@@ -413,6 +415,12 @@ class _PostState extends State<PostCardView> {
               Column(
                 children: <Widget>[
                   IconButton(
+                      onPressed: () async {
+                        Fluttertoast.showToast(msg: 'Please wait...');
+                        await postShareWeb(community, postKey, oldTitle,
+                            mediaType, mediaURL, content);
+                        Navigator.pop(context);
+                      },
                       icon: Icon(Icons.share,
                           size: 30, color: Theme.of(context).buttonColor)),
                   Text(

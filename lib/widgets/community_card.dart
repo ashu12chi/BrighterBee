@@ -47,8 +47,7 @@ class _CommunityCardState extends State<CommunityCard> {
                       ),
                       Text(
                         snapshot.data['about'],
-                        style: TextStyle(
-                            fontSize: 15, color: Colors.grey),
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       )

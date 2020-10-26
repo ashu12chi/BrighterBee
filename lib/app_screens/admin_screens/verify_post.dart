@@ -24,36 +24,79 @@ class _VerifyPostState extends State<VerifyPost> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('communities').doc(community).collection('posts').snapshots(),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
-          return ListView.builder(
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (context,index){
-              DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
-              if(documentSnapshot['isVerified']== false && documentSnapshot['creator'] != FirebaseAuth.instance.currentUser.displayName) {
-                return Dismissible(
-                  key: Key(documentSnapshot.id),
-                  child: InkWell(
-                    onTap: () {
+          stream: FirebaseFirestore.instance
+              .collection('communities')
+              .doc(community)
+              .collection('posts')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator();
+            return ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
+                if (documentSnapshot['isVerified'] == false &&
+                    documentSnapshot['creator'] !=
+                        FirebaseAuth.instance.currentUser.displayName) {
+                  return Dismissible(
+                    key: Key(documentSnapshot.id),
+                    child: InkWell(
+                      onTap: () {
 //                      Navigator.push(
 //                          context,
 //                          MaterialPageRoute(
 //                              builder: (context) => ));
-                    },
-                    child: PostCardView(community,documentSnapshot.id),
-                  ),
-                  background: slideRightBackground(),
-                  secondaryBackground: slideLeftBackground(),
-                  confirmDismiss: (direction) async {
-                    if (direction == DismissDirection.endToStart) {
+                      },
+                      child: PostCardView(community, documentSnapshot.id),
+                    ),
+                    background: slideRightBackground(),
+                    secondaryBackground: slideLeftBackground(),
+                    confirmDismiss: (direction) async {
+                      if (direction == DismissDirection.endToStart) {
+                        final bool res = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content:
+                                    Text("Are you sure you want to reject ?"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  FlatButton(
+                                    child: Text(
+                                      "Reject",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    onPressed: () async {
+                                      //if(processing)
+                                      //return;
+                                      await deletePost(
+                                          community,
+                                          documentSnapshot.id,
+                                          documentSnapshot['creator']);
+//                                    //processing = false;
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
+                        return res;
+                      }
                       final bool res = await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
                               content:
-                              Text("Are you sure you want to reject ?"),
+                                  Text("Are you sure you want to accept ?"),
                               actions: <Widget>[
                                 FlatButton(
                                   child: Text(
@@ -66,14 +109,16 @@ class _VerifyPostState extends State<VerifyPost> {
                                 ),
                                 FlatButton(
                                   child: Text(
-                                    "Reject",
-                                    style: TextStyle(color: Colors.red),
+                                    "Accept",
+                                    style: TextStyle(color: Colors.green),
                                   ),
                                   onPressed: () async {
-                                    //if(processing)
-                                    //return;
-                                      await deletePost(community, documentSnapshot.id,documentSnapshot['creator']);
-//                                    //processing = false;
+                                    await FirebaseFirestore.instance
+                                        .collection('communities')
+                                        .doc(community)
+                                        .collection('posts')
+                                        .doc(documentSnapshot.id)
+                                        .update({'isVerified': true});
                                     Navigator.of(context).pop();
                                   },
                                 ),
@@ -81,49 +126,16 @@ class _VerifyPostState extends State<VerifyPost> {
                             );
                           });
                       return res;
-                    }
-                    final bool res = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Text("Are you sure you want to accept ?"),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              FlatButton(
-                                child: Text(
-                                  "Accept",
-                                  style: TextStyle(color: Colors.green),
-                                ),
-                                onPressed: () async {
-                                  await FirebaseFirestore.instance.collection('communities').doc(community)
-                                      .collection('posts').doc(documentSnapshot.id).update({
-                                    'isVerified':true
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        });
-                    return res;
-                  },
-                );
-              }
-              return Container();
-            },
-          );
-        }
-      ),
+                    },
+                  );
+                }
+                return Container();
+              },
+            );
+          }),
     );
   }
+
   Widget slideRightBackground() {
     return Container(
       color: Colors.green,

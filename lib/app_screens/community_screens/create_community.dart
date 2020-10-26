@@ -491,7 +491,8 @@ class _CreateGroupState extends State<CreateGroup> {
         'members': [],
         'pendingMembers': [],
       });
-      await handleCommunityCreate(commName,FirebaseAuth.instance.currentUser.displayName);
+      await handleCommunityCreate(
+          commName, FirebaseAuth.instance.currentUser.displayName);
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         behavior: SnackBarBehavior.floating,

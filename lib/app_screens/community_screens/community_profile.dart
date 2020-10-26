@@ -274,7 +274,8 @@ class _CommunityProfileState extends State<CommunityProfile> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => VerifyPost(community)));
+                                      builder: (context) =>
+                                          VerifyPost(community)));
                             },
                           ),
                         )
@@ -302,7 +303,8 @@ class _CommunityProfileState extends State<CommunityProfile> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => VerifyPost(community)));
+                                          builder: (context) =>
+                                              VerifyPost(community)));
                                 },
                               ),
                             )

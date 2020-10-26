@@ -58,6 +58,8 @@ dependencies:
   shared_preferences: ^0.5.12+2
   photo_view: ^0.10.2
   url_launcher: ^5.7.6
+  notustohtml: ^0.0.7
+  share: ^0.6.5+3
 
 dev_dependencies:
   flutter_test:
