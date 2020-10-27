@@ -47,7 +47,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
       _chewieController = ChewieController(
           videoPlayerController: _controller,
           aspectRatio: _controller.value.aspectRatio,
-          autoPlay: true,
+          autoPlay: false,
           looping: false,
           placeholder: buildPlaceholderImage());
     });

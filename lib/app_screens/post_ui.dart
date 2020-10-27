@@ -243,12 +243,6 @@ class _PostState extends State<PostUI> {
                                     imageDelegate: MyAppZefyrImageDelegate(),
                                   ),
                                 ),
-                                Row(children: [
-                                  SizedBox(width: 15),
-                                  (mediaType == 0)
-                                      ? SizedBox()
-                                      : Text('Attached media:')
-                                ]),
                                 (mediaType == 0)
                                     ? SizedBox()
                                     : (mediaType == 2)
@@ -263,14 +257,11 @@ class _PostState extends State<PostUI> {
                                                           PhotoViewerCached(
                                                               mediaUrl)));
                                             },
-                                            child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 15.0, right: 15.0),
-                                                child: CachedNetworkImage(
-                                                  placeholder: (context, url) =>
-                                                      CircularProgressIndicator(),
-                                                  imageUrl: mediaUrl,
-                                                ))),
+                                            child: CachedNetworkImage(
+                                              placeholder: (context, url) =>
+                                                  CircularProgressIndicator(),
+                                              imageUrl: mediaUrl,
+                                            )),
                                 Divider(
                                   color: Theme.of(context).buttonColor,
                                 ),
@@ -612,6 +603,10 @@ class CommentListBloc {
 
 /*This will automatically fetch the next 10 elements from the list*/
   fetchNextComments() async {
+    if (documentList.length == 0) {
+      updateIndicator(false);
+      return;
+    }
     try {
       updateIndicator(true);
       List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore.instance
@@ -623,10 +618,13 @@ class CommentListBloc {
           .docs;
       documentList.addAll(newDocumentList);
       commentController.sink.add(documentList);
+      updateIndicator(false);
     } on SocketException {
+      updateIndicator(false);
       commentController.sink
           .addError(SocketException("No Internet Connection"));
     } catch (e) {
+      updateIndicator(false);
       print(e.toString());
       commentController.sink.addError(e);
     }
