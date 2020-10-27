@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
@@ -7,15 +8,17 @@ import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/post_share.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
+import 'package:brighter_bee/widgets/comment_widget.dart';
+import 'package:brighter_bee/widgets/replies_list.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
-import 'package:brighter_bee/widgets/comments_list.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:zefyr/zefyr.dart';
 
 class PostUI extends StatefulWidget {
@@ -35,6 +38,8 @@ class _PostState extends State<PostUI> {
   String username;
   bool processing;
   int num = 0;
+  ScrollController controller;
+  CommentListBloc commentListBloc;
 
   _PostState(this.community, this.postKey, this.username);
 
@@ -42,6 +47,18 @@ class _PostState extends State<PostUI> {
   void initState() {
     super.initState();
     processing = false;
+    controller = ScrollController();
+    controller.addListener(_scrollListener);
+    commentListBloc = CommentListBloc(community, postKey);
+    commentListBloc.fetchFirstList();
+  }
+
+  void _scrollListener() {
+    if (controller.offset >= controller.position.maxScrollExtent &&
+        !controller.position.outOfRange) {
+      print("At the end of list");
+      commentListBloc.fetchNextComments();
+    }
   }
 
   @override
@@ -217,45 +234,114 @@ class _PostState extends State<PostUI> {
                       ),
                       Expanded(
                           child: SingleChildScrollView(
+                              controller: controller,
                               child: Column(children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 15, right: 15),
-                          child: ZefyrView(
-                            document: document,
-                            imageDelegate: MyAppZefyrImageDelegate(),
-                          ),
-                        ),
-                        Row(children: [
-                          SizedBox(width: 15),
-                          (mediaType == 0)
-                              ? SizedBox()
-                              : Text('Attached media:')
-                        ]),
-                        (mediaType == 0)
-                            ? SizedBox()
-                            : (mediaType == 2)
-                                ? VideoPlayer(mediaUrl)
-                                : InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  PhotoViewerCached(mediaUrl)));
+                                Padding(
+                                  padding: EdgeInsets.only(left: 15, right: 15),
+                                  child: ZefyrView(
+                                    document: document,
+                                    imageDelegate: MyAppZefyrImageDelegate(),
+                                  ),
+                                ),
+                                Row(children: [
+                                  SizedBox(width: 15),
+                                  (mediaType == 0)
+                                      ? SizedBox()
+                                      : Text('Attached media:')
+                                ]),
+                                (mediaType == 0)
+                                    ? SizedBox()
+                                    : (mediaType == 2)
+                                        ? VideoPlayer(mediaUrl)
+                                        : InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          PhotoViewerCached(
+                                                              mediaUrl)));
+                                            },
+                                            child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 15.0, right: 15.0),
+                                                child: CachedNetworkImage(
+                                                  placeholder: (context, url) =>
+                                                      CircularProgressIndicator(),
+                                                  imageUrl: mediaUrl,
+                                                ))),
+                                Divider(
+                                  color: Theme.of(context).buttonColor,
+                                ),
+                                Column(children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8, bottom: 15, left: 15),
+                                        child: Text(
+                                          'Comments',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            commentListBloc.fetchFirstList();
+                                          });
+                                        },
+                                        icon: Icon(Icons.refresh),
+                                      )
+                                    ],
+                                  ),
+                                  StreamBuilder<List<DocumentSnapshot>>(
+                                    stream: commentListBloc.commentStream,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState !=
+                                          ConnectionState.waiting) {
+                                        return ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: snapshot.data.length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            return ExpansionTile(
+                                              backgroundColor: Theme.of(context)
+                                                  .buttonColor
+                                                  .withOpacity(0.2),
+                                              title: CommentWidget(
+                                                  community,
+                                                  postKey,
+                                                  snapshot.data[index]
+                                                      ['commKey'],
+                                                  postKey,
+                                                  username,
+                                                  false),
+                                              children: [
+                                                Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20, bottom: 15),
+                                                    child: RepliesList(
+                                                        community,
+                                                        postKey,
+                                                        snapshot.data[index]
+                                                            ['commKey'],
+                                                        username))
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        return CircularProgressIndicator();
+                                      }
                                     },
-                                    child: Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 15.0, right: 15.0),
-                                        child: CachedNetworkImage(
-                                          placeholder: (context, url) =>
-                                              CircularProgressIndicator(),
-                                          imageUrl: mediaUrl,
-                                        ))),
-                        Divider(
-                          color: Theme.of(context).buttonColor,
-                        ),
-                        CommentsList(community, postKey, username)
-                      ]))),
+                                  )
+                                ])
+                              ]))),
                       Padding(
                           padding: EdgeInsets.only(left: 15, right: 15),
                           child: Row(
@@ -484,5 +570,75 @@ class _PostState extends State<PostUI> {
         return alert;
       },
     );
+  }
+}
+
+class CommentListBloc {
+  String community;
+  String key;
+
+  bool showIndicator = false;
+  List<DocumentSnapshot> documentList;
+  BehaviorSubject<bool> showIndicatorController;
+  BehaviorSubject<List<DocumentSnapshot>> commentController;
+
+  CommentListBloc(this.community, this.key) {
+    commentController = BehaviorSubject<List<DocumentSnapshot>>();
+    showIndicatorController = BehaviorSubject<bool>();
+  }
+
+  Stream get getShowIndicatorStream => showIndicatorController.stream;
+  Stream<List<DocumentSnapshot>> get commentStream => commentController.stream;
+
+/*This method will automatically fetch first 10 elements from the document list */
+  Future fetchFirstList() async {
+    try {
+      documentList = (await FirebaseFirestore.instance
+              .collection("communities/$community/posts/$key/comments")
+              .orderBy("upvotes", descending: true)
+              .limit(2)
+              .get())
+          .docs;
+      print(documentList);
+      commentController.sink.add(documentList);
+    } on SocketException {
+      commentController.sink
+          .addError(SocketException("No Internet Connection"));
+    } catch (e) {
+      print(e.toString());
+      commentController.sink.addError(e);
+    }
+  }
+
+/*This will automatically fetch the next 10 elements from the list*/
+  fetchNextComments() async {
+    try {
+      updateIndicator(true);
+      List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore.instance
+              .collection("communities/$community/posts/$key/comments")
+              .orderBy("upvotes", descending: true)
+              .startAfterDocument(documentList[documentList.length - 1])
+              .limit(2)
+              .get())
+          .docs;
+      documentList.addAll(newDocumentList);
+      commentController.sink.add(documentList);
+    } on SocketException {
+      commentController.sink
+          .addError(SocketException("No Internet Connection"));
+    } catch (e) {
+      print(e.toString());
+      commentController.sink.addError(e);
+    }
+  }
+
+  updateIndicator(bool value) async {
+    showIndicator = value;
+    showIndicatorController.sink.add(value);
+  }
+
+  void dispose() {
+    commentController.close();
+    showIndicatorController.close();
   }
 }

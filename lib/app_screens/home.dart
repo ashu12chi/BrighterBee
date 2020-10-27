@@ -56,140 +56,144 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
         postListBloc.fetchFirstList();
         controller.addListener(scrollListener);
         return Scaffold(
-            body: SingleChildScrollView(
-                controller: controller,
-                physics: ScrollPhysics(),
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: <Widget>[
-                        InkWell(
-                          child: CircleAvatar(
-                            backgroundImage:
-                                CachedNetworkImageProvider(user.photoURL),
-                            radius: 25.0,
-                            backgroundColor: Colors.grey,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Profile(user.displayName)));
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: SizedBox(
-                            height: 55.0,
-                            child: FlatButton(
-                              child: Text(
-                                'Write something here...           ',
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 18.0),
+            body: RefreshIndicator(
+                onRefresh: postListBloc.fetchFirstList,
+                child: SingleChildScrollView(
+                    controller: controller,
+                    physics: ScrollPhysics(),
+                    child: Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            InkWell(
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    CachedNetworkImageProvider(user.photoURL),
+                                radius: 25.0,
+                                backgroundColor: Colors.grey,
                               ),
-                              onPressed: () {
+                              onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CreatePost()));
+                                        builder: (BuildContext context) =>
+                                            Profile(user.displayName)));
                               },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                side: BorderSide(color: Colors.grey),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: SizedBox(
+                                height: 55.0,
+                                child: FlatButton(
+                                  child: Text(
+                                    'Write something here...           ',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 18.0),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreatePost()));
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    side: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                      padding: EdgeInsets.all(8),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ChoiceChip(
-                            selectedColor: Theme.of(context).accentColor,
-                            elevation: 10,
-                            onSelected: (value) {
-                              setState(() {
-                                selectedSort = 0;
-                              });
-                            },
-                            label: Text('Latest',
-                                style: TextStyle(
-                                    color: Theme.of(context).buttonColor)),
-                            selected: selectedSort == 0,
-                          ),
-                          SizedBox(width: 5),
-                          ChoiceChip(
-                            selectedColor: Theme.of(context).accentColor,
-                            elevation: 10,
-                            onSelected: (value) {
-                              postListBloc.fetchNextPosts();
-                              // setState(() {
-                              //   selectedSort = 1;
-                              // });
-                            },
-                            label: Text('Hot',
-                                style: TextStyle(
-                                    color: Theme.of(context).buttonColor)),
-                            selected: selectedSort == 1,
-                          ),
-                          SizedBox(width: 5),
-                          ChoiceChip(
-                            selectedColor: Theme.of(context).accentColor,
-                            elevation: 10,
-                            onSelected: (value) {
-                              setState(() {
-                                selectedSort = 2;
-                              });
-                            },
-                            label: Text('Most upvoted',
-                                style: TextStyle(
-                                    color: Theme.of(context).buttonColor)),
-                            selected: selectedSort == 2,
-                          ),
-                          SizedBox(width: 5),
-                          ChoiceChip(
-                            selectedColor: Theme.of(context).accentColor,
-                            elevation: 10,
-                            onSelected: (value) {
-                              setState(() {
-                                selectedSort = 3;
-                              });
-                            },
-                            label: Text('Most viewed',
-                                style: TextStyle(
-                                    color: Theme.of(context).buttonColor)),
-                            selected: selectedSort == 3,
-                          ),
-                        ],
-                      )),
-                  StreamBuilder<List<DocumentSnapshot>>(
-                    stream: postListBloc.postStream,
-                    builder: (context, snapshot) {
-                      return snapshot.connectionState == ConnectionState.waiting
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                DocumentSnapshot documentSnapshot =
-                                    snapshot.data[index];
-                                String id = documentSnapshot.id;
-                                return PostCardView(
-                                    documentSnapshot.get('community'), id);
-                              });
-                    },
-                  ),
-                ])));
+                      ),
+                      SingleChildScrollView(
+                          padding: EdgeInsets.all(8),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ChoiceChip(
+                                selectedColor: Theme.of(context).accentColor,
+                                elevation: 10,
+                                onSelected: (value) {
+                                  setState(() {
+                                    selectedSort = 0;
+                                  });
+                                },
+                                label: Text('Latest',
+                                    style: TextStyle(
+                                        color: Theme.of(context).buttonColor)),
+                                selected: selectedSort == 0,
+                              ),
+                              SizedBox(width: 5),
+                              ChoiceChip(
+                                selectedColor: Theme.of(context).accentColor,
+                                elevation: 10,
+                                onSelected: (value) {
+                                  postListBloc.fetchNextPosts();
+                                  // setState(() {
+                                  //   selectedSort = 1;
+                                  // });
+                                },
+                                label: Text('Hot',
+                                    style: TextStyle(
+                                        color: Theme.of(context).buttonColor)),
+                                selected: selectedSort == 1,
+                              ),
+                              SizedBox(width: 5),
+                              ChoiceChip(
+                                selectedColor: Theme.of(context).accentColor,
+                                elevation: 10,
+                                onSelected: (value) {
+                                  setState(() {
+                                    selectedSort = 2;
+                                  });
+                                },
+                                label: Text('Most upvoted',
+                                    style: TextStyle(
+                                        color: Theme.of(context).buttonColor)),
+                                selected: selectedSort == 2,
+                              ),
+                              SizedBox(width: 5),
+                              ChoiceChip(
+                                selectedColor: Theme.of(context).accentColor,
+                                elevation: 10,
+                                onSelected: (value) {
+                                  setState(() {
+                                    selectedSort = 3;
+                                  });
+                                },
+                                label: Text('Most viewed',
+                                    style: TextStyle(
+                                        color: Theme.of(context).buttonColor)),
+                                selected: selectedSort == 3,
+                              ),
+                            ],
+                          )),
+                      StreamBuilder<List<DocumentSnapshot>>(
+                        stream: postListBloc.postStream,
+                        builder: (context, snapshot) {
+                          return snapshot.connectionState ==
+                                  ConnectionState.waiting
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.length,
+                                  itemBuilder: (context, index) {
+                                    DocumentSnapshot documentSnapshot =
+                                        snapshot.data[index];
+                                    String id = documentSnapshot.id;
+                                    return PostCardView(
+                                        documentSnapshot.get('community'), id);
+                                  });
+                        },
+                      ),
+                    ]))));
       },
     );
   }
@@ -208,9 +212,11 @@ class PostListBloc {
   BehaviorSubject<List<DocumentSnapshot>> postController;
 
   PostListBloc(this.selectedSort, this.memberOf) {
+    showIndicatorController = BehaviorSubject<bool>();
     postController = BehaviorSubject<List<DocumentSnapshot>>();
   }
 
+  Stream get getShowIndicatorStream => showIndicatorController.stream;
   Stream<List<DocumentSnapshot>> get postStream => postController.stream;
 
 /*This method will automatically fetch first 10 elements from the document list */
@@ -237,6 +243,7 @@ class PostListBloc {
           .docs;
       documentList.addAll(newDocumentList);
       postController.sink.add(documentList);
+      updateIndicator(false);
     } on SocketException {
       postController.sink.addError(SocketException("No Internet Connection"));
     } catch (e) {
