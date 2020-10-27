@@ -55,7 +55,7 @@ class _UserSearchState extends State<UserSearch> {
                     searchController.text != null)
                 ? FirebaseFirestore.instance
                     .collection('users')
-                    .where('nameSearch', arrayContains: searchController.text)
+                    .where('nameSearch', arrayContains: searchController.text.toLowerCase())
                     .snapshots()
                 : FirebaseFirestore.instance.collection('users').snapshots(),
             builder: (context, snapshot) {
@@ -70,21 +70,21 @@ class _UserSearchState extends State<UserSearch> {
                         DocumentSnapshot documentSnapshot =
                             snapshot.data.docs[index];
                         print(documentSnapshot['name']);
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, right: 8.0, top: 8.0),
-                              child: SizedBox(
-                                height: 40,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Profile(documentSnapshot.id)));
-                                  },
+                        return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Profile(documentSnapshot.id)));
+                            },
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0, top: 8.0),
+                                child: SizedBox(
+                                  height: 40,
                                   child: Text(
                                     documentSnapshot['name'],
                                     style: TextStyle(fontSize: 18),
@@ -93,16 +93,16 @@ class _UserSearchState extends State<UserSearch> {
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
-                              child: Container(
-                                height: 1.0,
-                                width: double.infinity,
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            )
-                          ],
+                              Padding(
+                                padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
+                                child: Container(
+                                  height: 1.0,
+                                  width: double.infinity,
+                                  color: Theme.of(context).dividerColor,
+                                ),
+                              )
+                            ],
+                          ),
                         );
                       },
                     );

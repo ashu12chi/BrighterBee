@@ -27,7 +27,7 @@ class DatabaseService {
     String temp = "";
     for (int i = 0; i < name.length; i++) {
       temp = temp + name[i];
-      nameSearchList.add(temp);
+      nameSearchList.add(temp.toLowerCase());
     }
     await instance.collection('users').doc(username).set({
       'name': name,

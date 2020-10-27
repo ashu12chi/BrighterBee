@@ -126,7 +126,7 @@ class _ExtraState extends State<Extra> {
                                   Icon(Icons.people),
                                   Padding(
                                       padding: const EdgeInsets.all(4.0),
-                                      child: Text('Communities'))
+                                      child: Text('Your Communities'))
                                 ])))),
                 InkWell(
                     onTap: () {

@@ -473,7 +473,7 @@ class _CreateGroupState extends State<CreateGroup> {
       String temp = "";
       for (int i = 0; i < commName.length; i++) {
         temp = temp + commName[i];
-        nameSearchList.add(temp);
+        nameSearchList.add(temp.toLowerCase());
       }
       await instance.collection('communities').doc(commName).set({
         'name': commName,

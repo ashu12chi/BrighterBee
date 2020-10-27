@@ -4,6 +4,7 @@ import 'package:brighter_bee/helpers/upvote_downvote_comment.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -161,6 +162,10 @@ class _CommentWidget extends State<CommentWidget> {
                           child: IconButton(
                             icon: Icon(Icons.more_horiz),
                             alignment: Alignment.topRight,
+                            onPressed: (){
+                              print(creator);
+                              showOptions(creator);
+                            },
                           ),
                         )
                       ],
@@ -337,5 +342,63 @@ class _CommentWidget extends State<CommentWidget> {
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => Profile(userTag)));
     debugPrint('Profile opened!');
+  }
+
+  showOptions(String creator) {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
+        ),
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter state) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(10),
+                  child: LimitedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        FirebaseAuth.instance.currentUser.displayName == creator?Column(
+                          children: <Widget>[
+                            IconButton(
+                                icon: Icon(Icons.edit,
+                                    size: 30,
+                                    color: Theme.of(context).buttonColor)),
+                            Text(
+                              'Edit',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ):Column(
+                          children: <Widget>[
+                            IconButton(
+                                icon: Icon(Icons.report,
+                                    size: 30,
+                                    color: Theme.of(context).buttonColor)),
+                            Text(
+                              'Report',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        FirebaseAuth.instance.currentUser.displayName == creator?Column(
+                          children: <Widget>[
+                            IconButton(
+                                icon: Icon(Icons.delete,
+                                    size: 30,
+                                    color: Theme.of(context).buttonColor)),
+                            Text(
+                              'Delete',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ):Container()
+                      ],
+                    ),
+                  ),
+                );
+              });
+        });
   }
 }
