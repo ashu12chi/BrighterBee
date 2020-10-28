@@ -25,8 +25,8 @@ import 'package:zefyr/zefyr.dart';
 */
 
 class PostCardView extends StatefulWidget {
-  String _community;
-  String _postKey;
+  final String _community;
+  final String _postKey;
 
   PostCardView(this._community, this._postKey);
 
@@ -84,7 +84,7 @@ class _PostState extends State<PostCardView> {
           String title = snapshot.data['title'];
           List listOfMedia = snapshot.data['listOfMedia'];
           String mediaUrl =
-              'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=110cba28-6dd5-4656-8eca-cbefe9cce925';
+              'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/thumbnails%2Fthumbnail_video_default.png?alt=media&token=02b4028c-b7f5-4462-920d-51585edd2a57';
           String mediaUrlOriginal = snapshot.data['mediaUrl'];
           if (mediaType == 1) mediaUrl = mediaUrlOriginal;
           var time = snapshot.data['time'];
@@ -266,14 +266,11 @@ class _PostState extends State<PostCardView> {
                                       )),
                                   mediaType == 0
                                       ? Container()
-                                      : Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: CachedNetworkImage(
-                                            placeholder: (context, url) =>
-                                                CircularProgressIndicator(),
-                                            imageUrl: mediaUrl,
-                                          )),
+                                      : CachedNetworkImage(
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(),
+                                          imageUrl: mediaUrl,
+                                        ),
                                   Row(
                                     children: <Widget>[
                                       Text(
@@ -455,23 +452,54 @@ class _PostState extends State<PostCardView> {
                         ),
                       ],
                     )
-                  : Column(children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.bookmark,
-                              size: 30, color: Theme.of(context).buttonColor),
-                          onPressed: () async {
-                            bool result =
-                                await savePost(username, community, postKey);
-                            Fluttertoast.showToast(
-                                msg: result
-                                    ? 'Post saved'
-                                    : 'Post removed from save list');
-                          }),
-                      Text(
-                        'Save post',
-                        style: TextStyle(fontSize: 14),
-                      )
-                    ]),
+                  : StreamBuilder<DocumentSnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users/$username/posts/saved/$community')
+                          .doc(postKey)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return CircularProgressIndicator();
+                        if (snapshot.data.exists) {
+                          return Column(children: [
+                            IconButton(
+                                icon: Icon(Icons.bookmark,
+                                    size: 30, color: Colors.green),
+                                onPressed: () async {
+                                  bool result = await savePost(
+                                      username, community, postKey);
+                                  Fluttertoast.showToast(
+                                      msg: result
+                                          ? 'Post saved'
+                                          : 'Post removed from saved list');
+                                  Navigator.of(context).pop();
+                                }),
+                            Text(
+                              'Post saved',
+                              style: TextStyle(fontSize: 14),
+                            )
+                          ]);
+                        }
+                        return Column(children: [
+                          IconButton(
+                              icon: Icon(Icons.bookmark_outline,
+                                  size: 30,
+                                  color: Theme.of(context).buttonColor),
+                              onPressed: () async {
+                                bool result = await savePost(
+                                    username, community, postKey);
+                                Fluttertoast.showToast(
+                                    msg: result
+                                        ? 'Post saved'
+                                        : 'Post removed from save list');
+                                Navigator.of(context).pop();
+                              }),
+                          Text(
+                            'Save post',
+                            style: TextStyle(fontSize: 14),
+                          )
+                        ]);
+                      }),
               username == creator
                   ? Column(
                       children: <Widget>[

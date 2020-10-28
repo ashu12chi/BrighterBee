@@ -6,6 +6,7 @@ import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/post_share.dart';
+import 'package:brighter_bee/helpers/save_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/widgets/comment_widget.dart';
@@ -496,18 +497,54 @@ class _PostState extends State<PostUI> {
                         ),
                       ],
                     )
-                  : Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.bookmark,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Save article',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+                  : StreamBuilder<DocumentSnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users/$username/posts/saved/$community')
+                          .doc(postKey)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return CircularProgressIndicator();
+                        if (snapshot.data.exists) {
+                          return Column(children: [
+                            IconButton(
+                                icon: Icon(Icons.bookmark,
+                                    size: 30, color: Colors.green),
+                                onPressed: () async {
+                                  bool result = await savePost(
+                                      username, community, postKey);
+                                  Fluttertoast.showToast(
+                                      msg: result
+                                          ? 'Post saved'
+                                          : 'Post removed from saved list');
+                                  Navigator.of(context).pop();
+                                }),
+                            Text(
+                              'Post saved',
+                              style: TextStyle(fontSize: 14),
+                            )
+                          ]);
+                        }
+                        return Column(children: [
+                          IconButton(
+                              icon: Icon(Icons.bookmark_outline,
+                                  size: 30,
+                                  color: Theme.of(context).buttonColor),
+                              onPressed: () async {
+                                bool result = await savePost(
+                                    username, community, postKey);
+                                Fluttertoast.showToast(
+                                    msg: result
+                                        ? 'Post saved'
+                                        : 'Post removed from save list');
+                                Navigator.of(context).pop();
+                              }),
+                          Text(
+                            'Save post',
+                            style: TextStyle(fontSize: 14),
+                          )
+                        ]);
+                      }),
               username == creator
                   ? Column(
                       children: <Widget>[

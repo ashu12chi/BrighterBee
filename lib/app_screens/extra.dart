@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/settings.dart' as settings;
+import 'package:brighter_bee/app_screens/user_app_screens/user_saved.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_communities.dart';
@@ -160,16 +161,24 @@ class _ExtraState extends State<Extra> {
                   width: MediaQuery.of(context).size.width / 2 - 10,
                   child: Card(
                     elevation: 8,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.bookmark),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text('Saved'),
-                        )
-                      ],
-                    ),
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      UserSaved()));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.bookmark),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text('Saved'),
+                            )
+                          ],
+                        )),
                   ),
                 ),
                 SizedBox(
