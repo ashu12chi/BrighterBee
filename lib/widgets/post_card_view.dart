@@ -81,6 +81,7 @@ class _PostState extends State<PostCardView> {
           bool upvoted = snapshot.data['upvoters'].contains(username);
           bool downvoted = snapshot.data['downvoters'].contains(username);
           int commentCount = snapshot.data['commentCount'];
+          bool verified = snapshot.data['isVerified'];
           String title = snapshot.data['title'];
           List listOfMedia = snapshot.data['listOfMedia'];
           String mediaUrl =
@@ -235,7 +236,7 @@ class _PostState extends State<PostCardView> {
                                                       mediaType,
                                                       listOfMedia,
                                                       title,
-                                                      content);
+                                                      content,verified);
                                                 });
                                           },
                                         ),
@@ -400,14 +401,39 @@ class _PostState extends State<PostCardView> {
   }
 
   buildBottomSheet(String creator, String displayName, String mediaURL,
-      int mediaType, List listOfMedia, String oldTitle, String content) {
+      int mediaType, List listOfMedia, String oldTitle, String content,bool verified) {
     return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
       return SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: LimitedBox(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
+            children: verified == false?<Widget>[
+              Column(
+                children: <Widget>[
+                  IconButton(icon: Icon(Icons.check,color: Colors.green,), onPressed: () async{
+                    await FirebaseFirestore.instance
+                        .collection('communities')
+                        .doc(community)
+                        .collection('posts')
+                        .doc(postKey)
+                        .update({'isVerified': true});
+                  }),
+                  Text('Verify',style:TextStyle(fontSize: 14,color: Colors.green),),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  IconButton(icon: Icon(Icons.close,color: Colors.red), onPressed: () async{
+                    await deletePost(
+                        community,
+                        postKey,
+                        creator);
+                  }),
+                  Text('Reject',style:TextStyle(fontSize: 14,color: Colors.red),),
+                ],
+              )
+            ]: <Widget>[
               Column(
                 children: <Widget>[
                   IconButton(

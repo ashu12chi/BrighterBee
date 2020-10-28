@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,6 +37,7 @@ class _VerifyPostState extends State<VerifyPost> {
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
+                print(documentSnapshot.id);
                 if (documentSnapshot['isVerified'] == false &&
                     documentSnapshot['creator'] !=
                         FirebaseAuth.instance.currentUser.displayName) {
@@ -43,10 +45,10 @@ class _VerifyPostState extends State<VerifyPost> {
                     key: Key(documentSnapshot.id),
                     child: InkWell(
                       onTap: () {
-//                      Navigator.push(
-//                          context,
-//                          MaterialPageRoute(
-//                              builder: (context) => ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PostUI(community,documentSnapshot.id)));
                       },
                       child: PostCardView(community, documentSnapshot.id),
                     ),
