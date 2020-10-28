@@ -13,7 +13,7 @@ import '../../widgets/user_card.dart';
 import '../profile.dart';
 
 class UserFollowing extends StatefulWidget {
-  String _username;
+  final String _username;
 
   UserFollowing(this._username);
 
@@ -44,59 +44,54 @@ class _UserFollowingState extends State<UserFollowing> {
         body: StreamBuilder<DocumentSnapshot>(
             stream: instance.collection('users').doc(username).snapshots(),
             builder: (context, snapshot) {
-              return ListView.builder(
-                  itemCount: snapshot.data['followingCount'],
-                  itemBuilder: (context, index) {
-                    return Dismissible(
-                      key: Key(snapshot.data['followingList'][index]),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Profile(
-                                      snapshot.data['followingList'][index])));
-                        },
+              if (snapshot.data != null) {
+                return ListView.builder(
+                    itemCount: snapshot.data['followingCount'],
+                    itemBuilder: (context, index) {
+                      return Dismissible(
+                        key: Key(snapshot.data['followingList'][index]),
                         child: UserCard(snapshot.data['followingList'][index]),
-                      ),
-                      background: slideRightBackground(),
-                      confirmDismiss: (direction) async {
-                        final bool res = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                content:
-                                    Text("Are you sure you want to unfollow?"),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text(
-                                      "Cancel",
-                                      style: TextStyle(color: Colors.black),
+                        background: slideRightBackground(),
+                        confirmDismiss: (direction) async {
+                          final bool res = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text(
+                                      "Are you sure you want to unfollow?"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
                                     ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  FlatButton(
-                                    child: Text(
-                                      "Unfollow",
-                                      style: TextStyle(color: Colors.red),
+                                    FlatButton(
+                                      child: Text(
+                                        "Unfollow",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      onPressed: () async {
+                                        await handleUnfollow(
+                                            username,
+                                            snapshot.data['followingList']
+                                                [index]);
+                                        Navigator.of(context).pop();
+                                      },
                                     ),
-                                    onPressed: () async {
-                                      await handleUnfollow(
-                                          username,
-                                          snapshot.data['followingList']
-                                              [index]);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            });
-                        return res;
-                      },
-                    );
-                  });
+                                  ],
+                                );
+                              });
+                          return res;
+                        },
+                      );
+                    });
+              } else {
+                return CircularProgressIndicator();
+              }
             }));
   }
 

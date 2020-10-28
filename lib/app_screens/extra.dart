@@ -58,14 +58,14 @@ class _ExtraState extends State<Extra> {
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: ListView(
           children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Profile(user.displayName)));
-              },
-              child: Card(
+            Card(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Profile(user.displayName)));
+                },
                 child: Row(
                   children: <Widget>[
                     CircleAvatar(
@@ -107,19 +107,19 @@ class _ExtraState extends State<Extra> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  UserCommunities()));
-                    },
-                    child: SizedBox(
-                        height: 100,
-                        width: MediaQuery.of(context).size.width / 2 - 10,
-                        child: Card(
-                            elevation: 8,
+                SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 2 - 10,
+                    child: Card(
+                        elevation: 8,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          UserCommunities()));
+                            },
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -128,19 +128,19 @@ class _ExtraState extends State<Extra> {
                                       padding: const EdgeInsets.all(4.0),
                                       child: Text('Your Communities'))
                                 ])))),
-                InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  UserFollowing(username)));
-                    },
-                    child: SizedBox(
-                        height: 100,
-                        width: MediaQuery.of(context).size.width / 2 - 10,
-                        child: Card(
-                            elevation: 8,
+                SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 2 - 10,
+                    child: Card(
+                        elevation: 8,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          UserFollowing(username)));
+                            },
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -222,16 +222,16 @@ class _ExtraState extends State<Extra> {
             SizedBox(
               width: double.infinity,
               height: 67,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              settings.Settings()));
-                },
-                child: Card(
-                  elevation: 8,
+              child: Card(
+                elevation: 8,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                settings.Settings()));
+                  },
                   child: Row(
                     children: <Widget>[
                       SizedBox(
@@ -247,9 +247,9 @@ class _ExtraState extends State<Extra> {
                       )
                     ],
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
                 ),
               ),
             ),

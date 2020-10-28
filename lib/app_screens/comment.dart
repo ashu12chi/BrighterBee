@@ -8,21 +8,31 @@ import 'package:flutter/material.dart';
 */
 
 class Comment extends StatefulWidget {
-  String community;
-  String dateLong;
-  String postKey;
-  String parentPostKey;
-  String username;
-  String title;
-  String creator;
-  bool isReply; // whether parent to this comment will be a comment or a post.
+  final String _community;
+  final String _dateLong;
+  final String _postKey;
+  final String _parentPostKey;
+  final String _username;
+  final String _title;
+  final String _creator;
+  final bool
+      isReply; // whether parent to this comment will be a comment or a post.
+  final String _initialText;
 
-  Comment(this.community, this.dateLong, this.postKey, this.parentPostKey,
-      this.username, this.title, this.creator, this.isReply);
+  Comment(
+      this._community,
+      this._dateLong,
+      this._postKey,
+      this._parentPostKey,
+      this._username,
+      this._title,
+      this._creator,
+      this.isReply,
+      this._initialText);
 
   @override
-  _Comment createState() => _Comment(community, dateLong, postKey,
-      parentPostKey, username, title, creator, isReply);
+  _Comment createState() => _Comment(_community, _dateLong, _postKey,
+      _parentPostKey, _username, _title, _creator, isReply, _initialText);
 }
 
 class _Comment extends State<Comment> {
@@ -34,14 +44,22 @@ class _Comment extends State<Comment> {
   String title;
   String creator;
   bool isReply;
+  String initialText;
+
   TextEditingController textInputController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<String> users = [], words = [];
   String str = '';
 
+  @override
+  void initState() {
+    super.initState();
+    textInputController.text = initialText;
+  }
+
   _Comment(this.community, this.dateLong, this.key, this.parentPostKey,
-      this.username, this.title, this.creator, this.isReply);
+      this.username, this.title, this.creator, this.isReply, this.initialText);
 
   @override
   Widget build(BuildContext context) {
@@ -116,18 +134,18 @@ class _Comment extends State<Comment> {
             ),
             Expanded(
                 child: TextField(
+                    autofocus: true,
                     maxLines: 100,
                     controller: textInputController,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-                      hintText: isReply ? 'Your reply' : 'Your comment',
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                    ),
+                        hintText: isReply ? 'Your reply' : 'Your comment',
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none),
                     onChanged: (val) {
                       setState(() {
                         words = val.split(' ');

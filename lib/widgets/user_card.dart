@@ -1,3 +1,4 @@
+import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,22 +25,29 @@ class _UserCardState extends State<UserCard> {
           if (snapshot.connectionState == ConnectionState.waiting)
             return CircularProgressIndicator();
           return Card(
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    backgroundImage:
-                        CachedNetworkImageProvider(snapshot.data['photoUrl']),
-                    radius: 30,
-                  ),
-                ),
-                Text(
-                  snapshot.data['name'],
-                  style: TextStyle(fontSize: 18),
-                )
-              ],
-            ),
+            child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Profile(username)));
+                },
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                            snapshot.data['photoUrl']),
+                        radius: 30,
+                      ),
+                    ),
+                    Text(
+                      snapshot.data['name'],
+                      style: TextStyle(fontSize: 18),
+                    )
+                  ],
+                )),
           );
         });
   }

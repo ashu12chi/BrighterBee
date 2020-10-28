@@ -31,37 +31,26 @@ class _RepliesList extends State<RepliesList> {
   String commKey;
   String username;
 
-  CommentListBloc commentListBloc;
-  ScrollController controller = ScrollController();
-
   _RepliesList(this.community, this.postKey, this.commKey, this.username);
 
   @override
   void initState() {
     super.initState();
-    commentListBloc = CommentListBloc(community, postKey, commKey);
-    commentListBloc.fetchFirstList();
-    controller.addListener(_scrollListener);
-  }
-
-  void _scrollListener() {
-    if (controller.offset >= controller.position.maxScrollExtent &&
-        !controller.position.outOfRange) {
-      print("At the end of list");
-      commentListBloc.fetchNextComments();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<DocumentSnapshot>>(
-      stream: commentListBloc.commentStream,
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection(
+              "communities/$community/posts/$postKey/comments/$commKey/replies")
+          .orderBy('time')
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.data != null) {
           return ListView.builder(
-            itemCount: snapshot.data.length,
+            itemCount: snapshot.data.docs.length,
             shrinkWrap: true,
-            controller: controller,
             itemBuilder: (context, index) {
               debugPrint('NSP replies');
               return Card(
@@ -71,7 +60,7 @@ class _RepliesList extends State<RepliesList> {
                       child: CommentWidget(
                           community,
                           postKey,
-                          snapshot.data[index]['commKey'],
+                          snapshot.data.docs[index]['commKey'],
                           commKey,
                           username,
                           true)));

@@ -168,7 +168,7 @@ class MessageBean {
       routeName,
       () => MaterialPageRoute<void>(
         settings: RouteSettings(name: routeName),
-        builder: (BuildContext context) => PostUI(community, postID, creator),
+        builder: (BuildContext context) => PostUI(community, postID),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:brighter_bee/app_screens/admin_screens/admin_control_pannel.dart';
+import 'package:brighter_bee/app_screens/admin_screens/admin_control_panel.dart';
 import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:brighter_bee/live_stream/live_list.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';

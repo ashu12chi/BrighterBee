@@ -398,8 +398,7 @@ class _PostState extends State<PostCardView> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) =>
-                PostUI(community, postKey, username)));
+            builder: (BuildContext context) => PostUI(community, postKey)));
     debugPrint('Post opened!');
   }
 

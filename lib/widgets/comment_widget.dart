@@ -17,12 +17,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 */
 
 class CommentWidget extends StatefulWidget {
-  String _username;
-  String _community;
-  String _parentPostKey;
-  String _commKey;
-  String _parentKey;
-  bool _isReply;
+  final String _username;
+  final String _community;
+  final String _parentPostKey;
+  final String _commKey;
+  final String _parentKey;
+  final bool _isReply;
 
   CommentWidget(this._community, this._parentPostKey, this._commKey,
       this._parentKey, this._username, this._isReply);
@@ -112,7 +112,7 @@ class _CommentWidget extends State<CommentWidget> {
                       ),
                     ],
                   );
-                String fullName = snapshot.data['name'];
+                // String fullName = snapshot.data['name'];
                 String profilePicUrl = snapshot.data['photoUrl'];
                 return Column(
                   children: <Widget>[
@@ -138,9 +138,9 @@ class _CommentWidget extends State<CommentWidget> {
                             child: Row(
                               children: <Widget>[
                                 InkWell(
-                                  child: Text(
-                                      fullName.substring(
-                                          0, fullName.indexOf(' ')),
+                                  child: Text(creator,
+                                      // fullName.substring(
+                                      //     0, fullName.indexOf(' ')),
                                       style: TextStyle(fontSize: 14.0)),
                                   onTap: () {
                                     Navigator.push(
@@ -162,7 +162,7 @@ class _CommentWidget extends State<CommentWidget> {
                           child: IconButton(
                             icon: Icon(Icons.more_horiz),
                             alignment: Alignment.topRight,
-                            onPressed: (){
+                            onPressed: () {
                               print(creator);
                               showOptions(creator);
                             },
@@ -285,23 +285,24 @@ class _CommentWidget extends State<CommentWidget> {
                                       fontSize: 14,
                                       color: Theme.of(context).buttonColor),
                                 ),
-                                SizedBox(width: 10),
-                                IconButton(
-                                  onPressed: () {
-                                    comment(
-                                        community,
-                                        dateLong,
-                                        commKey,
-                                        parentPostKey,
-                                        username,
-                                        text,
-                                        creator,
-                                        true);
-                                  },
-                                  icon: Icon(Icons.reply, size: 18),
-                                  color: Theme.of(context).buttonColor,
-                                )
+                                SizedBox(width: 10)
                               ])),
+                        IconButton(
+                          onPressed: () {
+                            comment(
+                                community,
+                                dateLong,
+                                parentKey,
+                                parentPostKey,
+                                username,
+                                text,
+                                creator,
+                                true,
+                                '@$creator ');
+                          },
+                          icon: Icon(Icons.reply, size: 18),
+                          color: Theme.of(context).buttonColor,
+                        ),
                       ],
                     )
                   ],
@@ -318,17 +319,26 @@ class _CommentWidget extends State<CommentWidget> {
       String username,
       String title,
       String creator,
-      bool isReply) {
+      bool isReply,
+      String initialText) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext) => Comment(community, dateLong, parentKey,
-                parentPostKey, username, title, creator, isReply)));
+            builder: (BuildContext) => Comment(
+                community,
+                dateLong,
+                parentKey,
+                parentPostKey,
+                username,
+                title,
+                creator,
+                isReply,
+                initialText)));
   }
 
   openProfile(String userTag) async {
     Fluttertoast.showToast(
-        msg: "Loading...!",
+        msg: "Loading...",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER);
     userTag = userTag.replaceAll(RegExp('[^A-Za-z0-9]'), '');
@@ -336,7 +346,9 @@ class _CommentWidget extends State<CommentWidget> {
         await FirebaseFirestore.instance.collection('users').doc(userTag).get();
     if (doc == null || !doc.exists) {
       Fluttertoast.showToast(
-          msg: "User doesn't exist!", toastLength: Toast.LENGTH_LONG);
+          msg: "User doesn't exist",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER);
       return;
     }
     Navigator.push(context,
@@ -353,52 +365,56 @@ class _CommentWidget extends State<CommentWidget> {
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter state) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.all(10),
-                  child: LimitedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        FirebaseAuth.instance.currentUser.displayName == creator?Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.edit,
-                                    size: 30,
-                                    color: Theme.of(context).buttonColor)),
-                            Text(
-                              'Edit',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ):Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.report,
-                                    size: 30,
-                                    color: Theme.of(context).buttonColor)),
-                            Text(
-                              'Report',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        FirebaseAuth.instance.currentUser.displayName == creator?Column(
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.delete,
-                                    size: 30,
-                                    color: Theme.of(context).buttonColor)),
-                            Text(
-                              'Delete',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ):Container()
-                      ],
-                    ),
-                  ),
-                );
-              });
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(10),
+              child: LimitedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    FirebaseAuth.instance.currentUser.displayName == creator
+                        ? Column(
+                            children: <Widget>[
+                              IconButton(
+                                  icon: Icon(Icons.edit,
+                                      size: 30,
+                                      color: Theme.of(context).buttonColor)),
+                              Text(
+                                'Edit',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: <Widget>[
+                              IconButton(
+                                  icon: Icon(Icons.report,
+                                      size: 30,
+                                      color: Theme.of(context).buttonColor)),
+                              Text(
+                                'Report',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                    FirebaseAuth.instance.currentUser.displayName == creator
+                        ? Column(
+                            children: <Widget>[
+                              IconButton(
+                                  icon: Icon(Icons.delete,
+                                      size: 30,
+                                      color: Theme.of(context).buttonColor)),
+                              Text(
+                                'Delete',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          )
+                        : Container()
+                  ],
+                ),
+              ),
+            );
+          });
         });
   }
 }

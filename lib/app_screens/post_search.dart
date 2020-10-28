@@ -126,9 +126,7 @@ class _PostSearchState extends State<PostSearch> {
                                                                     .data
                                                                     .docs[
                                                                         index1]
-                                                                    .id,
-                                                                documentSnapshot[
-                                                                    'creator'])));
+                                                                    .id)));
                                               },
                                             ),
                                           ),

@@ -29,8 +29,10 @@ class _NotificationsState extends State<Notifications>
             style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream:
-              instance.collection('users/$username/notifications').snapshots(),
+          stream: instance
+              .collection('users/$username/notifications')
+              .orderBy('time', descending: true)
+              .snapshots(),
           builder: (context, snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
                 ? Center(
@@ -43,25 +45,11 @@ class _NotificationsState extends State<Notifications>
                           snapshot.data.docs[index];
                       String id = documentSnapshot.id;
                       int postRelated = documentSnapshot.data()['postRelated'];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => (postRelated == 1)
-                                      ? getPostObject()
-                                      : getProfileObject()));
-                        },
-                        child: NotificationCard(id, postRelated),
-                      );
+                      return NotificationCard(id, postRelated);
                     });
           }),
     );
   }
-
-  getProfileObject() {}
-
-  getPostObject() {}
 
   @override
   bool get wantKeepAlive => true;
