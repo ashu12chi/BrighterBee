@@ -157,12 +157,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                       : Container(),
                   FirebaseAuth.instance.currentUser.displayName == creator
                       ? Padding(
-                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child: Container(
-                            height: 1.0,
-                            width: double.infinity,
-                            color: Colors.black12,
-                          ),
+                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0)
                         )
                       : ((verification == 1 &&
                                   (snapshot.data['members']).contains(
@@ -171,12 +166,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                               snapshot.data['admin'].contains(FirebaseAuth
                                   .instance.currentUser.displayName))
                           ? Padding(
-                              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                              child: Container(
-                                height: 1.0,
-                                width: double.infinity,
-                                color: Colors.black12,
-                              ),
+                              padding: EdgeInsets.only(top: 8.0, bottom: 8.0)
                             )
                           : Container(),
                   FirebaseAuth.instance.currentUser.displayName == creator
@@ -234,12 +224,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                           : Container(),
                   FirebaseAuth.instance.currentUser.displayName == creator
                       ? Padding(
-                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child: Container(
-                            height: 1.0,
-                            width: double.infinity,
-                            color: Colors.black12,
-                          ),
+                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0)
                         )
                       : ((posts == 1 &&
                                   (snapshot.data['members']).contains(
@@ -310,11 +295,11 @@ class _CommunityProfileState extends State<CommunityProfile> {
                             )
                           : Container(),
                   Padding(
-                    padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
+                    padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
                     child: Container(
                       height: 1.0,
                       width: double.infinity,
-                      color: Theme.of(context).dividerColor,
+                      color: Colors.black12,
                     ),
                   ),
                   Row(
@@ -336,14 +321,6 @@ class _CommunityProfileState extends State<CommunityProfile> {
                         child: Card(),
                       )
                     ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                    child: Container(
-                      height: 1.0,
-                      width: double.infinity,
-                      color: Colors.black12,
-                    ),
                   ),
                 ],
               );

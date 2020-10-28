@@ -19,7 +19,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        'Settings and Privacy',
+        'Settings',
         style: TextStyle(fontWeight: FontWeight.bold),
       )),
       body: ListView(
@@ -33,10 +33,7 @@ class _SettingsState extends State<Settings> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        Icons.notifications_active,
-                        color: Colors.grey,
-                      ),
+                      child: Icon(Icons.notifications_active),
                     ),
                     Text(
                       'Allow admin notifications',
@@ -54,6 +51,27 @@ class _SettingsState extends State<Settings> {
                       });
                     })
               ],
+            ),
+          ),
+          InkWell(
+            onTap: showOptions,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
+              child: Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(Icons.calendar_today),
+                    ),
+                    Text(
+                      'News Feed Preference',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           Padding(
@@ -76,45 +94,10 @@ class _SettingsState extends State<Settings> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.grey,
-                      ),
+                      child: Icon(Icons.delete),
                     ),
                     Text(
                       'Clear cached data',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
-          InkWell(
-            onTap: showOptions,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
-              child: Container(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        Icons.calendar_today,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      'News Feed Preference',
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -146,26 +129,17 @@ class _SettingsState extends State<Settings> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        Icons.policy,
-                        color: Colors.grey,
-                      ),
+                      child: Icon(Icons.policy),
                     ),
                     Text(
                       'Licence',
                       style: TextStyle(fontSize: 18),
                     ),
+                    Spacer(),
+                    Text('GNU GPL v3')
                   ],
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
             ),
           ),
           InkWell(
@@ -183,26 +157,17 @@ class _SettingsState extends State<Settings> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        Icons.info_outline,
-                        color: Colors.grey,
-                      ),
+                      child: Icon(Icons.info_outline),
                     ),
                     Text(
                       'About',
                       style: TextStyle(fontSize: 18),
                     ),
+                    Spacer(),
+                    Text('BrighterBee v0.7')
                   ],
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
             ),
           ),
         ],
@@ -269,7 +234,7 @@ class _SettingsState extends State<Settings> {
                         Text(
                           'Views',
                           style: TextStyle(fontSize: 14),
-                        ),
+                        )
                       ],
                     )
                   ],

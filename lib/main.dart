@@ -42,9 +42,8 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         errorColor: Color.fromRGBO(176, 0, 32, 1),
-        appBarTheme: Theme.of(context)
-            .appBarTheme
-            .copyWith(iconTheme: Theme.of(context).iconTheme),
+        appBarTheme: Theme.of(context).appBarTheme.copyWith(
+            iconTheme: Theme.of(context).iconTheme, shadowColor: Colors.white),
         textTheme: Theme.of(context).textTheme.apply(fontFamily: 'OpenSans'),
         primaryTextTheme: Theme.of(context)
             .primaryTextTheme

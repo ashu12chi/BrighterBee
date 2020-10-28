@@ -7,7 +7,6 @@ import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -136,83 +135,70 @@ class _CreatePostState extends State<CreatePost> {
       }
     });
 
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title:
-            Text('Create Post', style: TextStyle(fontWeight: FontWeight.bold)),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Post',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).accentColor)),
-            onPressed: checkPostableAndPost,
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(user.photoURL),
-                  radius: 30.0,
-                  backgroundColor: Colors.grey,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        displayName,
+    return WillPopScope(
+        onWillPop: _handleOnWillPop,
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+              title: Text('Create Post',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('Post',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18.0),
-                      ),
-                      MaterialButton(
-                        child: Row(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).accentColor)),
+                    onPressed: checkPostableAndPost)
+              ]),
+          body: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(children: <Widget>[
+                Row(children: <Widget>[
+                  CircleAvatar(
+                      backgroundImage:
+                          CachedNetworkImageProvider(user.photoURL),
+                      radius: 30.0,
+                      backgroundColor: Colors.grey),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Icon(Icons.people),
-                            SizedBox(width: 8),
-                            Text(community == null ? 'Communities' : community),
-                            Icon(Icons.arrow_drop_down)
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            side: BorderSide(color: Colors.grey)),
-                        onPressed: showCommunities,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            TextFormField(
-              controller: titleController,
-              decoration: InputDecoration(
-                hintText: 'Enter title here',
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).buttonColor),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: ZefyrScaffold(
-                child: editor,
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(child: createBottomBar()),
-    );
+                            Text(displayName,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0)),
+                            MaterialButton(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(Icons.people),
+                                    SizedBox(width: 8),
+                                    Text(community == null
+                                        ? 'Communities'
+                                        : community),
+                                    Icon(Icons.arrow_drop_down)
+                                  ],
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    side: BorderSide(color: Colors.grey)),
+                                onPressed: showCommunities)
+                          ]))
+                ]),
+                TextFormField(
+                    controller: titleController,
+                    decoration: InputDecoration(
+                        hintText: 'Enter title here',
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).buttonColor)))),
+                SizedBox(height: 10),
+                Expanded(child: ZefyrScaffold(child: editor))
+              ])),
+          bottomNavigationBar: BottomAppBar(child: createBottomBar()),
+        ));
   }
 
   createBottomBar() {
@@ -571,6 +557,35 @@ class _CreatePostState extends State<CreatePost> {
     setState(() {
       displayName = str;
     });
+  }
+
+  Future<bool> _handleOnWillPop() {
+    debugPrint('Popped');
+    return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Are you sure?'),
+            content: Text('Do you want to save this post as draft?'),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: Text('No'),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                /*Navigator.of(context).pop(true)*/
+                child: Text('Yes'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }
 
