@@ -26,12 +26,29 @@ Articles and comments will be lazily loaded.
 # External libraries/APIs used
 1. Zefyr editor 0.12: for the Rich Text editor and viewer.
 2. Quill delta 1.0.0: to make Notus documents, which helps work on RTF format.
-3. Image picker: 0.6.7: for picking images and videos from gallery or camera.
+3. Image picker 0.6.7: for picking images and videos from gallery or camera.
 4. Firebase Auth 0.18.1: for user login/ signup authentication.
 5. Firebase core 0.5.0 and Cloud Firestore 0.14.1: for using Google Cloud Firestore database.
 6. Image 2.1.18: for working on images, e.g., compressing them.
-7. Agora: for video calling.
-8. Firebase Cloud Messaging: for sending push notifications.
+7. Agora RTC Engine 3.1.3: for video calling.
+8. Firebase Cloud Messaging 7.0.2: for sending push notifications.
+9. Shimmer 1.1.2: for shimmer effect in cards
+10. Flutter Local Notifications 1.5.0: for displaying notifications
+11. Permission Handler 3.0.0: for easy permission handling
+12. Date Format 1.0.9: for easy date formatting
+13. Path Provider 1.6.18: for getting path for storing temporary files
+14. Firebase Storage 4.0.1: for using Firebase Cloud Storage
+15. fluttertoast 7.1.1: to display toast messages
+16. rxdart 0.24.1: for Firebase stream complex tasks handling
+17. Path 1.7.0: to work on file paths
+18. Chewie 0.9.10 and Video Player 0.10.9: for easy video player implementation
+19. Progress dialog 1.2.4: to show Progress Dialog
+20. Cached Network Image 2.3.3: for faster image loading by caching
+21. Shared Preferences 0.5.12: to enable Shared Preferences support
+22. Photo View 0.10.2: to display full screen zoomable and pannable images.
+23. URL Launcher 5.7.6: for URL launching
+24. Notus to HTML 0.0.7: to convert Notus Documents to HTML, for sharing
+25. share 0.6.5: for sharing content to other apps
 
 ## Class diagram
 
