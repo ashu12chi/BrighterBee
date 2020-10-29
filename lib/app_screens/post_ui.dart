@@ -213,7 +213,8 @@ class _PostState extends State<PostUI> {
                                             mediaType,
                                             listOfMedia,
                                             title,
-                                            content,verified);
+                                            content,
+                                            verified);
                                       });
                                 },
                               ),
@@ -445,162 +446,185 @@ class _PostState extends State<PostUI> {
                 username, title, creator, isReply, '@$creator ')));
   }
 
-  buildBottomSheet(String creator, String displayName, String mediaURL,
-      int mediaType, List listOfMedia, String oldTitle, String content,bool verified) {
+  buildBottomSheet(
+      String creator,
+      String displayName,
+      String mediaURL,
+      int mediaType,
+      List listOfMedia,
+      String oldTitle,
+      String content,
+      bool verified) {
     return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
       return SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: LimitedBox(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: verified == false?<Widget>[
-              Column(
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.check,color: Colors.green,), onPressed: () async{
-                    await FirebaseFirestore.instance
-                        .collection('communities')
-                        .doc(community)
-                        .collection('posts')
-                        .doc(postKey)
-                        .update({'isVerified': true});
-                  }),
-                  Text('Verify',style:TextStyle(fontSize: 14,color: Colors.green),),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.close,color: Colors.red), onPressed: () async{
-                    await deletePost(
-                        community,
-                        postKey,
-                        creator);
-                  }),
-                  Text('Reject',style:TextStyle(fontSize: 14,color: Colors.red),),
-                ],
-              )
-            ]: <Widget>[
-              Column(
-                children: <Widget>[
-                  IconButton(
-                      onPressed: () async {
-                        Fluttertoast.showToast(msg: 'Please wait...');
-                        await postShareWeb(community, postKey, oldTitle,
-                            mediaType, mediaURL, content);
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(Icons.share,
-                          size: 30, color: Theme.of(context).buttonColor)),
-                  Text(
-                    'Share',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-              (creator == username)
-                  ? Column(
+            children: verified == false
+                ? <Widget>[
+                    Column(
                       children: <Widget>[
                         IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditPost(
-                                      community,
-                                      postKey,
-                                      username,
-                                      displayName,
-                                      mediaURL,
-                                      mediaType,
-                                      listOfMedia,
-                                      oldTitle,
-                                      content)));
+                            icon: Icon(
+                              Icons.check,
+                              color: Colors.green,
+                            ),
+                            onPressed: () async {
+                              await FirebaseFirestore.instance
+                                  .collection('communities')
+                                  .doc(community)
+                                  .collection('posts')
+                                  .doc(postKey)
+                                  .update({'isVerified': true});
+                            }),
+                        Text(
+                          'Verify',
+                          style: TextStyle(fontSize: 14, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.close, color: Colors.red),
+                            onPressed: () async {
+                              await deletePost(community, postKey, creator);
+                            }),
+                        Text(
+                          'Reject',
+                          style: TextStyle(fontSize: 14, color: Colors.red),
+                        ),
+                      ],
+                    )
+                  ]
+                : <Widget>[
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            onPressed: () async {
+                              Fluttertoast.showToast(msg: 'Please wait...');
+                              await postShareWeb(community, postKey, oldTitle,
+                                  mediaType, mediaURL, content);
+                              Navigator.pop(context);
                             },
-                            icon: Icon(Icons.edit,
+                            icon: Icon(Icons.share,
                                 size: 30,
                                 color: Theme.of(context).buttonColor)),
                         Text(
-                          'Edit post',
+                          'Share',
                           style: TextStyle(fontSize: 14),
                         ),
                       ],
-                    )
-                  : StreamBuilder<DocumentSnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('users/$username/posts/saved/$community')
-                          .doc(postKey)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData)
-                          return CircularProgressIndicator();
-                        if (snapshot.data.exists) {
-                          return Column(children: [
-                            IconButton(
-                                icon: Icon(Icons.bookmark,
-                                    size: 30, color: Colors.green),
-                                onPressed: () async {
-                                  bool result = await savePost(
-                                      username, community, postKey);
-                                  Fluttertoast.showToast(
-                                      msg: result
-                                          ? 'Post saved'
-                                          : 'Post removed from saved list');
-                                  Navigator.of(context).pop();
-                                }),
-                            Text(
-                              'Post saved',
-                              style: TextStyle(fontSize: 14),
-                            )
-                          ]);
-                        }
-                        return Column(children: [
-                          IconButton(
-                              icon: Icon(Icons.bookmark_outline,
-                                  size: 30,
-                                  color: Theme.of(context).buttonColor),
-                              onPressed: () async {
-                                bool result = await savePost(
-                                    username, community, postKey);
-                                Fluttertoast.showToast(
-                                    msg: result
-                                        ? 'Post saved'
-                                        : 'Post removed from save list');
-                                Navigator.of(context).pop();
-                              }),
-                          Text(
-                            'Save post',
-                            style: TextStyle(fontSize: 14),
+                    ),
+                    (creator == username)
+                        ? Column(
+                            children: <Widget>[
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => EditPost(
+                                                community,
+                                                postKey,
+                                                username,
+                                                displayName,
+                                                mediaURL,
+                                                mediaType,
+                                                listOfMedia,
+                                                oldTitle,
+                                                content)));
+                                  },
+                                  icon: Icon(Icons.edit,
+                                      size: 30,
+                                      color: Theme.of(context).buttonColor)),
+                              Text(
+                                'Edit post',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
                           )
-                        ]);
-                      }),
-              username == creator
-                  ? Column(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.delete,
-                              size: 30, color: Theme.of(context).buttonColor),
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                            await showDeletionConfirmation();
-                          },
-                        ),
-                        Text(
-                          'Delete',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Theme.of(context).buttonColor)),
-                        Text(
-                          'Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    )
-            ],
+                        : StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection(
+                                    'users/$username/posts/saved/$community')
+                                .doc(postKey)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData)
+                                return CircularProgressIndicator();
+                              if (snapshot.data.exists) {
+                                return Column(children: [
+                                  IconButton(
+                                      icon: Icon(Icons.bookmark,
+                                          size: 30, color: Colors.green),
+                                      onPressed: () async {
+                                        bool result = await savePost(
+                                            username, community, postKey);
+                                        Fluttertoast.showToast(
+                                            msg: result
+                                                ? 'Post saved'
+                                                : 'Post removed from saved list');
+                                        Navigator.of(context).pop();
+                                      }),
+                                  Text(
+                                    'Post saved',
+                                    style: TextStyle(fontSize: 14),
+                                  )
+                                ]);
+                              }
+                              return Column(children: [
+                                IconButton(
+                                    icon: Icon(Icons.bookmark_outline,
+                                        size: 30,
+                                        color: Theme.of(context).buttonColor),
+                                    onPressed: () async {
+                                      bool result = await savePost(
+                                          username, community, postKey);
+                                      Fluttertoast.showToast(
+                                          msg: result
+                                              ? 'Post saved'
+                                              : 'Post removed from save list');
+                                      Navigator.of(context).pop();
+                                    }),
+                                Text(
+                                  'Save post',
+                                  style: TextStyle(fontSize: 14),
+                                )
+                              ]);
+                            }),
+                    username == creator
+                        ? Column(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.delete,
+                                    size: 30,
+                                    color: Theme.of(context).buttonColor),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  await showDeletionConfirmation();
+                                },
+                              ),
+                              Text(
+                                'Delete',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: <Widget>[
+                              IconButton(
+                                  icon: Icon(Icons.report,
+                                      size: 30,
+                                      color: Theme.of(context).buttonColor)),
+                              Text(
+                                'Report',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          )
+                  ],
           ),
         ),
       );
@@ -661,21 +685,27 @@ class CommentListBloc {
 
 /*This method will automatically fetch first 10 elements from the document list */
   Future fetchFirstList() async {
-    try {
-      documentList = (await FirebaseFirestore.instance
-              .collection("communities/$community/posts/$key/comments")
-              .orderBy("upvotes", descending: true)
-              .limit(2)
-              .get())
-          .docs;
-      print(documentList);
-      commentController.sink.add(documentList);
-    } on SocketException {
-      commentController.sink
-          .addError(SocketException("No Internet Connection"));
-    } catch (e) {
-      print(e.toString());
-      commentController.sink.addError(e);
+    if (!showIndicator) {
+      try {
+        updateIndicator(true);
+        documentList = (await FirebaseFirestore.instance
+                .collection("communities/$community/posts/$key/comments")
+                .orderBy("upvotes", descending: true)
+                .limit(2)
+                .get())
+            .docs;
+        print(documentList);
+        commentController.sink.add(documentList);
+        updateIndicator(false);
+      } on SocketException {
+        updateIndicator(false);
+        commentController.sink
+            .addError(SocketException("No Internet Connection"));
+      } catch (e) {
+        updateIndicator(false);
+        print(e.toString());
+        commentController.sink.addError(e);
+      }
     }
   }
 
@@ -685,26 +715,29 @@ class CommentListBloc {
       updateIndicator(false);
       return;
     }
-    try {
-      updateIndicator(true);
-      List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore.instance
-              .collection("communities/$community/posts/$key/comments")
-              .orderBy("upvotes", descending: true)
-              .startAfterDocument(documentList[documentList.length - 1])
-              .limit(2)
-              .get())
-          .docs;
-      documentList.addAll(newDocumentList);
-      commentController.sink.add(documentList);
-      updateIndicator(false);
-    } on SocketException {
-      updateIndicator(false);
-      commentController.sink
-          .addError(SocketException("No Internet Connection"));
-    } catch (e) {
-      updateIndicator(false);
-      print(e.toString());
-      commentController.sink.addError(e);
+    if (!showIndicator) {
+      try {
+        updateIndicator(true);
+        List<DocumentSnapshot> newDocumentList = (await FirebaseFirestore
+                .instance
+                .collection("communities/$community/posts/$key/comments")
+                .orderBy("upvotes", descending: true)
+                .startAfterDocument(documentList[documentList.length - 1])
+                .limit(2)
+                .get())
+            .docs;
+        documentList.addAll(newDocumentList);
+        commentController.sink.add(documentList);
+        updateIndicator(false);
+      } on SocketException {
+        updateIndicator(false);
+        commentController.sink
+            .addError(SocketException("No Internet Connection"));
+      } catch (e) {
+        updateIndicator(false);
+        print(e.toString());
+        commentController.sink.addError(e);
+      }
     }
   }
 

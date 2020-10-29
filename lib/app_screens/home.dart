@@ -221,34 +221,42 @@ class PostListBloc {
 
 /*This method will automatically fetch first 10 elements from the document list */
   Future fetchFirstList() async {
-    try {
-      documentList = (await getQuery().limit(2).get()).docs;
-      postController.sink.add(documentList);
-    } on SocketException {
-      postController.sink.addError(SocketException("No Internet Connection"));
-    } catch (e) {
-      print(e.toString());
-      postController.sink.addError(e);
+    if (!showIndicator) {
+      try {
+        updateIndicator(true);
+        documentList = (await getQuery().limit(2).get()).docs;
+        postController.sink.add(documentList);
+        updateIndicator(false);
+      } on SocketException {
+        updateIndicator(false);
+        postController.sink.addError(SocketException("No Internet Connection"));
+      } catch (e) {
+        updateIndicator(false);
+        print(e.toString());
+        postController.sink.addError(e);
+      }
     }
   }
 
 /*This will automatically fetch the next 10 elements from the list*/
   fetchNextPosts() async {
-    try {
-      updateIndicator(true);
-      List<DocumentSnapshot> newDocumentList = (await getQuery()
-              .startAfterDocument(documentList[documentList.length - 1])
-              .limit(2)
-              .get())
-          .docs;
-      documentList.addAll(newDocumentList);
-      postController.sink.add(documentList);
-      updateIndicator(false);
-    } on SocketException {
-      postController.sink.addError(SocketException("No Internet Connection"));
-    } catch (e) {
-      print(e.toString());
-      postController.sink.addError(e);
+    if (!showIndicator) {
+      try {
+        updateIndicator(true);
+        List<DocumentSnapshot> newDocumentList = (await getQuery()
+                .startAfterDocument(documentList[documentList.length - 1])
+                .limit(2)
+                .get())
+            .docs;
+        documentList.addAll(newDocumentList);
+        postController.sink.add(documentList);
+        updateIndicator(false);
+      } on SocketException {
+        postController.sink.addError(SocketException("No Internet Connection"));
+      } catch (e) {
+        print(e.toString());
+        postController.sink.addError(e);
+      }
     }
   }
 
