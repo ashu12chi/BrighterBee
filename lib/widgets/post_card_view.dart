@@ -4,6 +4,7 @@ import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
+import 'package:brighter_bee/helpers/hotness_calculator.dart';
 import 'package:brighter_bee/helpers/post_share.dart';
 import 'package:brighter_bee/helpers/save_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
@@ -238,6 +239,8 @@ class _PostState extends State<PostCardView> {
                                                       title,
                                                       content,verified);
                                                 });
+//                                            var ans = Hotness(int.parse(postKey),downvotes,upvotes,views,commentCount).calculate();
+//                                            print(ans);
                                           },
                                         ),
                                       )
