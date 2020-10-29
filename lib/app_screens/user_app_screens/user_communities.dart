@@ -32,10 +32,14 @@ class _UserCommunitiesState extends State<UserCommunities> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text(
-          'Member of',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        )),
+            title:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Member of',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text('Swipe ➱ right to leave', style: TextStyle(fontSize: 14))
+        ])),
         body: StreamBuilder<DocumentSnapshot>(
             stream:
                 instance.collection('users').doc(user.displayName).snapshots(),
@@ -47,7 +51,7 @@ class _UserCommunitiesState extends State<UserCommunities> {
                       return Dismissible(
                         key: Key(snapshot.data['communityList'][index]),
                         child: CommunityCard(
-                              snapshot.data['communityList'][index]),
+                            snapshot.data['communityList'][index]),
                         background: slideRightBackground(),
                         confirmDismiss: (direction) async {
                           final bool res = await showDialog(
@@ -60,7 +64,9 @@ class _UserCommunitiesState extends State<UserCommunities> {
                                     FlatButton(
                                       child: Text(
                                         "Cancel",
-                                        style: TextStyle(color: Colors.black),
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).buttonColor),
                                       ),
                                       onPressed: () {
                                         Navigator.of(context).pop();
@@ -69,7 +75,9 @@ class _UserCommunitiesState extends State<UserCommunities> {
                                     FlatButton(
                                       child: Text(
                                         "Leave",
-                                        style: TextStyle(color: Colors.red),
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).errorColor),
                                       ),
                                       onPressed: () async {
                                         await handleLeave(
@@ -94,7 +102,7 @@ class _UserCommunitiesState extends State<UserCommunities> {
 
   Widget slideRightBackground() {
     return Container(
-      color: Colors.red,
+      color: Theme.of(context).errorColor,
       child: Align(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

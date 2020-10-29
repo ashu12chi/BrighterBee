@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:brighter_bee/helpers/draft_db_helper.dart';
 import 'package:brighter_bee/helpers/path_helper.dart';
 import 'package:brighter_bee/helpers/send_verification_notifications.dart';
+import 'package:brighter_bee/models/post.dart';
+import 'package:brighter_bee/models/post_entry.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -564,23 +567,87 @@ class _CreatePostState extends State<CreatePost> {
     return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Are you sure?'),
-            content: Text('Do you want to save this post as draft?'),
+            title: Text(
+              'Are you sure?',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            content: Text(
+                'Do you want to save this post as draft?\n\nWarning: separately attached media will NOT be saved.'),
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
-                child: Text('No'),
+                child: Text(
+                  'No',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               FlatButton(
-                onPressed: () {
+                onPressed: () async {
+                  if (community == null || community.length == 0) {
+                    _scaffoldKey.currentState.hideCurrentSnackBar();
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text('No communities selected.'),
+                    ));
+                    Navigator.of(context).pop();
+                    return false;
+                  }
+                  String title = titleController.text;
+                  if (title.length == 0) {
+                    _scaffoldKey.currentState.hideCurrentSnackBar();
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text('Title is empty.'),
+                    ));
+                    Navigator.of(context).pop();
+                    return false;
+                  }
+                  String content = jsonEncode(_controller.document);
+                  if (content.length == 0) {
+                    _scaffoldKey.currentState.hideCurrentSnackBar();
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text('No text written.'),
+                    ));
+                    Navigator.of(context).pop();
+                    return false;
+                  }
+                  int time = DateTime.now().millisecondsSinceEpoch;
+                  Post post = Post(
+                      creator: username,
+                      isVerified: false,
+                      community: community,
+                      time: time,
+                      commentCount: 0,
+                      content: jsonEncode(_controller.document),
+                      downvoters: [],
+                      downvotes: 0,
+                      lastModified: time,
+                      listOfMedia: listOfMedia,
+                      mediaType: 0,
+                      mediaUrl: mediaURL,
+                      title: titleController.text,
+                      titleSearch: [],
+                      upvoters: [],
+                      upvotes: 0,
+                      viewers: [],
+                      views: 0);
+                  debugPrint(jsonEncode(post.toJson()));
+                  PostEntry postEntry =
+                      PostEntry(text: jsonEncode(post.toJson()), time: time);
+                  await insertPostInDb(postEntry);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 },
                 /*Navigator.of(context).pop(true)*/
-                child: Text('Yes'),
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                      color: Colors.green, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),

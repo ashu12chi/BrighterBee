@@ -22,17 +22,19 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   List memberOf;
   PostListBloc postListBloc;
   ScrollController controller = ScrollController();
+  int previousSnapshotLength;
 
   @override
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     selectedSort = 0;
+    previousSnapshotLength = 0;
   }
 
   void scrollListener() {
-    if (controller.offset >= controller.position.maxScrollExtent &&
-        !controller.position.outOfRange) {
+    if (controller.position.extentAfter < 400) {
+      debugPrint('At bottom!');
       postListBloc.fetchNextPosts();
     }
   }
@@ -132,10 +134,9 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                                 selectedColor: Theme.of(context).accentColor,
                                 elevation: 10,
                                 onSelected: (value) {
-                                  postListBloc.fetchNextPosts();
-                                  // setState(() {
-                                  //   selectedSort = 1;
-                                  // });
+                                  setState(() {
+                                    selectedSort = 1;
+                                  });
                                 },
                                 label: Text('Hot',
                                     style: TextStyle(
@@ -175,27 +176,48 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       StreamBuilder<List<DocumentSnapshot>>(
                         stream: postListBloc.postStream,
                         builder: (context, snapshot) {
-                          return snapshot.connectionState ==
-                                  ConnectionState.waiting
-                              ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.length,
-                                  itemBuilder: (context, index) {
-                                    DocumentSnapshot documentSnapshot =
-                                        snapshot.data[index];
-                                    String id = documentSnapshot.id;
-                                    return PostCardView(
-                                        documentSnapshot.get('community'), id);
-                                  });
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          else {
+                            int presentLength = snapshot.data.length;
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, index) {
+                                  DocumentSnapshot documentSnapshot =
+                                      snapshot.data[index];
+                                  String id = documentSnapshot.id;
+                                  debugPrint('${snapshot.data.length}');
+                                  return Column(children: [
+                                    Padding(
+                                        padding: EdgeInsets.only(bottom: 10),
+                                        child: PostCardView(
+                                            documentSnapshot.get('community'),
+                                            id)),
+                                    (index != snapshot.data.length - 1)
+                                        ? Container()
+                                        : buildProgressIndicator(presentLength)
+                                  ]);
+                                });
+                          }
                         },
                       ),
                     ]))));
       },
     );
+  }
+
+  buildProgressIndicator(int presentLength) {
+    if (presentLength != previousSnapshotLength) {
+      previousSnapshotLength = presentLength;
+      return CircularProgressIndicator();
+    } else {
+      return Container();
+    }
   }
 
   @override

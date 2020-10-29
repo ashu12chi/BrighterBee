@@ -101,62 +101,16 @@ class _UserSavedState extends State<UserSaved> {
                                                 ]))
                                           ])));
                                 } else
-                                  return showShimmer();
+                                  return CircularProgressIndicator();
                               });
                         } else
-                          return showShimmer();
+                          return CircularProgressIndicator();
                       },
                     );
                   });
             } else
-              return showShimmer();
+              return CircularProgressIndicator();
           }),
     );
-  }
-
-  showShimmer() {
-    return ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Card(
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Shimmer.fromColors(
-                    child: Card(
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                      ),
-                    ),
-                    baseColor: Colors.grey,
-                    highlightColor: Colors.black12,
-                  ),
-                ),
-                Column(
-                  children: [
-                    Shimmer.fromColors(
-                      child: Card(
-                        child: Text('Name of Community'),
-                        shape: RoundedRectangleBorder(),
-                      ),
-                      baseColor: Colors.grey,
-                      highlightColor: Colors.black12,
-                    ),
-                    Shimmer.fromColors(
-                      child: Card(
-                        child: Text('Name of Community name of Community'),
-                        shape: RoundedRectangleBorder(),
-                      ),
-                      baseColor: Colors.grey,
-                      highlightColor: Colors.black12,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          );
-        });
   }
 }

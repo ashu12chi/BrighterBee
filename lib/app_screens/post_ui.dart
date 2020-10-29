@@ -477,6 +477,7 @@ class _PostState extends State<PostUI> {
                                   .collection('posts')
                                   .doc(postKey)
                                   .update({'isVerified': true});
+                              Navigator.of(context).pop();
                             }),
                         Text(
                           'Verify',
@@ -490,6 +491,7 @@ class _PostState extends State<PostUI> {
                             icon: Icon(Icons.close, color: Colors.red),
                             onPressed: () async {
                               await deletePost(community, postKey, creator);
+                              Navigator.of(context).pop();
                             }),
                         Text(
                           'Reject',

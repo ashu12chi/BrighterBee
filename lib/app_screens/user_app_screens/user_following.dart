@@ -37,10 +37,14 @@ class _UserFollowingState extends State<UserFollowing> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text(
-          'Following',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        )),
+            title:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Following',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text('Swipe ➱ right to unfollow', style: TextStyle(fontSize: 14))
+        ])),
         body: StreamBuilder<DocumentSnapshot>(
             stream: instance.collection('users').doc(username).snapshots(),
             builder: (context, snapshot) {
@@ -63,7 +67,9 @@ class _UserFollowingState extends State<UserFollowing> {
                                     FlatButton(
                                       child: Text(
                                         "Cancel",
-                                        style: TextStyle(color: Colors.black),
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).buttonColor),
                                       ),
                                       onPressed: () {
                                         Navigator.of(context).pop();
@@ -72,7 +78,9 @@ class _UserFollowingState extends State<UserFollowing> {
                                     FlatButton(
                                       child: Text(
                                         "Unfollow",
-                                        style: TextStyle(color: Colors.red),
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).errorColor),
                                       ),
                                       onPressed: () async {
                                         await handleUnfollow(
@@ -97,7 +105,7 @@ class _UserFollowingState extends State<UserFollowing> {
 
   Widget slideRightBackground() {
     return Container(
-      color: Colors.red,
+      color: Theme.of(context).errorColor,
       child: Align(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

@@ -49,6 +49,7 @@ class _RepliesList extends State<RepliesList> {
       builder: (context, snapshot) {
         if (snapshot.data != null) {
           return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             itemCount: snapshot.data.docs.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {

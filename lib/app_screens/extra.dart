@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/settings.dart' as settings;
+import 'package:brighter_bee/app_screens/user_app_screens/user_drafts.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_saved.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
@@ -155,52 +156,55 @@ class _ExtraState extends State<Extra> {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width / 2 - 10,
-                  child: Card(
-                    elevation: 4,
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      UserSaved()));
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.bookmark),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text('Saved'),
-                            )
-                          ],
-                        )),
-                  ),
-                ),
-                SizedBox(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width / 2 - 10,
-                  child: Card(
-                    elevation: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.drafts),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text('Drafts'),
-                        )
-                      ],
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 2 - 10,
+                    child: Card(
+                      elevation: 4,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        UserSaved()));
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.bookmark),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text('Saved'),
+                              )
+                            ],
+                          )),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(
+                      height: 100,
+                      width: MediaQuery.of(context).size.width / 2 - 10,
+                      child: Card(
+                          elevation: 4,
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Drafts()));
+                              },
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(Icons.drafts),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Text('Drafts'),
+                                    )
+                                  ]))))
+                ]),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: SizedBox(
