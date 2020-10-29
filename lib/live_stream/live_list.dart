@@ -13,19 +13,24 @@ import 'call.dart';
 
 class LiveList extends StatefulWidget {
   final String community;
+
   LiveList(this.community);
+
   @override
   _LiveListState createState() => _LiveListState(community);
 }
 
 class _LiveListState extends State<LiveList> {
   String community;
+
   _LiveListState(this.community);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Streaming'),
+        title: Text('Live Streaming',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add_circle),

@@ -74,7 +74,8 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Create an account'),
+        title: Text('Create an account',
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Form(

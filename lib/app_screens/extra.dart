@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/settings.dart' as settings;
+import 'package:brighter_bee/app_screens/user_app_screens/user_communities.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_drafts.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/user_following.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_saved.dart';
 import 'package:brighter_bee/app_screens/user_search.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
-import 'package:brighter_bee/app_screens/user_app_screens/user_communities.dart';
-import 'package:brighter_bee/app_screens/user_app_screens/user_following.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

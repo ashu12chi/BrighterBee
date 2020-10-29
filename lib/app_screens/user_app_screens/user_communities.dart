@@ -5,7 +5,6 @@
 * This file shows list of communities current user is member of.
  */
 
-import 'package:brighter_bee/app_screens/community_screens/community_profile.dart';
 import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:brighter_bee/widgets/community_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

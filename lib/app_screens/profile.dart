@@ -1,5 +1,5 @@
-import 'package:brighter_bee/app_screens/user_app_screens/edit_details.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/edit_details.dart';
 import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
-  String _username;
+  final String _username;
 
   Profile(this._username);
 

@@ -445,6 +445,7 @@ class PostListBloc {
   }
 
   Stream get getShowIndicatorStream => showIndicatorController.stream;
+
   Stream<List<DocumentSnapshot>> get postStream => postController.stream;
 
 /*This method will automatically fetch first 10 elements from the document list */

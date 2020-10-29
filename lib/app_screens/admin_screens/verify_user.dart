@@ -7,7 +7,9 @@ import '../../widgets/user_card.dart';
 
 class VerifyUser extends StatefulWidget {
   final community;
+
   VerifyUser(this.community);
+
   @override
   _VerifyUserState createState() => _VerifyUserState(community);
 }
@@ -15,12 +17,14 @@ class VerifyUser extends StatefulWidget {
 class _VerifyUserState extends State<VerifyUser> {
   final community;
   bool processing;
+
   void intiState() {
     super.initState();
     processing = false;
   }
 
   _VerifyUserState(this.community);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

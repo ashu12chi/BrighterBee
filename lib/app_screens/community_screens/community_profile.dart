@@ -29,7 +29,11 @@ class _CommunityProfileState extends State<CommunityProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(community)),
+      appBar: AppBar(
+          title: Text(
+        community,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      )),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: StreamBuilder<DocumentSnapshot>(
@@ -156,9 +160,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                         )
                       : Container(),
                   FirebaseAuth.instance.currentUser.displayName == creator
-                      ? Padding(
-                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0)
-                        )
+                      ? Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0))
                       : ((verification == 1 &&
                                   (snapshot.data['members']).contains(
                                       FirebaseAuth
@@ -166,8 +168,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                               snapshot.data['admin'].contains(FirebaseAuth
                                   .instance.currentUser.displayName))
                           ? Padding(
-                              padding: EdgeInsets.only(top: 8.0, bottom: 8.0)
-                            )
+                              padding: EdgeInsets.only(top: 8.0, bottom: 8.0))
                           : Container(),
                   FirebaseAuth.instance.currentUser.displayName == creator
                       ? Padding(
@@ -223,9 +224,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                             )
                           : Container(),
                   FirebaseAuth.instance.currentUser.displayName == creator
-                      ? Padding(
-                          padding: EdgeInsets.only(top: 8.0, bottom: 8.0)
-                        )
+                      ? Padding(padding: EdgeInsets.only(top: 8.0, bottom: 8.0))
                       : ((posts == 1 &&
                                   (snapshot.data['members']).contains(
                                       FirebaseAuth

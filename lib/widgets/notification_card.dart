@@ -17,6 +17,7 @@ class NotificationCard extends StatefulWidget {
 class _NotificationCardState extends State<NotificationCard> {
   final String key;
   final int postRelated;
+
   _NotificationCardState(this.key, this.postRelated);
 
   @override

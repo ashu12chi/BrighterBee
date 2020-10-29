@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 
 class UserCard extends StatefulWidget {
   final _username;
+
   UserCard(this._username);
+
   @override
   _UserCardState createState() => _UserCardState(_username);
 }
 
 class _UserCardState extends State<UserCard> {
   final username;
+
   _UserCardState(this.username);
 
   @override

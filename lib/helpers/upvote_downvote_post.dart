@@ -64,12 +64,15 @@ downvote(String community, String key, String username, bool upvoted,
   debugPrint('Downvoted!');
 }
 
-report(String community,String key,String username) async {
+report(String community, String key, String username) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {
-    DocumentReference postRef = instance.collection('communities').doc(community).collection('posts').
-    doc(key);
-    transaction.update(postRef,{
+    DocumentReference postRef = instance
+        .collection('communities')
+        .doc(community)
+        .collection('posts')
+        .doc(key);
+    transaction.update(postRef, {
       'reporters': FieldValue.arrayUnion([username]),
       'reports': FieldValue.increment(1)
     });
@@ -116,12 +119,15 @@ undoDownvote(String community, String key, String username, bool upvoted,
   debugPrint('Downvote undone!');
 }
 
-undoReport(String community,String key,String username) async {
+undoReport(String community, String key, String username) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {
-    DocumentReference postRef = instance.collection('communities').doc(community).collection('posts').
-    doc(key);
-    transaction.update(postRef,{
+    DocumentReference postRef = instance
+        .collection('communities')
+        .doc(community)
+        .collection('posts')
+        .doc(key);
+    transaction.update(postRef, {
       'reporters': FieldValue.arrayRemove([username]),
       'reports': FieldValue.increment(-1)
     });

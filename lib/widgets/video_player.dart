@@ -9,7 +9,7 @@ import 'package:video_player/video_player.dart';
 */
 
 class VideoPlayer extends StatefulWidget {
-  String _videoUrl;
+  final String _videoUrl;
 
   VideoPlayer(this._videoUrl);
 
@@ -21,7 +21,9 @@ class VideoPlayer extends StatefulWidget {
 
 class _VideoPlayerState extends State<VideoPlayer> {
   ChewieController _chewieController;
+
   _VideoPlayerState(this.videoUrl);
+
   VideoPlayerController _controller;
   Future<void> _future;
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'call.dart';
-import 'dart:io';
 
 /*
 * @author: Ashutosh Chitranshi
@@ -17,7 +18,9 @@ import 'dart:io';
 
 class StartLive extends StatefulWidget {
   final String community;
+
   StartLive(this.community);
+
   @override
   _StartLiveState createState() => _StartLiveState(community);
 }
@@ -27,7 +30,9 @@ class _StartLiveState extends State<StartLive> {
   File _imageFile;
   String url;
   TextEditingController _controller;
+
   _StartLiveState(this.community);
+
   final picker = ImagePicker();
 
   Future pickImage() async {
@@ -57,7 +62,8 @@ class _StartLiveState extends State<StartLive> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Start new Live'),
+        title: Text('Start new Live',
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: ListView(
         children: <Widget>[
@@ -149,6 +155,7 @@ class _StartLiveState extends State<StartLive> {
       ),
     );
   }
+
 //  Future<void> onJoin() async {
 //    // await for camera and mic permissions before pushing video page
 //    await _handleCameraAndMic();

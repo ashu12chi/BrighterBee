@@ -7,14 +7,18 @@ import 'package:flutter/material.dart';
 
 class VerifyPost extends StatefulWidget {
   final commuinty;
+
   VerifyPost(this.commuinty);
+
   @override
   _VerifyPostState createState() => _VerifyPostState(commuinty);
 }
 
 class _VerifyPostState extends State<VerifyPost> {
   final community;
+
   _VerifyPostState(this.community);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,10 +49,11 @@ class _VerifyPostState extends State<VerifyPost> {
                     key: Key(documentSnapshot.id),
                     child: InkWell(
                       onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PostUI(community,documentSnapshot.id)));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PostUI(community, documentSnapshot.id)));
                       },
                       child: PostCardView(community, documentSnapshot.id),
                     ),

@@ -239,6 +239,7 @@ class PostListBloc {
   }
 
   Stream get getShowIndicatorStream => showIndicatorController.stream;
+
   Stream<List<DocumentSnapshot>> get postStream => postController.stream;
 
 /*This method will automatically fetch first 10 elements from the document list */
@@ -246,7 +247,7 @@ class PostListBloc {
     if (!showIndicator) {
       try {
         updateIndicator(true);
-        documentList = (await getQuery().limit(2).get()).docs;
+        documentList = (await getQuery().limit(5).get()).docs;
         postController.sink.add(documentList);
         updateIndicator(false);
       } on SocketException {
@@ -267,7 +268,7 @@ class PostListBloc {
         updateIndicator(true);
         List<DocumentSnapshot> newDocumentList = (await getQuery()
                 .startAfterDocument(documentList[documentList.length - 1])
-                .limit(2)
+                .limit(5)
                 .get())
             .docs;
         documentList.addAll(newDocumentList);

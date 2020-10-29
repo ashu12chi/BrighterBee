@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 */
 
 class EditText extends StatefulWidget {
-  String startValue;
+  final String startValue;
+
   EditText(this.startValue);
+
   @override
   _EditTextState createState() => _EditTextState(startValue);
 }
@@ -16,7 +18,9 @@ class EditText extends StatefulWidget {
 class _EditTextState extends State<EditText> {
   String startValue;
   TextEditingController _controller;
+
   _EditTextState(this.startValue);
+
   void initState() {
     super.initState();
     _controller = TextEditingController(text: startValue);

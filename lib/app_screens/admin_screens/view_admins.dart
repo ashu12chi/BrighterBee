@@ -7,14 +7,18 @@ import '../profile.dart';
 
 class ViewAdmins extends StatefulWidget {
   final community;
+
   ViewAdmins(this.community);
+
   @override
   _ViewAdminsState createState() => _ViewAdminsState(community);
 }
 
 class _ViewAdminsState extends State<ViewAdmins> {
   final community;
+
   _ViewAdminsState(this.community);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

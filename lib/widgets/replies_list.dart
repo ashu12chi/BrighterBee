@@ -13,10 +13,10 @@ import 'package:rxdart/subjects.dart';
 */
 
 class RepliesList extends StatefulWidget {
-  String community;
-  String postKey;
-  String commKey;
-  String username;
+  final String community;
+  final String postKey;
+  final String commKey;
+  final String username;
 
   RepliesList(this.community, this.postKey, this.commKey, this.username);
 

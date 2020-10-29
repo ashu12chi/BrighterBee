@@ -8,14 +8,18 @@ import '../profile.dart';
 
 class AddAdmins extends StatefulWidget {
   final community;
+
   AddAdmins(this.community);
+
   @override
   _AddAdminsState createState() => _AddAdminsState(community);
 }
 
 class _AddAdminsState extends State<AddAdmins> {
   final community;
+
   _AddAdminsState(this.community);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

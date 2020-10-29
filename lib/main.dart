@@ -1,6 +1,5 @@
 import 'package:brighter_bee/app_screens/feed.dart';
 import 'package:brighter_bee/authentication/sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +60,8 @@ class _MyAppState extends State<MyApp> {
           errorColor: Color.fromRGBO(207, 102, 121, 1),
           accentColor: Colors.deepOrangeAccent,
           primaryColor: Color.fromRGBO(18, 18, 18, 1),
-          backgroundColor: Color.fromRGBO(18, 18, 18, 1), // #121212
+          backgroundColor: Color.fromRGBO(18, 18, 18, 1),
+          // #121212
           scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
           appBarTheme: Theme.of(context).appBarTheme.copyWith(
                 color: Color.fromRGBO(31, 31, 31, 1), // #1F1F1F

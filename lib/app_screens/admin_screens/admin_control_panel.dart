@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class AdminControlPanel extends StatefulWidget {
   final community;
+
   AdminControlPanel(this.community);
 
   @override
@@ -14,7 +15,9 @@ class AdminControlPanel extends StatefulWidget {
 
 class _AdminControlPanelState extends State<AdminControlPanel> {
   final community;
+
   _AdminControlPanelState(this.community);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +58,7 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                           height: 150,
                           child: Center(
                             child: Card(
+                              elevation: 8,
                               child: InkWell(
                                   onTap: () {
                                     Navigator.push(
@@ -92,33 +96,34 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                           height: 150,
                           child: Center(
                             child: Card(
+                                elevation: 8,
                                 child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ViewAdmins(community)));
-                              },
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0,
-                                        bottom: 8.0,
-                                        left: 20,
-                                        right: 20),
-                                    child: Text(
-                                      'View admins',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ViewAdmins(community)));
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8.0,
+                                            bottom: 8.0,
+                                            left: 20,
+                                            right: 20),
+                                        child: Text(
+                                          'View admins',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                      Icon(Icons.person)
+                                    ],
                                   ),
-                                  Icon(Icons.person)
-                                ],
-                              ),
-                            )),
+                                )),
                           ),
                         ),
                       ),
@@ -134,6 +139,7 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                           height: 150,
                           child: Center(
                             child: Card(
+                              elevation: 8,
                               child: InkWell(
                                   onTap: () {
                                     Navigator.push(
@@ -171,6 +177,7 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                           height: 150,
                           child: Center(
                             child: Card(
+                              elevation: 8,
                               child: InkWell(
                                   onTap: () {},
                                   child: Column(

@@ -42,6 +42,7 @@ class _CallPageState extends State<CallPage> {
   final _infoStrings = <String>[];
   bool muted = false;
   RtcEngine _engine;
+
   _CallPageState(this.name, this.channelName, this.community);
 
   @override
@@ -327,7 +328,7 @@ class _CallPageState extends State<CallPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       backgroundColor: Colors.black,
       body: Center(

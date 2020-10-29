@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:brighter_bee/helpers/post_share.dart';
 import 'package:brighter_bee/helpers/save_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
-import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
+import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:brighter_bee/widgets/comment_widget.dart';
 import 'package:brighter_bee/widgets/replies_list.dart';
 import 'package:brighter_bee/widgets/video_player.dart';
-import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
@@ -218,8 +218,7 @@ class _PostState extends State<PostUI> {
                                             title,
                                             content,
                                             verified,
-                                            reported
-                                        );
+                                            reported);
                                       });
                                 },
                               ),
@@ -620,39 +619,41 @@ class _PostState extends State<PostUI> {
                               ),
                             ],
                           )
-                        : reported == false?Column(
-                            children: <Widget>[
-                              IconButton(
-                                  icon: Icon(Icons.report,
-                                      size: 30,
-                                      color: Colors.red),
-                                onPressed: () async {
-                                    await report(community,postKey, username);
-                                    Navigator.pop(context);
-                                },
-                              ),
-                              Text(
-                                'Report',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ):Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Colors.green),
-                            onPressed: () async {
-                              await undoReport(community, postKey, username);
-                              Navigator.pop(context);
-                            },
-                        ),
-                        Text(
-                          'Remove Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    )
+                        : reported == false
+                            ? Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.report,
+                                        size: 30, color: Colors.red),
+                                    onPressed: () async {
+                                      await report(
+                                          community, postKey, username);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Text(
+                                    'Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.report,
+                                        size: 30, color: Colors.green),
+                                    onPressed: () async {
+                                      await undoReport(
+                                          community, postKey, username);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Text(
+                                    'Remove Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              )
                   ],
           ),
         ),
@@ -710,6 +711,7 @@ class CommentListBloc {
   }
 
   Stream get getShowIndicatorStream => showIndicatorController.stream;
+
   Stream<List<DocumentSnapshot>> get commentStream => commentController.stream;
 
 /*This method will automatically fetch first 10 elements from the document list */

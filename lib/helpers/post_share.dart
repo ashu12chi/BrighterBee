@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:notustohtml/notustohtml.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:quill_delta/quill_delta.dart';
 import 'package:share/share.dart';
 import 'package:zefyr/zefyr.dart';
 

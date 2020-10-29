@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 
 class CommunityCard extends StatefulWidget {
   final _community;
+
   CommunityCard(this._community);
+
   @override
   _CommunityCardState createState() => _CommunityCardState(_community);
 }
 
 class _CommunityCardState extends State<CommunityCard> {
   final community;
+
   _CommunityCardState(this.community);
 
   @override

@@ -1,13 +1,9 @@
 import 'dart:convert';
 
-import 'package:brighter_bee/app_screens/create_post.dart';
-import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/helpers/draft_db_helper.dart';
 import 'package:brighter_bee/models/post.dart';
-import 'package:brighter_bee/models/post_entry.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
 import 'package:date_format/date_format.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';

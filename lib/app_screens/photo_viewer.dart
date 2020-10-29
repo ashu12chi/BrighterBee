@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PhotoViewer extends StatefulWidget {
-  String _url;
+  final String _url;
 
   PhotoViewer(this._url);
 
@@ -15,6 +15,7 @@ class _PhotoViewerState extends State<PhotoViewer> {
   String _url;
 
   _PhotoViewerState(this._url);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +25,7 @@ class _PhotoViewerState extends State<PhotoViewer> {
 }
 
 class PhotoViewerCached extends StatefulWidget {
-  String _url;
+  final String _url;
 
   PhotoViewerCached(this._url);
 
@@ -36,6 +37,7 @@ class _PhotoViewerCachedState extends State<PhotoViewerCached> {
   String _url;
 
   _PhotoViewerCachedState(this._url);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

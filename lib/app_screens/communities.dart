@@ -1,4 +1,5 @@
 import 'package:brighter_bee/app_screens/community_screens/create_community.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/user_communities.dart';
 import 'package:flutter/material.dart';
 
 import 'community_screens/community_search.dart';
@@ -38,6 +39,13 @@ class _CommunitiesState extends State<Communities>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              UserCommunities()));
+                },
                 child: Row(
                   children: <Widget>[
                     Icon(

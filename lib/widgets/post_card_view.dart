@@ -4,7 +4,6 @@ import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
-import 'package:brighter_bee/helpers/hotness_calculator.dart';
 import 'package:brighter_bee/helpers/post_share.dart';
 import 'package:brighter_bee/helpers/save_post.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_post.dart';
@@ -240,7 +239,9 @@ class _PostState extends State<PostCardView> {
                                                       mediaType,
                                                       listOfMedia,
                                                       title,
-                                                      content,verified,reported);
+                                                      content,
+                                                      verified,
+                                                      reported);
                                                 });
 //                                            var ans = Hotness(int.parse(postKey),downvotes,upvotes,views,commentCount).calculate();
 //                                            print(ans);
@@ -406,183 +407,209 @@ class _PostState extends State<PostCardView> {
     debugPrint('Post opened!');
   }
 
-  buildBottomSheet(String creator, String displayName, String mediaURL,
-      int mediaType, List listOfMedia, String oldTitle, String content,bool verified,bool reported) {
+  buildBottomSheet(
+      String creator,
+      String displayName,
+      String mediaURL,
+      int mediaType,
+      List listOfMedia,
+      String oldTitle,
+      String content,
+      bool verified,
+      bool reported) {
     return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
       return SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: LimitedBox(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: verified == false?<Widget>[
-              Column(
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.check,color: Colors.green,), onPressed: () async{
-                    await FirebaseFirestore.instance
-                        .collection('communities')
-                        .doc(community)
-                        .collection('posts')
-                        .doc(postKey)
-                        .update({'isVerified': true});
-                  }),
-                  Text('Verify',style:TextStyle(fontSize: 14,color: Colors.green),),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.close,color: Colors.red), onPressed: () async{
-                    await deletePost(
-                        community,
-                        postKey,
-                        creator);
-                  }),
-                  Text('Reject',style:TextStyle(fontSize: 14,color: Colors.red),),
-                ],
-              )
-            ]: <Widget>[
-              Column(
-                children: <Widget>[
-                  IconButton(
-                      onPressed: () async {
-                        Fluttertoast.showToast(msg: 'Please wait...');
-                        await postShareWeb(community, postKey, oldTitle,
-                            mediaType, mediaURL, content);
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(Icons.share,
-                          size: 30, color: Theme.of(context).buttonColor)),
-                  Text(
-                    'Share',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-              (creator == username)
-                  ? Column(
+            children: verified == false
+                ? <Widget>[
+                    Column(
                       children: <Widget>[
                         IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditPost(
-                                      community,
-                                      postKey,
-                                      username,
-                                      displayName,
-                                      mediaURL,
-                                      mediaType,
-                                      listOfMedia,
-                                      oldTitle,
-                                      content)));
+                            icon: Icon(
+                              Icons.check,
+                              color: Colors.green,
+                            ),
+                            onPressed: () async {
+                              await FirebaseFirestore.instance
+                                  .collection('communities')
+                                  .doc(community)
+                                  .collection('posts')
+                                  .doc(postKey)
+                                  .update({'isVerified': true});
+                            }),
+                        Text(
+                          'Verify',
+                          style: TextStyle(fontSize: 14, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.close, color: Colors.red),
+                            onPressed: () async {
+                              await deletePost(community, postKey, creator);
+                            }),
+                        Text(
+                          'Reject',
+                          style: TextStyle(fontSize: 14, color: Colors.red),
+                        ),
+                      ],
+                    )
+                  ]
+                : <Widget>[
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            onPressed: () async {
+                              Fluttertoast.showToast(msg: 'Please wait...');
+                              await postShareWeb(community, postKey, oldTitle,
+                                  mediaType, mediaURL, content);
+                              Navigator.pop(context);
                             },
-                            icon: Icon(Icons.edit,
+                            icon: Icon(Icons.share,
                                 size: 30,
                                 color: Theme.of(context).buttonColor)),
                         Text(
-                          'Edit post',
+                          'Share',
                           style: TextStyle(fontSize: 14),
                         ),
                       ],
-                    )
-                  : StreamBuilder<DocumentSnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('users/$username/posts/saved/$community')
-                          .doc(postKey)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData)
-                          return CircularProgressIndicator();
-                        if (snapshot.data.exists) {
-                          return Column(children: [
-                            IconButton(
-                                icon: Icon(Icons.bookmark,
-                                    size: 30, color: Colors.green),
-                                onPressed: () async {
-                                  bool result = await savePost(
-                                      username, community, postKey);
-                                  Fluttertoast.showToast(
-                                      msg: result
-                                          ? 'Post saved'
-                                          : 'Post removed from saved list');
-                                  Navigator.of(context).pop();
-                                }),
-                            Text(
-                              'Post saved',
-                              style: TextStyle(fontSize: 14),
-                            )
-                          ]);
-                        }
-                        return Column(children: [
-                          IconButton(
-                              icon: Icon(Icons.bookmark_outline,
-                                  size: 30,
-                                  color: Theme.of(context).buttonColor),
-                              onPressed: () async {
-                                bool result = await savePost(
-                                    username, community, postKey);
-                                Fluttertoast.showToast(
-                                    msg: result
-                                        ? 'Post saved'
-                                        : 'Post removed from save list');
-                                Navigator.of(context).pop();
-                              }),
-                          Text(
-                            'Save post',
-                            style: TextStyle(fontSize: 14),
+                    ),
+                    (creator == username)
+                        ? Column(
+                            children: <Widget>[
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => EditPost(
+                                                community,
+                                                postKey,
+                                                username,
+                                                displayName,
+                                                mediaURL,
+                                                mediaType,
+                                                listOfMedia,
+                                                oldTitle,
+                                                content)));
+                                  },
+                                  icon: Icon(Icons.edit,
+                                      size: 30,
+                                      color: Theme.of(context).buttonColor)),
+                              Text(
+                                'Edit post',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
                           )
-                        ]);
-                      }),
-              username == creator
-                  ? Column(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.delete,
-                              size: 30, color: Theme.of(context).buttonColor),
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                            await deletePostHandler();
-                          },
-                        ),
-                        Text(
-                          'Delete',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    )
-                  : reported==true?Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Colors.green),
-                          onPressed: () async {
-                            await undoReport(community, postKey, username);
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Text(
-                          'Remove Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ):Column(
-                children: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.report,
-                          size: 30,
-                          color: Colors.red),
-                      onPressed: () async {
-                        await report(community, postKey, username);
-                        Navigator.pop(context);
-                      },
-                  ),
-                  Text(
-                    'Report',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              )
-            ],
+                        : StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection(
+                                    'users/$username/posts/saved/$community')
+                                .doc(postKey)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData)
+                                return CircularProgressIndicator();
+                              if (snapshot.data.exists) {
+                                return Column(children: [
+                                  IconButton(
+                                      icon: Icon(Icons.bookmark,
+                                          size: 30, color: Colors.green),
+                                      onPressed: () async {
+                                        bool result = await savePost(
+                                            username, community, postKey);
+                                        Fluttertoast.showToast(
+                                            msg: result
+                                                ? 'Post saved'
+                                                : 'Post removed from saved list');
+                                        Navigator.of(context).pop();
+                                      }),
+                                  Text(
+                                    'Post saved',
+                                    style: TextStyle(fontSize: 14),
+                                  )
+                                ]);
+                              }
+                              return Column(children: [
+                                IconButton(
+                                    icon: Icon(Icons.bookmark_outline,
+                                        size: 30,
+                                        color: Theme.of(context).buttonColor),
+                                    onPressed: () async {
+                                      bool result = await savePost(
+                                          username, community, postKey);
+                                      Fluttertoast.showToast(
+                                          msg: result
+                                              ? 'Post saved'
+                                              : 'Post removed from save list');
+                                      Navigator.of(context).pop();
+                                    }),
+                                Text(
+                                  'Save post',
+                                  style: TextStyle(fontSize: 14),
+                                )
+                              ]);
+                            }),
+                    username == creator
+                        ? Column(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.delete,
+                                    size: 30,
+                                    color: Theme.of(context).buttonColor),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  await deletePostHandler();
+                                },
+                              ),
+                              Text(
+                                'Delete',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          )
+                        : reported == true
+                            ? Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.report,
+                                        size: 30, color: Colors.green),
+                                    onPressed: () async {
+                                      await undoReport(
+                                          community, postKey, username);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Text(
+                                    'Remove Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.report,
+                                        size: 30, color: Colors.red),
+                                    onPressed: () async {
+                                      await report(
+                                          community, postKey, username);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Text(
+                                    'Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              )
+                  ],
           ),
         ),
       );

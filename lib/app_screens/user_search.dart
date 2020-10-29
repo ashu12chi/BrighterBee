@@ -55,7 +55,8 @@ class _UserSearchState extends State<UserSearch> {
                     searchController.text != null)
                 ? FirebaseFirestore.instance
                     .collection('users')
-                    .where('nameSearch', arrayContains: searchController.text.toLowerCase())
+                    .where('nameSearch',
+                        arrayContains: searchController.text.toLowerCase())
                     .snapshots()
                 : FirebaseFirestore.instance.collection('users').snapshots(),
             builder: (context, snapshot) {
@@ -71,13 +72,13 @@ class _UserSearchState extends State<UserSearch> {
                             snapshot.data.docs[index];
                         print(documentSnapshot['name']);
                         return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          Profile(documentSnapshot.id)));
-                            },
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Profile(documentSnapshot.id)));
+                          },
                           child: Column(
                             children: [
                               Padding(

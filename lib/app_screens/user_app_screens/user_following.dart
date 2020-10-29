@@ -10,7 +10,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/user_card.dart';
-import '../profile.dart';
 
 class UserFollowing extends StatefulWidget {
   final String _username;

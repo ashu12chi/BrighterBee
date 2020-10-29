@@ -51,15 +51,16 @@ class _CommunitySearchState extends State<CommunitySearch> {
           ),
         ),
         body: StreamBuilder<QuerySnapshot>(
-            stream: (searchController.text != "" &&
-                    searchController.text != null)
-                ? FirebaseFirestore.instance
-                    .collection('communities')
-                    .where('nameSearch', arrayContains: searchController.text.toLowerCase())
-                    .snapshots()
-                : FirebaseFirestore.instance
-                    .collection('communities')
-                    .snapshots(),
+            stream:
+                (searchController.text != "" && searchController.text != null)
+                    ? FirebaseFirestore.instance
+                        .collection('communities')
+                        .where('nameSearch',
+                            arrayContains: searchController.text.toLowerCase())
+                        .snapshots()
+                    : FirebaseFirestore.instance
+                        .collection('communities')
+                        .snapshots(),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
                   ? Center(
@@ -73,13 +74,13 @@ class _CommunitySearchState extends State<CommunitySearch> {
                             snapshot.data.docs[index];
                         print(documentSnapshot.id);
                         return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          CommunityHome(documentSnapshot.id)));
-                            },
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CommunityHome(documentSnapshot.id)));
+                          },
                           child: Column(
                             children: [
                               Padding(

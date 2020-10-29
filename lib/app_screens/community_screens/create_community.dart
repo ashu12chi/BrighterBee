@@ -65,9 +65,8 @@ class _CreateGroupState extends State<CreateGroup> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(
-          'Create Community',
-        ),
+        title: Text('Create Community',
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: ListView(
         children: <Widget>[

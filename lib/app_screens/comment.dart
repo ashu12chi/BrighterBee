@@ -74,15 +74,17 @@ class _Comment extends State<Comment> {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          isReply ? 'Reply to comment' : 'Add comment',
-        ),
+        title: Text(isReply ? 'Reply to comment' : 'Add comment',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
         actions: <Widget>[
           FlatButton(
             child: Text(
               'Post',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).accentColor),
             ),
             onPressed: postComment,
           ),
