@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 /*
-* @author: Nishchal Siddharth Pandey
+* @author: Nishchal Siddharth Pandey,Ashutosh Chitranshi
 * 14 October, 2020
-* This file has code for managing upvote/ downvote actions on a post..
+* This file has code for managing upvote/ downvote/ reporting actions on a post..
 */
 
 upvote(String community, String key, String username, bool upvoted,
@@ -64,6 +64,18 @@ downvote(String community, String key, String username, bool upvoted,
   debugPrint('Downvoted!');
 }
 
+report(String community,String key,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference postRef = instance.collection('communities').doc(community).collection('posts').
+    doc(key);
+    transaction.update(postRef,{
+      'reporters': FieldValue.arrayUnion([username]),
+      'reports': FieldValue.increment(1)
+    });
+  });
+}
+
 undoUpvote(String community, String key, String username, bool upvoted,
     bool downvoted) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;
@@ -102,6 +114,18 @@ undoDownvote(String community, String key, String username, bool upvoted,
   });
 
   debugPrint('Downvote undone!');
+}
+
+undoReport(String community,String key,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference postRef = instance.collection('communities').doc(community).collection('posts').
+    doc(key);
+    transaction.update(postRef,{
+      'reporters': FieldValue.arrayRemove([username]),
+      'reports': FieldValue.increment(-1)
+    });
+  });
 }
 
 addToViewers(String community, String key, String username) async {

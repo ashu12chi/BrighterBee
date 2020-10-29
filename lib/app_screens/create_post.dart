@@ -398,6 +398,8 @@ class _CreatePostState extends State<CreatePost> {
       "lastModified": time,
       "listOfMedia": listOfMedia,
       "isVerified": false,
+      'reports':0,
+      'reporters':[],
       "community": community,
     }).then((action) async {
       debugPrint("successful posting in community!");

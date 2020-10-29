@@ -1,5 +1,6 @@
 import 'package:brighter_bee/app_screens/admin_screens/add_admins.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_admins.dart';
+import 'package:brighter_bee/app_screens/admin_screens/view_reports.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -134,7 +135,13 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                           child: Center(
                             child: Card(
                               child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ViewReports(community)));
+                                  },
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,

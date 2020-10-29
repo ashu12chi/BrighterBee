@@ -100,6 +100,9 @@ class _PostState extends State<PostUI> {
               bool verified = snapshot.data['isVerified'];
               bool upvoted = snapshot.data['upvoters'].contains(username);
               bool downvoted = snapshot.data['downvoters'].contains(username);
+              bool reported = false;
+              int reports = snapshot.data['reports'];
+              reported = snapshot.data['reporters'].contains(username);
               if (!snapshot.data['viewers'].contains(username))
                 addToViewers(community, postKey, username);
               String mediaUrl;
@@ -214,7 +217,9 @@ class _PostState extends State<PostUI> {
                                             listOfMedia,
                                             title,
                                             content,
-                                            verified);
+                                            verified,
+                                            reported
+                                        );
                                       });
                                 },
                               ),
@@ -454,7 +459,8 @@ class _PostState extends State<PostUI> {
       List listOfMedia,
       String oldTitle,
       String content,
-      bool verified) {
+      bool verified,
+      bool reported) {
     return StatefulBuilder(builder: (BuildContext context, StateSetter state) {
       return SingleChildScrollView(
         padding: EdgeInsets.all(10),
@@ -614,18 +620,39 @@ class _PostState extends State<PostUI> {
                               ),
                             ],
                           )
-                        : Column(
+                        : reported == false?Column(
                             children: <Widget>[
                               IconButton(
                                   icon: Icon(Icons.report,
                                       size: 30,
-                                      color: Theme.of(context).buttonColor)),
+                                      color: Colors.red),
+                                onPressed: () async {
+                                    await report(community,postKey, username);
+                                    Navigator.pop(context);
+                                },
+                              ),
                               Text(
                                 'Report',
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
-                          )
+                          ):Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.report,
+                                size: 30,
+                                color: Colors.green),
+                            onPressed: () async {
+                              await undoReport(community, postKey, username);
+                              Navigator.pop(context);
+                            },
+                        ),
+                        Text(
+                          'Remove Report',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    )
                   ],
           ),
         ),
