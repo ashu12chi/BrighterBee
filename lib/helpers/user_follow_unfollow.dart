@@ -44,3 +44,30 @@ handleUnfollow(String me, String user) async {
     });
   });
 }
+
+undoReport(String reported,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference ref = instance
+        .collection('users')
+        .doc(reported);
+    transaction.update(ref, {
+      'reporters': FieldValue.arrayRemove([username]),
+      'reports': FieldValue.increment(-1)
+    });
+  });
+}
+
+report(String reported,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference ref = instance
+        .collection('users')
+        .doc(reported);
+    transaction.update(ref, {
+      'reporters': FieldValue.arrayUnion([username]),
+      'reports': FieldValue.increment(1)
+    });
+  });
+}
+
