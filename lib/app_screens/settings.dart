@@ -17,9 +17,12 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool adminNotification = true;
   int feedOrder = 0; // 0 for time,1 for upvotes, 2 for views
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
           title: Text(
         'Settings',
@@ -329,6 +332,21 @@ class _SettingsState extends State<Settings> {
                 color: Theme.of(context).errorColor)),
         onPressed: () async {
           Navigator.of(context).pop();
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(hours: 1),
+            content: Row(
+              children: <Widget>[
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text("Deleting account...")
+              ],
+            ),
+          ));
           await deleteUser(FirebaseAuth.instance.currentUser.displayName);
           Navigator.of(context).pop();
           FirebaseAuth.instance.signOut();

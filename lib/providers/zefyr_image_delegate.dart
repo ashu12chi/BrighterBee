@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/helpers/path_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -35,10 +36,17 @@ class MyAppZefyrImageDelegate implements ZefyrImageDelegate<ImageSource> {
 
   @override
   Widget buildImage(BuildContext context, String key) {
-    return CachedNetworkImage(
-      placeholder: (context, url) => CircularProgressIndicator(),
-      imageUrl: key,
-    );
+    return InkWell(
+        child: CachedNetworkImage(
+          placeholder: (context, url) => CircularProgressIndicator(),
+          imageUrl: key,
+        ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => PhotoViewerCached(key)));
+        });
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
+import 'package:brighter_bee/helpers/comment_delete.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_comment.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -287,22 +288,24 @@ class _CommentWidget extends State<CommentWidget> {
                                 ),
                                 SizedBox(width: 10)
                               ])),
-                        IconButton(
-                          onPressed: () {
-                            comment(
-                                community,
-                                dateLong,
-                                parentKey,
-                                parentPostKey,
-                                username,
-                                text,
-                                creator,
-                                true,
-                                '@$creator ');
-                          },
-                          icon: Icon(Icons.reply, size: 18),
-                          color: Theme.of(context).buttonColor,
-                        ),
+                        isReply
+                            ? Container()
+                            : IconButton(
+                                onPressed: () {
+                                  comment(
+                                      community,
+                                      dateLong,
+                                      commKey,
+                                      parentPostKey,
+                                      username,
+                                      text,
+                                      creator,
+                                      true,
+                                      '@$creator ');
+                                },
+                                icon: Icon(Icons.reply, size: 18),
+                                color: Theme.of(context).buttonColor,
+                              ),
                       ],
                     )
                   ],
@@ -400,6 +403,10 @@ class _CommentWidget extends State<CommentWidget> {
                         ? Column(
                             children: <Widget>[
                               IconButton(
+                                  onPressed: () async {
+                                    await showCommentDeletionConfirmation(
+                                        creator);
+                                  },
                                   icon: Icon(Icons.delete,
                                       size: 30,
                                       color: Theme.of(context).buttonColor)),
@@ -416,5 +423,45 @@ class _CommentWidget extends State<CommentWidget> {
             );
           });
         });
+  }
+
+  showCommentDeletionConfirmation(String creator) async {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+        child: Text("Delete",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).errorColor)),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(msg: 'Deleting comment...');
+          await deleteComment(community, parentPostKey,
+              isReply ? parentKey : commKey, commKey, isReply, creator);
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete comment?"),
+      content: Text("Doing this will delete the comment" +
+          (isReply ? '.' : ' and all its replies.')),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

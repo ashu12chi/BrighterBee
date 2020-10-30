@@ -726,7 +726,7 @@ class CommentListBloc {
         documentList = (await FirebaseFirestore.instance
                 .collection("communities/$community/posts/$key/comments")
                 .orderBy("upvotes", descending: true)
-                .limit(2)
+                .limit(10)
                 .get())
             .docs;
         print(documentList);
@@ -758,7 +758,7 @@ class CommentListBloc {
                 .collection("communities/$community/posts/$key/comments")
                 .orderBy("upvotes", descending: true)
                 .startAfterDocument(documentList[documentList.length - 1])
-                .limit(2)
+                .limit(5)
                 .get())
             .docs;
         documentList.addAll(newDocumentList);
