@@ -1,6 +1,7 @@
 import 'package:brighter_bee/app_screens/admin_screens/verify_post.dart';
 import 'package:brighter_bee/app_screens/admin_screens/verify_user.dart';
 import 'package:brighter_bee/app_screens/community_screens/edit_community_details.dart';
+import 'package:brighter_bee/widgets/user_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -301,26 +302,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
                       color: Colors.black12,
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 100,
-                        width: MediaQuery.of(context).size.width / 3 - 10,
-                        child: Card(),
-                      ),
-                      SizedBox(
-                        height: 100,
-                        width: MediaQuery.of(context).size.width / 3 - 10,
-                        child: Card(),
-                      ),
-                      SizedBox(
-                        height: 100,
-                        width: MediaQuery.of(context).size.width / 3 - 10,
-                        child: Card(),
-                      )
-                    ],
-                  ),
+                  UserCard(creator)
                 ],
               );
             }),

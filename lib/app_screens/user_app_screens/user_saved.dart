@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class UserSaved extends StatefulWidget {
   _UserSavedState createState() => _UserSavedState();
@@ -100,10 +101,88 @@ class _UserSavedState extends State<UserSaved> {
                                                 ]))
                                           ])));
                                 } else
-                                  return CircularProgressIndicator();
+                                  {
+                                    return Card(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Shimmer.fromColors(
+                                              child: Card(
+                                                child: Container(
+                                                  height: 100,
+                                                  width: 100,
+                                                ),
+                                              ),
+                                              baseColor: Colors.grey,
+                                              highlightColor: Colors.black12,
+                                            ),
+                                          ),
+                                          Column(
+                                            children: [
+                                              Shimmer.fromColors(
+                                                child: Card(
+                                                  child: Text('Name of User'),
+                                                  shape: RoundedRectangleBorder(),
+                                                ),
+                                                baseColor: Colors.grey,
+                                                highlightColor: Colors.black12,
+                                              ),
+                                              Shimmer.fromColors(
+                                                child: Card(
+                                                  child: Text('Name of User name of user'),
+                                                  shape: RoundedRectangleBorder(),
+                                                ),
+                                                baseColor: Colors.grey,
+                                                highlightColor: Colors.black12,
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }
                               });
                         } else
-                          return CircularProgressIndicator();
+                          return Card(
+                          child: Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Shimmer.fromColors(
+                                  child: Card(
+                                    child: Container(
+                                      height: 100,
+                                      width: 100,
+                                    ),
+                                  ),
+                                  baseColor: Colors.grey,
+                                  highlightColor: Colors.black12,
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Shimmer.fromColors(
+                                    child: Card(
+                                      child: Text('Name of User'),
+                                      shape: RoundedRectangleBorder(),
+                                    ),
+                                    baseColor: Colors.grey,
+                                    highlightColor: Colors.black12,
+                                  ),
+                                  Shimmer.fromColors(
+                                    child: Card(
+                                      child: Text('Name of User name of user'),
+                                      shape: RoundedRectangleBorder(),
+                                    ),
+                                    baseColor: Colors.grey,
+                                    highlightColor: Colors.black12,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
                       },
                     );
                   });
