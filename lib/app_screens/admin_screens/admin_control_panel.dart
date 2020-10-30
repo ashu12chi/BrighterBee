@@ -3,6 +3,7 @@ import 'package:brighter_bee/app_screens/admin_screens/view_admins.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_community_reports.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_post_reports.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_user_reports.dart';
+import 'package:brighter_bee/helpers/community_delete.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -17,12 +18,14 @@ class AdminControlPanel extends StatefulWidget {
 
 class _AdminControlPanelState extends State<AdminControlPanel> {
   final community;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _AdminControlPanelState(this.community);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
           title: Text(
         'Admin Control Panel',
@@ -213,8 +216,8 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                                 : Card(
                                     elevation: 8,
                                     child: InkWell(
-                                        onTap: () {
-                                          // TODO: Add community deletion
+                                        onTap: () async {
+                                          await showCommunityDeletionConfirmation();
                                         },
                                         child: Column(
                                           mainAxisAlignment:
@@ -287,6 +290,59 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
               return CircularProgressIndicator();
             }
           }),
+    );
+  }
+
+  showCommunityDeletionConfirmation() async {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+        child: Text("Delete",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).errorColor)),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(hours: 1),
+            content: Row(
+              children: <Widget>[
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text("Deleting community...")
+              ],
+            ),
+          ));
+          await deleteCommunity(community);
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete comment?"),
+      content: Text("Doing this will delete the community with all its posts."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

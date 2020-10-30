@@ -1,3 +1,4 @@
+import 'package:brighter_bee/helpers/comment_delete.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -65,20 +66,14 @@ Future<void> deletePost(
     await storageReference.child(element).delete();
     print('Successfully deleted $element storage item');
   });
-  var result = await instance
+  var commentsSnap = await instance
       .collection('communities/$community/posts/$postKey/comments')
       .get();
-  final List<DocumentSnapshot> documents = result.docs;
-  documents.forEach((element) async {
-    String creator = element.data()['creator'];
-    await instance
-        .collection('users/$creator/comments')
-        .doc(element.id)
-        .delete();
-    await instance
-        .collection('communities/$community/posts/$postKey/comments')
-        .doc(element.id)
-        .delete();
+  final List<DocumentSnapshot> comments = commentsSnap.docs;
+  comments.forEach((comment) async {
+    String creator = comment.data()['creator'];
+    await deleteComment(
+        community, postKey, comment.id, "reply", false, creator);
   });
   List upvoters = postDoc.data()['upvoters'];
   upvoters.forEach((element) {

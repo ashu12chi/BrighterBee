@@ -38,8 +38,17 @@ class _MyAppState extends State<MyApp> {
         dividerColor: Colors.black12,
         accentColor: Colors.deepOrange,
         primaryColor: Colors.white,
-        backgroundColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
+        dialogTheme: Theme.of(context).dialogTheme.copyWith(
+            backgroundColor: Colors.white,
+            titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                fontFamily: 'OpenSans'),
+            contentTextStyle: TextStyle(
+                color: Colors.black, fontSize: 16, fontFamily: 'OpenSans')),
+        // backgroundColor: Colors.white,
+        // scaffoldBackgroundColor: Colors.white,
         errorColor: Color.fromRGBO(176, 0, 32, 1),
         appBarTheme: Theme.of(context).appBarTheme.copyWith(
             iconTheme: Theme.of(context).iconTheme, shadowColor: Colors.white),
@@ -67,6 +76,14 @@ class _MyAppState extends State<MyApp> {
                 color: Color.fromRGBO(31, 31, 31, 1), // #1F1F1F
               ),
           cardColor: Color.fromRGBO(31, 31, 31, 1),
+          dialogTheme: Theme.of(context).dialogTheme.copyWith(
+              backgroundColor: Color.fromRGBO(31, 31, 31, 1),
+              titleTextStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontFamily: 'OpenSans'),
+              contentTextStyle:
+                  TextStyle(fontSize: 16, fontFamily: 'OpenSans')),
           textTheme: Theme.of(context).textTheme.apply(
               bodyColor: Color.fromRGBO(226, 226, 226, 1),
               fontFamily: 'OpenSans'),
