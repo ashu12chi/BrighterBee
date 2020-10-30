@@ -65,7 +65,9 @@ class _ViewPostReportsState extends State<ViewPostReports> {
                                       FlatButton(
                                         child: Text(
                                           "Cancel",
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .buttonColor),
                                         ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -74,7 +76,9 @@ class _ViewPostReportsState extends State<ViewPostReports> {
                                       FlatButton(
                                         child: Text(
                                           "Delete",
-                                          style: TextStyle(color: Colors.red),
+                                          style: TextStyle(
+                                              color:
+                                                  Theme.of(context).errorColor),
                                         ),
                                         onPressed: () async {
                                           //if(processing)
@@ -102,7 +106,9 @@ class _ViewPostReportsState extends State<ViewPostReports> {
                                     FlatButton(
                                       child: Text(
                                         "Cancel",
-                                        style: TextStyle(color: Colors.black),
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).buttonColor),
                                       ),
                                       onPressed: () {
                                         Navigator.of(context).pop();
@@ -168,7 +174,7 @@ class _ViewPostReportsState extends State<ViewPostReports> {
 
   Widget slideLeftBackground() {
     return Container(
-      color: Colors.red,
+      color: Theme.of(context).errorColor,
       child: Align(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,

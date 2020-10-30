@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:brighter_bee/app_screens/about.dart';
+import 'package:brighter_bee/authentication/delete_user.dart';
+import 'package:brighter_bee/authentication/sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -98,6 +101,37 @@ class _SettingsState extends State<Settings> {
                     ),
                     Text(
                       'Clear cached data',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
+            child: Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Theme.of(context).dividerColor,
+            ),
+          ),
+          InkWell(
+            onTap: () async {
+              await showDeletionConfirmation();
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
+              child: Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(Icons.delete),
+                    ),
+                    Text(
+                      'Delete your account',
                       style: TextStyle(fontSize: 18),
                     ),
                   ],
@@ -266,6 +300,47 @@ class _SettingsState extends State<Settings> {
     AlertDialog alert = AlertDialog(
       title: Text("Delete cache?"),
       content: Text("Doing this might slow down loading of some images..."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showDeletionConfirmation() async {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+        child: Text("Delete my account",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).errorColor)),
+        onPressed: () async {
+          Navigator.of(context).pop();
+          await deleteUser(FirebaseAuth.instance.currentUser.displayName);
+          Navigator.of(context).pop();
+          FirebaseAuth.instance.signOut();
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => SignIn()));
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete your account?"),
+      content: Text(
+          "Doing this will remove all your account data. Posts, comments and replies will be left behind.\nThis is the ONLY warning."),
       actions: [
         cancelButton,
         continueButton,

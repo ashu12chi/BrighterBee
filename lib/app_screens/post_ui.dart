@@ -493,14 +493,17 @@ class _PostState extends State<PostUI> {
                     Column(
                       children: <Widget>[
                         IconButton(
-                            icon: Icon(Icons.close, color: Colors.red),
+                            icon: Icon(Icons.close,
+                                color: Theme.of(context).errorColor),
                             onPressed: () async {
                               await deletePost(community, postKey, creator);
                               Navigator.of(context).pop();
                             }),
                         Text(
                           'Reject',
-                          style: TextStyle(fontSize: 14, color: Colors.red),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).errorColor),
                         ),
                       ],
                     )
@@ -624,7 +627,8 @@ class _PostState extends State<PostUI> {
                                 children: <Widget>[
                                   IconButton(
                                     icon: Icon(Icons.report,
-                                        size: 30, color: Colors.red),
+                                        size: 30,
+                                        color: Theme.of(context).errorColor),
                                     onPressed: () async {
                                       await report(
                                           community, postKey, username);

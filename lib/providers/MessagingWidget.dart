@@ -74,7 +74,7 @@ class _MessagingWidgetState extends State<MessagingWidget> {
                           child: Container(
                             padding: EdgeInsets.all(1),
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Theme.of(context).errorColor,
                               borderRadius: BorderRadius.circular(15),
                             ),
                             constraints: BoxConstraints(

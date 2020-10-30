@@ -66,7 +66,8 @@ class _ViewAdminsState extends State<ViewAdmins> {
                               FlatButton(
                                 child: Text(
                                   "Cancel",
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(
+                                      color: Theme.of(context).buttonColor),
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
@@ -75,7 +76,8 @@ class _ViewAdminsState extends State<ViewAdmins> {
                               FlatButton(
                                 child: Text(
                                   "Remove",
-                                  style: TextStyle(color: Colors.red),
+                                  style: TextStyle(
+                                      color: Theme.of(context).errorColor),
                                 ),
                                 onPressed: () async {
                                   await handleRemoveAdmin(
@@ -97,7 +99,7 @@ class _ViewAdminsState extends State<ViewAdmins> {
 
   Widget slideRightBackground() {
     return Container(
-      color: Colors.red,
+      color: Theme.of(context).errorColor,
       child: Align(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

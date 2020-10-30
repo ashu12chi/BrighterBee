@@ -69,7 +69,9 @@ class _AddAdminsState extends State<AddAdmins> {
                                       FlatButton(
                                         child: Text(
                                           "Cancel",
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .buttonColor),
                                         ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -139,12 +141,12 @@ class _AddAdminsState extends State<AddAdmins> {
             ),
             Icon(
               Icons.person_add,
-              color: Colors.white,
+              color: Theme.of(context).primaryColor,
             ),
             Text(
               " Accept",
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).primaryColor,
                 fontWeight: FontWeight.w700,
               ),
               textAlign: TextAlign.left,

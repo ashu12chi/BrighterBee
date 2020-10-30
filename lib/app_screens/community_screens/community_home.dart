@@ -437,7 +437,8 @@ class _CommunityHomeState extends State<CommunityHome> {
                                 children: <Widget>[
                                   IconButton(
                                     icon: Icon(Icons.report,
-                                        size: 30, color: Colors.red),
+                                        size: 30,
+                                        color: Theme.of(context).errorColor),
                                     onPressed: () async {
                                       await report(community, username);
                                       Navigator.pop(context);

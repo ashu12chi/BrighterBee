@@ -312,11 +312,13 @@ class _ProfileState extends State<Profile> {
                                 child: Text(
                                   'Report User',
                                   style: TextStyle(
-                                      fontSize: 18, color: Colors.red),
+                                      fontSize: 18,
+                                      color: Theme.of(context).accentColor),
                                 ),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    side: BorderSide(color: Colors.red)),
+                                    side: BorderSide(
+                                        color: Theme.of(context).accentColor)),
                                 onPressed: () async {
                                   await report(username, user.displayName);
                                 },
