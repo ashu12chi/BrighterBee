@@ -292,37 +292,36 @@ class _ProfileState extends State<Profile> {
                               ),
                   ),
                   Padding(
-                      padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: (username != user.displayName)
-                        ? snapshot.data['reporters'].contains(user.displayName)?FlatButton(
-                      child: Text(
-                        'Remove Report',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.green),
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(
-                              color: Colors.green)),
-                      onPressed: () async {
-                        await undoReport(username, user.displayName);
-                      },
-                    ):FlatButton(
-                      child: Text(
-                        'Report User',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.red),
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(
-                              color: Colors.red)),
-                      onPressed: () async {
-                         await report(username, user.displayName);
-                      },
-                    ) : Container(),
+                        ? snapshot.data['reporters'].contains(user.displayName)
+                            ? FlatButton(
+                                child: Text(
+                                  'Remove Report',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.green),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(color: Colors.green)),
+                                onPressed: () async {
+                                  await undoReport(username, user.displayName);
+                                },
+                              )
+                            : FlatButton(
+                                child: Text(
+                                  'Report User',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.red),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(color: Colors.red)),
+                                onPressed: () async {
+                                  await report(username, user.displayName);
+                                },
+                              )
+                        : Container(),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 8.0, bottom: 4.0),

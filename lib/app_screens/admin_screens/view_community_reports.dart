@@ -13,77 +13,107 @@ class _ViewCommunityReportsState extends State<ViewCommunityReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Community Reports',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'View Community Reports',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('communities').snapshots(),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
-          return ListView.builder(
-            itemCount: snapshot.data.docs.length,
-            itemBuilder: (context,index) {
-              DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
-              int reports = documentSnapshot['reports'];
-              if(reports > 0) {
-                return Dismissible(
-                  key: Key(documentSnapshot.id),
-                  child: Card(
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext
-                                    context) =>
-                                        CommunityHome(documentSnapshot.id)));
-                          },
-                          child: Row(children: [
-                            Padding(
-                                padding:
-                                const EdgeInsets.all(8.0),
-                                child: CircleAvatar(
-                                    backgroundImage:
-                                    CachedNetworkImageProvider(
-                                        documentSnapshot[
-                                        'photoUrl']),
-                                    radius: 40)),
-                            Flexible(
-                                child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment
-                                        .start,
-                                    children: [
+          stream:
+              FirebaseFirestore.instance.collection('communities').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator();
+            return ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
+                int reports = documentSnapshot['reports'];
+                if (reports > 0) {
+                  return Dismissible(
+                      key: Key(documentSnapshot.id),
+                      child: Card(
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            CommunityHome(
+                                                documentSnapshot.id)));
+                              },
+                              child: Row(children: [
+                                Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircleAvatar(
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                                documentSnapshot['photoUrl']),
+                                        radius: 40)),
+                                Flexible(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
                                       Text(documentSnapshot.id,
                                           style: TextStyle(
                                               fontSize: 20,
-                                              fontWeight:
-                                              FontWeight.bold)),
+                                              fontWeight: FontWeight.bold)),
                                       SizedBox(height: 3),
-                                      Text(
-                                          'Reports: $reports',
-                                          style: TextStyle(
-                                              fontSize: 18)),
+                                      Text('Reports: $reports',
+                                          style: TextStyle(fontSize: 18)),
                                       SizedBox(height: 3),
                                       Text(documentSnapshot['about'],
                                           style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.grey),
+                                              fontSize: 15, color: Colors.grey),
                                           maxLines: 3,
-                                          overflow:
-                                          TextOverflow.ellipsis)
+                                          overflow: TextOverflow.ellipsis)
                                     ]))
-                          ]))),
-                    background: slideRightBackground(),
-                    secondaryBackground: slideLeftBackground(),
-                    confirmDismiss: (direction) async {
-                      if (direction == DismissDirection.endToStart) {
+                              ]))),
+                      background: slideRightBackground(),
+                      secondaryBackground: slideLeftBackground(),
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.endToStart) {
+                          final bool res = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content:
+                                      Text("Are you sure you want to delete ?"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      onPressed: () async {
+                                        //if(processing)
+                                        //return;
+                                        // TODO: Add community deletion
+//                                    //processing = false;
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                          return res;
+                        }
                         final bool res = await showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 content: Text(
-                                    "Are you sure you want to delete ?"),
+                                    "Are you sure you want to remove all reports ?"),
                                 actions: <Widget>[
                                   FlatButton(
                                     child: Text(
@@ -96,14 +126,14 @@ class _ViewCommunityReportsState extends State<ViewCommunityReports> {
                                   ),
                                   FlatButton(
                                     child: Text(
-                                      "Delete",
-                                      style: TextStyle(color: Colors.red),
+                                      "Remove reports",
+                                      style: TextStyle(color: Colors.green),
                                     ),
                                     onPressed: () async {
-                                      //if(processing)
-                                      //return;
-                                      // TODO: Add community deletion
-//                                    //processing = false;
+                                      await FirebaseFirestore.instance
+                                          .collection('communities')
+                                          .doc(documentSnapshot.id)
+                                          .update({'reports': 0});
                                       Navigator.of(context).pop();
                                     },
                                   ),
@@ -111,49 +141,15 @@ class _ViewCommunityReportsState extends State<ViewCommunityReports> {
                               );
                             });
                         return res;
-                      }
-                      final bool res = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content:
-                              Text("Are you sure you want to remove all reports ?"),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text(
-                                    "Remove reports",
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                                  onPressed: () async {
-                                    await FirebaseFirestore.instance
-                                        .collection('communities')
-                                        .doc(documentSnapshot.id)
-                                        .update({'reports': 0});
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-                      return res;
-                    });
-              }
-              return Container();
-            },
-          );
-        }
-      ),
+                      });
+                }
+                return Container();
+              },
+            );
+          }),
     );
   }
+
   Widget slideRightBackground() {
     return Container(
       color: Colors.green,

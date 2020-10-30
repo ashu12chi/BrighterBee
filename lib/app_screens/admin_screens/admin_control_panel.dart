@@ -179,61 +179,63 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                           width: 150,
                           height: 150,
                           child: Center(
-                            child: community=='BrighterBee'?Card(
-                              elevation: 8,
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ViewCommunityReports()));
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0,
-                                            bottom: 8.0,
-                                            left: 20,
-                                            right: 20),
-                                        child: Text(
-                                          'View Community Reports',
-                                          style: TextStyle(fontSize: 16),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Icon(Icons.report)
-                                    ],
-                                  )),
-                            ):Card(
-                              elevation: 8,
-                              child: InkWell(
-                                  onTap: () {
-                                    // TODO: Add community deletion
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0,
-                                            bottom: 8.0,
-                                            left: 20,
-                                            right: 20),
-                                        child: Text(
-                                          'Delete Community',
-                                          style: TextStyle(fontSize: 16),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Icon(Icons.delete_forever)
-                                    ],
-                                  )),
-                            ),
+                            child: community == 'BrighterBee'
+                                ? Card(
+                                    elevation: 8,
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewCommunityReports()));
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0,
+                                                  bottom: 8.0,
+                                                  left: 20,
+                                                  right: 20),
+                                              child: Text(
+                                                'View Community Reports',
+                                                style: TextStyle(fontSize: 16),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            Icon(Icons.report)
+                                          ],
+                                        )),
+                                  )
+                                : Card(
+                                    elevation: 8,
+                                    child: InkWell(
+                                        onTap: () {
+                                          // TODO: Add community deletion
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0,
+                                                  bottom: 8.0,
+                                                  left: 20,
+                                                  right: 20),
+                                              child: Text(
+                                                'Delete Community',
+                                                style: TextStyle(fontSize: 16),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            Icon(Icons.delete_forever)
+                                          ],
+                                        )),
+                                  ),
                           ),
                         ),
                       ),
@@ -245,37 +247,38 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                       width: 150,
                       height: 150,
                       child: Center(
-                        child: community=='BrighterBee'?Card(
-                          elevation: 8,
-                          child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ViewUserReports()));
-                              },
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0,
-                                        bottom: 8.0,
-                                        left: 20,
-                                        right: 20),
-                                    child: Text(
-                                      'View User Reports',
-                                      style: TextStyle(fontSize: 16),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  Icon(Icons.report)
-                                ],
-                              )),
-                        ):Container()
-                      ),
+                          child: community == 'BrighterBee'
+                              ? Card(
+                                  elevation: 8,
+                                  child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ViewUserReports()));
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0,
+                                                bottom: 8.0,
+                                                left: 20,
+                                                right: 20),
+                                            child: Text(
+                                              'View User Reports',
+                                              style: TextStyle(fontSize: 16),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Icon(Icons.report)
+                                        ],
+                                      )),
+                                )
+                              : Container()),
                     ),
                   ),
                 ],

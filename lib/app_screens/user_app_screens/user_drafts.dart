@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:brighter_bee/app_screens/user_app_screens/draft_editor.dart';
 import 'package:brighter_bee/helpers/draft_db_helper.dart';
 import 'package:brighter_bee/models/post.dart';
 import 'package:brighter_bee/providers/zefyr_image_delegate.dart';
@@ -92,10 +93,11 @@ class _DraftsState extends State<Drafts> {
                             elevation: 8,
                             child: InkWell(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (BuildContext context) => null));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              DraftEditor(post)));
                                 },
                                 child: Padding(
                                     padding: const EdgeInsets.all(8.0),

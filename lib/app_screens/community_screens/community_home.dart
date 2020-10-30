@@ -81,7 +81,7 @@ class _CommunityHomeState extends State<CommunityHome> {
               Icons.more_horiz,
               color: Theme.of(context).buttonColor,
             ),
-            onPressed: (){
+            onPressed: () {
               showOptions(creator, username, reported);
             },
           )
@@ -361,7 +361,7 @@ class _CommunityHomeState extends State<CommunityHome> {
     );
   }
 
-  showOptions(String creator,String username,bool reported) {
+  showOptions(String creator, String username, bool reported) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
@@ -414,39 +414,41 @@ class _CommunityHomeState extends State<CommunityHome> {
                         ),
                       ],
                     ),
-                    (username==creator || community == 'BrighterBee')?Container():reported?Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Colors.green),
-                          onPressed: () async {
-                              await undoReport(community, username);
-                              Navigator.pop(context);
-                          },
-                        ),
-                        Text(
-                          'Remove Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ):Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Colors.red),
-                          onPressed: () async {
-                              await report(community, username);
-                              Navigator.pop(context);
-                          },
-                        ),
-                        Text(
-                          'Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    )
+                    (username == creator || community == 'BrighterBee')
+                        ? Container()
+                        : reported
+                            ? Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.report,
+                                        size: 30, color: Colors.green),
+                                    onPressed: () async {
+                                      await undoReport(community, username);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Text(
+                                    'Remove Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.report,
+                                        size: 30, color: Colors.red),
+                                    onPressed: () async {
+                                      await report(community, username);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Text(
+                                    'Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              )
                   ],
                 ),
               ),

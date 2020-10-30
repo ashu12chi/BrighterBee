@@ -13,19 +13,22 @@ class _ViewUserReportsState extends State<ViewUserReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View User Reports',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'View User Reports',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('users').snapshots(),
           builder: (context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting)
+            if (snapshot.connectionState == ConnectionState.waiting)
               return CircularProgressIndicator();
             return ListView.builder(
               itemCount: snapshot.data.docs.length,
-              itemBuilder: (context,index) {
+              itemBuilder: (context, index) {
                 DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
                 int reports = documentSnapshot['reports'];
-                if(reports > 0) {
+                if (reports > 0) {
                   return Dismissible(
                       key: Key(documentSnapshot.id),
                       child: Card(
@@ -34,45 +37,36 @@ class _ViewUserReportsState extends State<ViewUserReports> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (BuildContext
-                                        context) =>
+                                        builder: (BuildContext context) =>
                                             Profile(documentSnapshot.id)));
                               },
                               child: Row(children: [
                                 Padding(
-                                    padding:
-                                    const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: CircleAvatar(
                                         backgroundImage:
-                                        CachedNetworkImageProvider(
-                                            documentSnapshot[
-                                            'photoUrl']),
+                                            CachedNetworkImageProvider(
+                                                documentSnapshot['photoUrl']),
                                         radius: 40)),
                                 Flexible(
                                     child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .start,
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(documentSnapshot.id,
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight:
-                                                  FontWeight.bold)),
-                                          SizedBox(height: 3),
-                                          Text(
-                                              'Reports: $reports',
-                                              style: TextStyle(
-                                                  fontSize: 18)),
-                                          SizedBox(height: 3),
-                                          Text(documentSnapshot['motto'],
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.grey),
-                                              maxLines: 3,
-                                              overflow:
-                                              TextOverflow.ellipsis)
-                                        ]))
+                                      Text(documentSnapshot.id,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 3),
+                                      Text('Reports: $reports',
+                                          style: TextStyle(fontSize: 18)),
+                                      SizedBox(height: 3),
+                                      Text(documentSnapshot['motto'],
+                                          style: TextStyle(
+                                              fontSize: 15, color: Colors.grey),
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis)
+                                    ]))
                               ]))),
                       background: slideRightBackground(),
                       secondaryBackground: slideLeftBackground(),
@@ -82,8 +76,8 @@ class _ViewUserReportsState extends State<ViewUserReports> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text(
-                                      "Are you sure you want to delete ?"),
+                                  content:
+                                      Text("Are you sure you want to delete ?"),
                                   actions: <Widget>[
                                     FlatButton(
                                       child: Text(
@@ -116,8 +110,8 @@ class _ViewUserReportsState extends State<ViewUserReports> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                content:
-                                Text("Are you sure you want to remove all reports ?"),
+                                content: Text(
+                                    "Are you sure you want to remove all reports ?"),
                                 actions: <Widget>[
                                   FlatButton(
                                     child: Text(
@@ -150,10 +144,10 @@ class _ViewUserReportsState extends State<ViewUserReports> {
                 return Container();
               },
             );
-          }
-      ),
+          }),
     );
   }
+
   Widget slideRightBackground() {
     return Container(
       color: Colors.green,

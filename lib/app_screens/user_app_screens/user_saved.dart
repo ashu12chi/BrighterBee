@@ -100,89 +100,90 @@ class _UserSavedState extends State<UserSaved> {
                                                           TextOverflow.ellipsis)
                                                 ]))
                                           ])));
-                                } else
-                                  {
-                                    return Card(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Shimmer.fromColors(
+                                } else {
+                                  return Card(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Shimmer.fromColors(
+                                            child: Card(
+                                              child: Container(
+                                                height: 100,
+                                                width: 100,
+                                              ),
+                                            ),
+                                            baseColor: Colors.grey,
+                                            highlightColor: Colors.black12,
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            Shimmer.fromColors(
                                               child: Card(
-                                                child: Container(
-                                                  height: 100,
-                                                  width: 100,
-                                                ),
+                                                child: Text('Name of User'),
+                                                shape: RoundedRectangleBorder(),
                                               ),
                                               baseColor: Colors.grey,
                                               highlightColor: Colors.black12,
                                             ),
-                                          ),
-                                          Column(
-                                            children: [
-                                              Shimmer.fromColors(
-                                                child: Card(
-                                                  child: Text('Name of User'),
-                                                  shape: RoundedRectangleBorder(),
-                                                ),
-                                                baseColor: Colors.grey,
-                                                highlightColor: Colors.black12,
+                                            Shimmer.fromColors(
+                                              child: Card(
+                                                child: Text(
+                                                    'Name of User name of user'),
+                                                shape: RoundedRectangleBorder(),
                                               ),
-                                              Shimmer.fromColors(
-                                                child: Card(
-                                                  child: Text('Name of User name of user'),
-                                                  shape: RoundedRectangleBorder(),
-                                                ),
-                                                baseColor: Colors.grey,
-                                                highlightColor: Colors.black12,
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }
+                                              baseColor: Colors.grey,
+                                              highlightColor: Colors.black12,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
                               });
                         } else
                           return Card(
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Shimmer.fromColors(
-                                  child: Card(
-                                    child: Container(
-                                      height: 100,
-                                      width: 100,
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Shimmer.fromColors(
+                                    child: Card(
+                                      child: Container(
+                                        height: 100,
+                                        width: 100,
+                                      ),
                                     ),
+                                    baseColor: Colors.grey,
+                                    highlightColor: Colors.black12,
                                   ),
-                                  baseColor: Colors.grey,
-                                  highlightColor: Colors.black12,
                                 ),
-                              ),
-                              Column(
-                                children: [
-                                  Shimmer.fromColors(
-                                    child: Card(
-                                      child: Text('Name of User'),
-                                      shape: RoundedRectangleBorder(),
+                                Column(
+                                  children: [
+                                    Shimmer.fromColors(
+                                      child: Card(
+                                        child: Text('Name of User'),
+                                        shape: RoundedRectangleBorder(),
+                                      ),
+                                      baseColor: Colors.grey,
+                                      highlightColor: Colors.black12,
                                     ),
-                                    baseColor: Colors.grey,
-                                    highlightColor: Colors.black12,
-                                  ),
-                                  Shimmer.fromColors(
-                                    child: Card(
-                                      child: Text('Name of User name of user'),
-                                      shape: RoundedRectangleBorder(),
+                                    Shimmer.fromColors(
+                                      child: Card(
+                                        child:
+                                            Text('Name of User name of user'),
+                                        shape: RoundedRectangleBorder(),
+                                      ),
+                                      baseColor: Colors.grey,
+                                      highlightColor: Colors.black12,
                                     ),
-                                    baseColor: Colors.grey,
-                                    highlightColor: Colors.black12,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        );
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
                       },
                     );
                   });

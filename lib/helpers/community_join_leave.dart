@@ -97,9 +97,7 @@ handleCommunityCreate(String community, String user) async {
 report(String community, String username) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {
-    DocumentReference Ref = instance
-        .collection('communities')
-        .doc(community);
+    DocumentReference Ref = instance.collection('communities').doc(community);
     transaction.update(Ref, {
       'reporters': FieldValue.arrayUnion([username]),
       'reports': FieldValue.increment(1)
@@ -110,9 +108,7 @@ report(String community, String username) async {
 undoReport(String community, String username) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {
-    DocumentReference Ref = instance
-        .collection('communities')
-        .doc(community);
+    DocumentReference Ref = instance.collection('communities').doc(community);
     transaction.update(Ref, {
       'reporters': FieldValue.arrayRemove([username]),
       'reports': FieldValue.increment(-1)

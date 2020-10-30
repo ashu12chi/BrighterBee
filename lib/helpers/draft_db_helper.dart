@@ -23,40 +23,49 @@ insertPostInDb(PostEntry post) async {
 }
 
 Future<List<PostEntry>> getPostsListFromDb() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  final Future<sqflite.Database> database = sqflite.openDatabase(
-    join(await sqflite.getDatabasesPath(), 'draft_database.db'),
-    onCreate: (db, version) {
+    final Future<sqflite.Database> database = sqflite.openDatabase(
+      join(await sqflite.getDatabasesPath(), 'draft_database.db'),
+      version: 1,
+      onCreate: (db, version) {
+        // Run the CREATE TABLE statement on the database.
+        return db.execute(
+          "CREATE TABLE drafts(time INTEGER PRIMARY KEY, text TEXT)",
+        );
+      },
+    );
+
+    final sqflite.Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('drafts');
+
+    return List.generate(maps.length,
+        (i) => PostEntry(time: maps[i]['time'], text: maps[i]['text']));
+  } catch (e) {
+    print('An error occurred! ' + e.toString());
+  }
+}
+
+updatePostInDb(PostEntry post) async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    final Future<sqflite.Database> database = sqflite.openDatabase(
+        join(await sqflite.getDatabasesPath(), 'draft_database.db'),
+        version: 1, onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
       return db.execute(
         "CREATE TABLE drafts(time INTEGER PRIMARY KEY, text TEXT)",
       );
-    },
-  );
+    });
 
-  final sqflite.Database db = await database;
-  final List<Map<String, dynamic>> maps = await db.query('drafts');
-
-  return List.generate(maps.length,
-      (i) => PostEntry(time: maps[i]['time'], text: maps[i]['text']));
-}
-
-updatePostInDb(PostEntry post) async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  final Future<sqflite.Database> database = sqflite
-      .openDatabase(join(await sqflite.getDatabasesPath(), 'draft_database.db'),
-          onCreate: (db, version) {
-    // Run the CREATE TABLE statement on the database.
-    return db.execute(
-      "CREATE TABLE drafts(time INTEGER PRIMARY KEY, text TEXT)",
-    );
-  }, version: 1);
-
-  final db = await database;
-  await db.update('drafts', post.toMap(),
-      where: 'time = ?', whereArgs: [post.time]);
+    final db = await database;
+    await db.update('drafts', post.toMap(),
+        where: 'time = ?', whereArgs: [post.time]);
+  } catch (e) {
+    print('An error occurred! ' + e.toString());
+  }
 }
 
 deletePostFromDb(int time) async {

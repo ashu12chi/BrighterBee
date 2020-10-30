@@ -21,8 +21,8 @@ class _ViewPostReportsState extends State<ViewPostReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text('View Post Reports', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('View Post Reports',
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -96,8 +96,8 @@ class _ViewPostReportsState extends State<ViewPostReports> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content:
-                                      Text("Are you sure you want to remove all reports ?"),
+                                  content: Text(
+                                      "Are you sure you want to remove all reports ?"),
                                   actions: <Widget>[
                                     FlatButton(
                                       child: Text(
