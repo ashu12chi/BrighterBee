@@ -25,6 +25,7 @@ class CommunityHome extends StatefulWidget {
 
 class _CommunityHomeState extends State<CommunityHome> {
   final community;
+  String username;
   String mediaUrl;
   String about;
   String creator;
@@ -34,6 +35,7 @@ class _CommunityHomeState extends State<CommunityHome> {
   int posts;
   int verification;
   bool processing;
+  bool reported;
   PostListBloc postListBloc;
   ScrollController controller = ScrollController();
   int selectedSort;
@@ -42,6 +44,7 @@ class _CommunityHomeState extends State<CommunityHome> {
     super.initState();
     processing = false;
     selectedSort = 0;
+    username = FirebaseAuth.instance.currentUser.displayName;
   }
 
   void scrollListener() {
@@ -78,7 +81,9 @@ class _CommunityHomeState extends State<CommunityHome> {
               Icons.more_horiz,
               color: Theme.of(context).buttonColor,
             ),
-            onPressed: showOptions,
+            onPressed: (){
+              showOptions(creator, username, reported);
+            },
           )
         ],
       ),
@@ -98,7 +103,7 @@ class _CommunityHomeState extends State<CommunityHome> {
             members = snapshot.data['memberCount'];
             verification = snapshot.data['verification'];
             creator = snapshot.data['creator'];
-
+            reported = snapshot.data['reporters'].contains(username);
             postListBloc = PostListBloc(selectedSort, community);
             postListBloc.fetchFirstList();
             controller.addListener(scrollListener);
@@ -356,7 +361,7 @@ class _CommunityHomeState extends State<CommunityHome> {
     );
   }
 
-  showOptions() {
+  showOptions(String creator,String username,bool reported) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
@@ -409,12 +414,33 @@ class _CommunityHomeState extends State<CommunityHome> {
                         ),
                       ],
                     ),
-                    Column(
+                    (username==creator || community == 'BrighterBee')?Container():reported?Column(
                       children: <Widget>[
                         IconButton(
                             icon: Icon(Icons.report,
                                 size: 30,
-                                color: Theme.of(context).buttonColor)),
+                                color: Colors.green),
+                          onPressed: () async {
+                              await undoReport(community, username);
+                              Navigator.pop(context);
+                          },
+                        ),
+                        Text(
+                          'Remove Report',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ):Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.report,
+                                size: 30,
+                                color: Colors.red),
+                          onPressed: () async {
+                              await report(community, username);
+                              Navigator.pop(context);
+                          },
+                        ),
                         Text(
                           'Report',
                           style: TextStyle(fontSize: 14),

@@ -3,26 +3,26 @@ import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ViewReports extends StatefulWidget {
+class ViewPostReports extends StatefulWidget {
   final community;
 
-  ViewReports(this.community);
+  ViewPostReports(this.community);
 
   @override
-  _ViewReportsState createState() => _ViewReportsState(community);
+  _ViewPostReportsState createState() => _ViewPostReportsState(community);
 }
 
-class _ViewReportsState extends State<ViewReports> {
+class _ViewPostReportsState extends State<ViewPostReports> {
   final community;
 
-  _ViewReportsState(this.community);
+  _ViewPostReportsState(this.community);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text('View Reports', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('View Post Reports', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -60,7 +60,7 @@ class _ViewReportsState extends State<ViewReports> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content: Text(
-                                        "Are you sure you want to reject ?"),
+                                        "Are you sure you want to delete ?"),
                                     actions: <Widget>[
                                       FlatButton(
                                         child: Text(
@@ -97,7 +97,7 @@ class _ViewReportsState extends State<ViewReports> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   content:
-                                      Text("Are you sure you want to accept ?"),
+                                      Text("Are you sure you want to remove all reports ?"),
                                   actions: <Widget>[
                                     FlatButton(
                                       child: Text(

@@ -489,6 +489,8 @@ class _CreateGroupState extends State<CreateGroup> {
         'creator': username,
         'members': [],
         'pendingMembers': [],
+        'reports': 0,
+        'reporters':[]
       });
       await handleCommunityCreate(
           commName, FirebaseAuth.instance.currentUser.displayName);
