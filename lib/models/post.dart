@@ -17,6 +17,7 @@ class Post {
       lastModified;
   final List upvoters, downvoters, viewers, listOfMedia, titleSearch;
   final bool isVerified;
+  final double weight;
 
   Post(
       {this.creator,
@@ -36,7 +37,8 @@ class Post {
       this.titleSearch,
       this.viewers,
       this.isVerified,
-      this.community});
+      this.community,
+      this.weight});
 
   factory Post.fromDocument(DocumentSnapshot doc) {
     return Post(
@@ -57,7 +59,8 @@ class Post {
         titleSearch: doc['titleSearch'],
         viewers: doc['viewers'],
         community: doc['community'],
-        isVerified: doc['isVerified']);
+        isVerified: doc['isVerified'],
+        weight: doc['weight']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -78,7 +81,8 @@ class Post {
         'titleSearch': titleSearch,
         'viewers': viewers,
         'community': community,
-        'isVerified': isVerified
+        'isVerified': isVerified,
+        'weight': weight
       };
 
   factory Post.fromJson(Map<String, dynamic> map) {
@@ -100,6 +104,7 @@ class Post {
         titleSearch: map['titleSearch'],
         viewers: map['viewers'],
         community: map['community'],
-        isVerified: map['isVerified']);
+        isVerified: map['isVerified'],
+        weight: map['weight']);
   }
 }

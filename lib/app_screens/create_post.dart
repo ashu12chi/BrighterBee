@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:brighter_bee/helpers/draft_db_helper.dart';
+import 'package:brighter_bee/helpers/hotness_calculator.dart';
 import 'package:brighter_bee/helpers/path_helper.dart';
 import 'package:brighter_bee/helpers/send_verification_notifications.dart';
 import 'package:brighter_bee/models/post.dart';
@@ -389,6 +390,7 @@ class _CreatePostState extends State<CreatePost> {
       "viewers": [],
       "time": time,
       "upvoters": [],
+      "weight": 0,
       "downvoters": [],
       "downvotes": 0,
       "upvotes": 0,
@@ -405,6 +407,7 @@ class _CreatePostState extends State<CreatePost> {
       debugPrint("successful posting in community!");
 
       await sendVerificationNotifications(community, key, username);
+      await updateHotness(community, key);
 
       debugPrint('successful posting in user');
       _scaffoldKey.currentState.hideCurrentSnackBar();

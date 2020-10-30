@@ -1,3 +1,4 @@
+import 'package:brighter_bee/helpers/hotness_calculator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -291,6 +292,7 @@ class _Comment extends State<Comment> {
         }
       }
     });
+    if (!isReply) await updateHotness(community, parentPostKey);
 
     _scaffoldKey.currentState.hideCurrentSnackBar();
     Navigator.pop(context);

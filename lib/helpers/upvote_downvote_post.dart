@@ -1,3 +1,4 @@
+import 'package:brighter_bee/helpers/hotness_calculator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,7 @@ upvote(String community, String key, String username, bool upvoted,
     transaction.update(userRef, {
       community: FieldValue.arrayUnion([key])
     });
+    await updateHotness(community, key);
   });
 
   debugPrint('Upvoted!');
@@ -59,6 +61,7 @@ downvote(String community, String key, String username, bool upvoted,
     transaction.update(userRef, {
       community: FieldValue.arrayUnion([key])
     });
+    await updateHotness(community, key);
   });
 
   debugPrint('Downvoted!');
@@ -94,6 +97,7 @@ undoUpvote(String community, String key, String username, bool upvoted,
     transaction.update(userRef, {
       community: FieldValue.arrayRemove([key])
     });
+    await updateHotness(community, key);
   });
 
   debugPrint('Upvote undone!');
@@ -114,6 +118,7 @@ undoDownvote(String community, String key, String username, bool upvoted,
     transaction.update(userRef, {
       community: FieldValue.arrayRemove([key])
     });
+    await updateHotness(community, key);
   });
 
   debugPrint('Downvote undone!');
@@ -143,6 +148,7 @@ addToViewers(String community, String key, String username) async {
       'viewers': FieldValue.arrayUnion([username]),
       'views': FieldValue.increment(1),
     });
+    await updateHotness(community, key);
   });
 
   debugPrint('Added as viewer!');
