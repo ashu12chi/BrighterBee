@@ -2,6 +2,7 @@ import 'package:brighter_bee/app_screens/admin_screens/add_admins.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_admins.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_community_reports.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_post_reports.dart';
+import 'package:brighter_bee/app_screens/admin_screens/view_user_reports.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -237,7 +238,46 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 150,
+                      height: 150,
+                      child: Center(
+                        child: community=='BrighterBee'?Card(
+                          elevation: 8,
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ViewUserReports()));
+                              },
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8.0,
+                                        bottom: 8.0,
+                                        left: 20,
+                                        right: 20),
+                                    child: Text(
+                                      'View User Reports',
+                                      style: TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Icon(Icons.report)
+                                ],
+                              )),
+                        ):Container()
+                      ),
+                    ),
+                  ),
                 ],
               );
             } else {
