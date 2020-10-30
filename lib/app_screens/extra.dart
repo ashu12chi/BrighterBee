@@ -39,203 +39,26 @@ class _ExtraState extends State<Extra> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.grey,
-            ),
-            iconSize: 30.0,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserSearch()));
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: ListView(
-          children: <Widget>[
-            Card(
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Profile(user.displayName)));
+      body: ListView(
+        children: <Widget>[
+          AppBar(
+            title: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                iconSize: 30.0,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserSearch()));
                 },
-                child: Row(
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage:
-                          CachedNetworkImageProvider(user.photoURL),
-                      radius: 30.0,
-                      backgroundColor: Colors.grey,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            displayName,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18.0),
-                          ),
-                          Text(
-                            'See your profile',
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 15.0),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Container(
-                height: 1.0,
-                width: double.infinity,
-                color: Theme.of(context).dividerColor,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width / 2 - 10,
-                    child: Card(
-                        elevation: 4,
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          UserCommunities()));
-                            },
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.people),
-                                  Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text('Your Communities'))
-                                ])))),
-                SizedBox(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width / 2 - 10,
-                    child: Card(
-                        elevation: 4,
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          UserFollowing(username)));
-                            },
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.person),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text('Following'),
-                                  )
-                                ]))))
-              ],
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  SizedBox(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width / 2 - 10,
-                    child: Card(
-                      elevation: 4,
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        UserSaved()));
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(Icons.bookmark),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text('Saved'),
-                              )
-                            ],
-                          )),
-                    ),
-                  ),
-                  SizedBox(
-                      height: 100,
-                      width: MediaQuery.of(context).size.width / 2 - 10,
-                      child: Card(
-                          elevation: 4,
-                          child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Drafts()));
-                              },
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(Icons.drafts),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text('Drafts'),
-                                    )
-                                  ]))))
-                ]),
-            Padding(
-              padding: const EdgeInsets.only(top: 4.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 67,
-                child: Card(
-                  elevation: 4,
-                  child: InkWell(
-                      onTap: () async {
-                        await launch(
-                            'https://github.com/NPDevs/BrighterBee/issues');
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Icon(Icons.help),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              'Help & Support',
-                              style: TextStyle(fontSize: 18.0),
-                            ),
-                          )
-                        ],
-                      )),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 67,
+            ],
+          ),
+          Padding(
+              padding: EdgeInsets.only(left: 8.0, right: 8.0),
               child: Card(
                 elevation: 4,
                 child: InkWell(
@@ -243,49 +66,158 @@ class _ExtraState extends State<Extra> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                settings.Settings()));
+                            builder: (context) => Profile(user.displayName)));
                   },
                   child: Row(
                     children: <Widget>[
-                      SizedBox(
-                        width: 8,
+                      CircleAvatar(
+                        backgroundImage:
+                            CachedNetworkImageProvider(user.photoURL),
+                        radius: 30.0,
+                        backgroundColor: Colors.grey,
                       ),
-                      Icon(Icons.settings),
                       Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          'Settings',
-                          style: TextStyle(fontSize: 18.0),
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              displayName,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18.0),
+                            ),
+                            Text(
+                              'See your profile',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 15.0),
+                            )
+                          ],
                         ),
                       )
                     ],
                   ),
                 ),
-              ),
-            ),
-            SizedBox(
+              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              SizedBox(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width / 2 - 10,
+                  child: Card(
+                      elevation: 4,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        UserCommunities()));
+                          },
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.people),
+                                Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text('Your Communities'))
+                              ])))),
+              SizedBox(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width / 2 - 10,
+                  child: Card(
+                      elevation: 4,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        UserFollowing(username)));
+                          },
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(Icons.person),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text('Following'),
+                                )
+                              ]))))
+            ],
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SizedBox(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width / 2 - 10,
+                  child: Card(
+                    elevation: 4,
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      UserSaved()));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.bookmark),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text('Saved'),
+                            )
+                          ],
+                        )),
+                  ),
+                ),
+                SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width / 2 - 10,
+                    child: Card(
+                        elevation: 4,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Drafts()));
+                            },
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.drafts),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text('Drafts'),
+                                  )
+                                ]))))
+              ]),
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0, left: 8, right: 8),
+            child: SizedBox(
               width: double.infinity,
               height: 67,
               child: Card(
                 elevation: 4,
                 child: InkWell(
-                    onTap: () {
-                      _signOut().whenComplete(() {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => SignIn()));
-                      });
+                    onTap: () async {
+                      await launch(
+                          'https://github.com/NPDevs/BrighterBee/issues');
                     },
                     child: Row(
                       children: <Widget>[
                         SizedBox(
                           width: 8,
                         ),
-                        Icon(Icons.exit_to_app),
+                        Icon(Icons.help),
                         Padding(
                           padding: const EdgeInsets.only(left: 4.0),
                           child: Text(
-                            'Logout',
+                            'Help & Support',
                             style: TextStyle(fontSize: 18.0),
                           ),
                         )
@@ -293,8 +225,73 @@ class _ExtraState extends State<Extra> {
                     )),
               ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+              child: SizedBox(
+                width: double.infinity,
+                height: 67,
+                child: Card(
+                  elevation: 4,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  settings.Settings()));
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Icon(Icons.settings),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            'Settings',
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )),
+          Padding(
+              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+              child: SizedBox(
+                width: double.infinity,
+                height: 67,
+                child: Card(
+                  elevation: 4,
+                  child: InkWell(
+                      onTap: () {
+                        _signOut().whenComplete(() {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => SignIn()));
+                        });
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Icon(Icons.exit_to_app),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: Text(
+                              'Logout',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          )
+                        ],
+                      )),
+                ),
+              )),
+        ],
       ),
     );
   }
