@@ -12,6 +12,7 @@ deleteCommunity(final String community) async {
   DocumentSnapshot communityDoc =
       await instance.collection('communities').doc(community).get();
   List members = communityDoc.get('members');
+  members.add(communityDoc.get('creator'));
   members.forEach((member) async {
     await handleLeave(community, member);
   });

@@ -92,6 +92,7 @@ class _PostState extends State<PostCardView> {
           String mediaUrlOriginal = snapshot.data['mediaUrl'];
           if (mediaType == 1) mediaUrl = mediaUrlOriginal;
           var time = snapshot.data['time'];
+          var lastModified = snapshot.data['lastModified'];
           String dateLong = formatDate(
               DateTime.fromMillisecondsSinceEpoch(time),
               [yyyy, ' ', MM, ' ', dd, ', ', hh, ':', nn, ' ', am]);
@@ -338,6 +339,12 @@ class _PostState extends State<PostCardView> {
                                       ),
                                       SizedBox(width: 10),
                                       Icon(Icons.comment),
+                                      Spacer(),
+                                      (lastModified != time)
+                                          ? Text('Edited  ',
+                                              style:
+                                                  TextStyle(color: Colors.grey))
+                                          : Container()
                                     ],
                                   )
                                 ],

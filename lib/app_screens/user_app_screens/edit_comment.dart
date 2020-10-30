@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 /*
 * @author: Nishchal Siddharth Pandey
 * 12 October, 2020
-* This file has UI and code for commenting on a post or replying to a comment.
+* This file has UI and code for updating comment on a post or reply on a comment.
 */
 
-class Comment extends StatefulWidget {
+class EditComment extends StatefulWidget {
   final String _community;
   final String _dateLong;
   final String _postKey;
@@ -19,8 +19,9 @@ class Comment extends StatefulWidget {
   final bool
       isReply; // whether parent to this comment will be a comment or a post.
   final String _initialText;
+  final String _keyOfThis;
 
-  Comment(
+  EditComment(
       this._community,
       this._dateLong,
       this._postKey,
@@ -29,14 +30,24 @@ class Comment extends StatefulWidget {
       this._title,
       this._creator,
       this.isReply,
-      this._initialText);
+      this._initialText,
+      this._keyOfThis);
 
   @override
-  _Comment createState() => _Comment(_community, _dateLong, _postKey,
-      _parentPostKey, _username, _title, _creator, isReply, _initialText);
+  _EditComment createState() => _EditComment(
+      _community,
+      _dateLong,
+      _postKey,
+      _parentPostKey,
+      _username,
+      _title,
+      _creator,
+      isReply,
+      _initialText,
+      _keyOfThis);
 }
 
-class _Comment extends State<Comment> {
+class _EditComment extends State<EditComment> {
   String community;
   String dateLong;
   String key;
@@ -46,6 +57,7 @@ class _Comment extends State<Comment> {
   String creator;
   bool isReply;
   String initialText;
+  String keyOfThis;
 
   TextEditingController textInputController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -59,8 +71,17 @@ class _Comment extends State<Comment> {
     textInputController.text = initialText;
   }
 
-  _Comment(this.community, this.dateLong, this.key, this.parentPostKey,
-      this.username, this.title, this.creator, this.isReply, this.initialText);
+  _EditComment(
+      this.community,
+      this.dateLong,
+      this.key,
+      this.parentPostKey,
+      this.username,
+      this.title,
+      this.creator,
+      this.isReply,
+      this.initialText,
+      this.keyOfThis);
 
   @override
   Widget build(BuildContext context) {
@@ -75,19 +96,19 @@ class _Comment extends State<Comment> {
             Navigator.pop(context);
           },
         ),
-        title: Text(isReply ? 'Reply to comment' : 'Add comment',
+        title: Text(isReply ? 'Edit reply' : 'Edit comment',
             style: TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
         actions: <Widget>[
           FlatButton(
             child: Text(
-              'Post',
+              'Update',
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).accentColor),
             ),
-            onPressed: postComment,
+            onPressed: updateComment,
           ),
         ],
       ),
@@ -126,7 +147,7 @@ class _Comment extends State<Comment> {
                 child: Padding(
                   padding: const EdgeInsets.all(0),
                   child: Text(
-                    title,
+                    'Original: $title',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
@@ -162,7 +183,7 @@ class _Comment extends State<Comment> {
     );
   }
 
-  postComment() async {
+  updateComment() async {
     _scaffoldKey.currentState.hideCurrentSnackBar();
     _scaffoldKey.currentState.showSnackBar(SnackBar(
       behavior: SnackBarBehavior.floating,
@@ -175,127 +196,31 @@ class _Comment extends State<Comment> {
           SizedBox(
             width: 15,
           ),
-          Text("Posting...")
+          Text("Updating comment...")
         ],
       ),
     ));
     var time = DateTime.now().millisecondsSinceEpoch;
-    String commKey = 'C' + time.toString();
     FirebaseFirestore instance = FirebaseFirestore.instance;
     String commentText = textInputController.text;
     if (isReply) {
       await instance
           .collection(
               'communities/$community/posts/$parentPostKey/comments/$key/replies')
-          .doc(commKey)
-          .set({
-        'time': time,
+          .doc(keyOfThis)
+          .update({
         'lastModified': time,
         'text': commentText,
-        'creator': username,
-        'upvoters': [],
-        'upvotes': 0,
-        'downvotes': 0,
-        'downvoters': [],
-        'commKey': commKey
       });
-      await instance.runTransaction((transaction) async {
-        DocumentReference postRef = instance
-            .collection('communities/$community/posts')
-            .doc(parentPostKey);
-        transaction.update(postRef, {'commentCount': FieldValue.increment(1)});
-        postRef = instance
-            .collection('communities/$community/posts/$parentPostKey/comments')
-            .doc(key);
-        transaction.update(postRef, {'replyCount': FieldValue.increment(1)});
-      });
-      if (creator.compareTo(username) != 0) {
-        String notificationId = (await instance.collection('notification').add({
-          'title': "Your comment in $community has a reply",
-          'body': commentText,
-          'community': community,
-          'creator': username,
-          'postId': parentPostKey,
-          'receiver': creator,
-          'time': time
-        }))
-            .id;
-        await instance
-            .collection('users/$creator/notifications')
-            .doc(notificationId)
-            .set({});
-      }
     } else {
       await instance
           .collection('communities/$community/posts/$parentPostKey/comments')
-          .doc(commKey)
-          .set({
-        'time': time,
+          .doc(keyOfThis)
+          .update({
         'lastModified': time,
         'text': commentText,
-        'creator': username,
-        'upvoters': [],
-        'upvotes': 0,
-        'downvotes': 0,
-        'downvoters': [],
-        'commKey': commKey,
-        'replyCount': 0,
-      });
-      await instance.runTransaction((transaction) async {
-        DocumentReference postRef = instance
-            .collection('communities/$community/posts')
-            .doc(parentPostKey);
-        transaction.update(postRef, {'commentCount': FieldValue.increment(1)});
-      });
-      if (creator.compareTo(username) != 0) {
-        String notificationId = (await instance.collection('notification').add({
-          'title': "Your post in $community has a comment",
-          'body': commentText,
-          'community': community,
-          'creator': username,
-          'postId': parentPostKey,
-          'receiver': creator,
-          'time': time
-        }))
-            .id;
-        await instance
-            .collection('users/$creator/notifications')
-            .doc(notificationId)
-            .set({'postRelated': 1});
-      }
-      await instance.collection('users/$username/comments').doc(commKey).set({
-        'community': community,
-        'commKey': commKey,
-        'isReply': isReply,
-        'parentPost': parentPostKey,
-        'parent': key,
       });
     }
-
-    commentText.split(' ').map((w) async {
-      if (w.startsWith('@') && w.length > 1) {
-        w = w.replaceAll('[^A-Za-z0-9]', '');
-        if (w.compareTo(username) != 0) {
-          String notificationId =
-              (await instance.collection('notification').add({
-            'title': "$username tagged you in a comment",
-            'body': commentText,
-            'community': community,
-            'creator': username,
-            'postId': parentPostKey,
-            'receiver': w,
-            'time': time
-          }))
-                  .id;
-          await instance
-              .collection('users/$w/notifications')
-              .doc(notificationId)
-              .set({'postRelated': 1});
-        }
-      }
-    });
-    if (!isReply) await updateHotness(community, parentPostKey);
-
     _scaffoldKey.currentState.hideCurrentSnackBar();
     Navigator.pop(context);
   }

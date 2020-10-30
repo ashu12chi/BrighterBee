@@ -1,5 +1,6 @@
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/edit_comment.dart';
 import 'package:brighter_bee/helpers/comment_delete.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_comment.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -80,6 +81,7 @@ class _CommentWidget extends State<CommentWidget> {
           if (!isReply) replyCount = snapshot.data['replyCount'];
           String text = snapshot.data['text'];
           var time = snapshot.data['time'];
+          var lastModified = snapshot.data['lastModified'];
           String dateLong = formatDate(
               DateTime.fromMillisecondsSinceEpoch(time),
               [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn, ' ', am]);
@@ -165,10 +167,10 @@ class _CommentWidget extends State<CommentWidget> {
                             alignment: Alignment.topRight,
                             onPressed: () {
                               print(creator);
-                              showOptions(creator);
+                              showOptions(creator, dateLong, text, text);
                             },
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Align(
@@ -306,6 +308,11 @@ class _CommentWidget extends State<CommentWidget> {
                                 icon: Icon(Icons.reply, size: 18),
                                 color: Theme.of(context).buttonColor,
                               ),
+                        Spacer(),
+                        (lastModified != time)
+                            ? Text('Edited  ',
+                                style: TextStyle(color: Colors.grey))
+                            : Container()
                       ],
                     )
                   ],
@@ -359,7 +366,8 @@ class _CommentWidget extends State<CommentWidget> {
     debugPrint('Profile opened!');
   }
 
-  showOptions(String creator) {
+  showOptions(
+      String creator, String dateLong, String initialText, String title) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
@@ -378,6 +386,22 @@ class _CommentWidget extends State<CommentWidget> {
                         ? Column(
                             children: <Widget>[
                               IconButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => EditComment(
+                                                community,
+                                                dateLong,
+                                                parentKey,
+                                                parentPostKey,
+                                                username,
+                                                title,
+                                                creator,
+                                                isReply,
+                                                initialText,
+                                                commKey)));
+                                  },
                                   icon: Icon(Icons.edit,
                                       size: 30,
                                       color: Theme.of(context).buttonColor)),
