@@ -96,7 +96,7 @@ class _ExtraState extends State<Extra> {
                 ),
               )),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
                   height: 100,
@@ -143,56 +143,53 @@ class _ExtraState extends State<Extra> {
                               ]))))
             ],
           ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width / 2 - 10,
-                  child: Card(
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            SizedBox(
+              height: 100,
+              width: MediaQuery.of(context).size.width / 2 - 10,
+              child: Card(
+                elevation: 4,
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => UserSaved()));
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.bookmark),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text('Saved'),
+                        )
+                      ],
+                    )),
+              ),
+            ),
+            SizedBox(
+                height: 100,
+                width: MediaQuery.of(context).size.width / 2 - 10,
+                child: Card(
                     elevation: 4,
                     child: InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      UserSaved()));
+                                  builder: (context) => Drafts()));
                         },
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.bookmark),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text('Saved'),
-                            )
-                          ],
-                        )),
-                  ),
-                ),
-                SizedBox(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width / 2 - 10,
-                    child: Card(
-                        elevation: 4,
-                        child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Drafts()));
-                            },
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.drafts),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text('Drafts'),
-                                  )
-                                ]))))
-              ]),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(Icons.drafts),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text('Drafts'),
+                              )
+                            ]))))
+          ]),
           Padding(
             padding: const EdgeInsets.only(top: 4.0, left: 8, right: 8),
             child: SizedBox(
@@ -306,7 +303,7 @@ class _ExtraState extends State<Extra> {
   }
 
   Future _signOut() async {
-    Fluttertoast.showToast(msg: 'Signing you out...');
+    Fluttertoast.showToast(msg: 'Signing out...');
     String deviceId = await FirebaseMessaging().getToken();
     await FirebaseFirestore.instance
         .collection('users/$username/tokens')

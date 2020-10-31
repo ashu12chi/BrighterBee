@@ -25,7 +25,9 @@ class _NotificationsState extends State<Notifications>
     super.build(context);
     return Scaffold(
       body: RefreshIndicator(
-          onRefresh: () {},
+          onRefresh: () async {
+            setState(() {});
+          },
           child: SingleChildScrollView(
               physics: ScrollPhysics(),
               child: Column(children: [

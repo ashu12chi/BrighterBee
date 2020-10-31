@@ -9,6 +9,7 @@ Future<void> sendVerificationNotifications(
   adminList.add(communityData.data()['creator']);
 
   adminList.forEach((admin) async {
+    int time = DateTime.now().millisecondsSinceEpoch;
     String notificationId = (await instance.collection('notification').add({
       'title': "$creator posted in $community community",
       'body': 'Tap to verify the post',
@@ -16,12 +17,12 @@ Future<void> sendVerificationNotifications(
       'creator': creator,
       'postId': postKey,
       'receiver': admin,
-      'time': DateTime.now().millisecondsSinceEpoch
+      'time': time
     }))
         .id;
     await instance
         .collection('users/$admin/notifications')
         .doc(notificationId)
-        .set({'postRelated': 1});
+        .set({'postRelated': 1, 'time': time});
   });
 }

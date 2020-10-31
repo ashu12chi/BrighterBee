@@ -211,7 +211,7 @@ class _Comment extends State<Comment> {
             .doc(key);
         transaction.update(postRef, {'replyCount': FieldValue.increment(1)});
       });
-      if (creator.compareTo(username) != 0) {
+      if (creator != username) {
         String notificationId = (await instance.collection('notification').add({
           'title': "Your comment in $community has a reply",
           'body': commentText,
@@ -265,7 +265,7 @@ class _Comment extends State<Comment> {
         await instance
             .collection('users/$creator/notifications')
             .doc(notificationId)
-            .set({'postRelated': 1});
+            .set({'postRelated': 1, 'time': time});
       }
       await instance.collection('users/$username/comments').doc(commKey).set({
         'community': community,
@@ -294,7 +294,7 @@ class _Comment extends State<Comment> {
           await instance
               .collection('users/$w/notifications')
               .doc(notificationId)
-              .set({'postRelated': 1});
+              .set({'postRelated': 1, 'time': time});
         }
       }
     });

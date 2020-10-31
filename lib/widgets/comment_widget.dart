@@ -75,6 +75,8 @@ class _CommentWidget extends State<CommentWidget> {
           try {
             String creator = snapshot.data['creator'];
             int downvotes = snapshot.data['downvotes'];
+            int reports = snapshot.data['reports'];
+            if (downvotes > 10 || reports > 5) return Container();
             int upvotes = snapshot.data['upvotes'];
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
@@ -169,7 +171,16 @@ class _CommentWidget extends State<CommentWidget> {
                               alignment: Alignment.topRight,
                               onPressed: () {
                                 print(creator);
-                                showOptions(creator, dateLong, text, text,reported,isReply,parentPostKey,parentKey,commKey);
+                                showOptions(
+                                    creator,
+                                    dateLong,
+                                    text,
+                                    text,
+                                    reported,
+                                    isReply,
+                                    parentPostKey,
+                                    parentKey,
+                                    commKey);
                               },
                             ),
                           ),
@@ -372,8 +383,15 @@ class _CommentWidget extends State<CommentWidget> {
   }
 
   showOptions(
-      String creator, String dateLong, String initialText, String title,bool reported,bool isReply,String postKey,
-      String commentKey,String replyKey) {
+      String creator,
+      String dateLong,
+      String initialText,
+      String title,
+      bool reported,
+      bool isReply,
+      String postKey,
+      String commentKey,
+      String replyKey) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
@@ -417,47 +435,52 @@ class _CommentWidget extends State<CommentWidget> {
                               ),
                             ],
                           )
-                        : reported?Column(
-                            children: <Widget>[
-                              IconButton(
-                                  icon: Icon(Icons.report,
-                                      size: 30,
-                                      color: Colors.green),
-                                onPressed: () async {
-                                    if(isReply) {
-                                      await undoReplyReport(community, postKey, commentKey, replyKey, username);
-                                    }
-                                    else
-                                      await undoCommentReport(community, postKey, replyKey, username);
-                                    Navigator.pop(context);
-                                },
+                        : reported
+                            ? Column(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.report,
+                                        size: 30, color: Colors.green),
+                                    onPressed: () async {
+                                      if (isReply) {
+                                        await undoReplyReport(
+                                            community,
+                                            postKey,
+                                            commentKey,
+                                            replyKey,
+                                            username);
+                                      } else
+                                        await undoCommentReport(community,
+                                            postKey, replyKey, username);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Text(
+                                    'Remove Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  IconButton(
+                                      icon: Icon(Icons.report,
+                                          size: 30, color: Colors.red),
+                                      onPressed: () async {
+                                        if (isReply) {
+                                          await replyReport(community, postKey,
+                                              commentKey, replyKey, username);
+                                        } else
+                                          await commentReport(community,
+                                              postKey, replyKey, username);
+                                        Navigator.pop(context);
+                                      }),
+                                  Text(
+                                    'Report',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Remove Report',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ):Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.report,
-                                size: 30,
-                                color: Colors.red),
-                            onPressed: () async {
-                              if(isReply) {
-                                await replyReport(community, postKey, commentKey, replyKey, username);
-                              }
-                              else
-                                await commentReport(community, postKey, replyKey, username);
-                              Navigator.pop(context);
-                            }
-                        ),
-                        Text(
-                          'Report',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
                     FirebaseAuth.instance.currentUser.displayName == creator
                         ? Column(
                             children: <Widget>[

@@ -2,6 +2,7 @@ import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NotificationCard extends StatefulWidget {
   final String _key;
@@ -30,7 +31,36 @@ class _NotificationCardState extends State<NotificationCard> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
+            return Card(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Shimmer.fromColors(
+                  child: Card(
+                    child: Text('Pihu posted in Mathematics'),
+                    shape: RoundedRectangleBorder(),
+                  ),
+                  baseColor: Colors.grey,
+                  highlightColor: Colors.black12,
+                ),
+                Shimmer.fromColors(
+                  child: Card(
+                    child: Text('Tap to verify the post'),
+                    shape: RoundedRectangleBorder(),
+                  ),
+                  baseColor: Colors.grey,
+                  highlightColor: Colors.black12,
+                ),
+                Shimmer.fromColors(
+                  child: Card(
+                    child: Text('2020 October 24, 11:54 AM'),
+                    shape: RoundedRectangleBorder(),
+                  ),
+                  baseColor: Colors.grey,
+                  highlightColor: Colors.black12,
+                )
+              ],
+            ));
           return Card(
             child: InkWell(
                 onTap: () {
