@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:brighter_bee/app_screens/admin_screens/admin_control_panel.dart';
+import 'package:brighter_bee/app_screens/community_screens/post_search_in_community.dart';
 import 'package:brighter_bee/helpers/community_join_leave.dart';
 import 'package:brighter_bee/live_stream/live_list.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
@@ -74,8 +75,14 @@ class _CommunityHomeState extends State<CommunityHome> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.search, color: Theme.of(context).buttonColor),
-          ),
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PostSearchInCommunity(community)));
+              }),
           IconButton(
             icon: Icon(
               Icons.more_horiz,
@@ -349,7 +356,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                                     DocumentSnapshot documentSnapshot =
                                         snapshot.data[index];
                                     return PostCardView(
-                                        community, documentSnapshot.id);
+                                        community, documentSnapshot.id, true);
                                   },
                                 );
                         },

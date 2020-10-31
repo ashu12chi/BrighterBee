@@ -69,10 +69,7 @@ class _CommunitiesState extends State<Communities>
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     actions: <Widget>[
                       IconButton(
-                        icon: Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
+                        icon: Icon(Icons.search),
                         iconSize: 30.0,
                         onPressed: () {
                           Navigator.push(
@@ -238,7 +235,9 @@ class _CommunitiesState extends State<Communities>
                                 Padding(
                                     padding: EdgeInsets.only(bottom: 10),
                                     child: PostCardView(
-                                        documentSnapshot.get('community'), id)),
+                                        documentSnapshot.get('community'),
+                                        id,
+                                        true)),
                                 (index != snapshot.data.length - 1)
                                     ? Container()
                                     : buildProgressIndicator(presentLength)

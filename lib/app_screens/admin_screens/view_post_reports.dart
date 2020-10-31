@@ -48,7 +48,7 @@ class _ViewPostReportsState extends State<ViewPostReports> {
                               'Reports: $reports',
                               style: TextStyle(fontSize: 18),
                             ),
-                            PostCardView(community, documentSnapshot.id)
+                            PostCardView(community, documentSnapshot.id, false)
                           ],
                         ),
                         background: slideRightBackground(),

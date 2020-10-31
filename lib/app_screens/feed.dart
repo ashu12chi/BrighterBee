@@ -69,10 +69,7 @@ class _FeedState extends State<Feed> with AutomaticKeepAliveClientMixin {
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.grey,
-              ),
+              icon: Icon(Icons.search),
               iconSize: 30.0,
               onPressed: () {
                 Navigator.push(context,

@@ -42,7 +42,7 @@ class _UserSavedInCommunity extends State<UserSavedInCommunity> {
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
                       return PostCardView(
-                          community, snapshot.data.docs[index].id);
+                          community, snapshot.data.docs[index].id, false);
                     });
               else
                 return CircularProgressIndicator();

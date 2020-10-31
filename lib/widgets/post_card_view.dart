@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
 import 'package:brighter_bee/app_screens/post_ui.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_post.dart';
@@ -27,23 +28,25 @@ import 'package:zefyr/zefyr.dart';
 class PostCardView extends StatefulWidget {
   final String _community;
   final String _postKey;
+  final bool _largeCard;
 
-  PostCardView(this._community, this._postKey);
+  PostCardView(this._community, this._postKey, this._largeCard);
 
   @override
-  _PostState createState() => _PostState(_community, _postKey);
+  _PostState createState() => _PostState(_community, _postKey, _largeCard);
 }
 
 class _PostState extends State<PostCardView> {
-  String community;
-  String postKey;
+  final String community;
+  final String postKey;
   FirebaseAuth _auth = FirebaseAuth.instance;
   String username;
   bool processing;
+  final bool largeCard;
 
   FocusNode _focusNode;
 
-  _PostState(this.community, this.postKey);
+  _PostState(this.community, this.postKey, this.largeCard);
 
   @override
   void initState() {
@@ -207,12 +210,23 @@ class _PostState extends State<PostCardView> {
                                                         },
                                                       ),
                                                       Icon(Icons.arrow_right),
-                                                      Text(community,
-                                                          style: TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold))
+                                                      InkWell(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (BuildContext
+                                                                            context) =>
+                                                                        CommunityHome(
+                                                                            community)));
+                                                          },
+                                                          child: Text(community,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)))
                                                     ],
                                                   ),
                                                   Text(
@@ -279,86 +293,102 @@ class _PostState extends State<PostCardView> {
                                               child: editor,
                                             ),
                                           )),
-                                      mediaType == 0
+                                      (mediaType == 0 || !largeCard)
                                           ? Container()
                                           : CachedNetworkImage(
                                               placeholder: (context, url) =>
                                                   CircularProgressIndicator(),
                                               imageUrl: mediaUrl,
                                             ),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            upvotes.toString(),
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: (upvoted
-                                                  ? Theme.of(context)
-                                                      .accentColor
-                                                  : Theme.of(context)
-                                                      .buttonColor),
-                                            ),
-                                          ),
-                                          IconButton(
-                                            onPressed: () async {
-                                              if (processing) return;
-                                              processing = true;
-                                              await upvote(community, postKey,
-                                                  username, upvoted, downvoted);
-                                              processing = false;
-                                            },
-                                            icon: Icon(Icons.arrow_upward),
-                                            color: (upvoted
-                                                ? Theme.of(context).accentColor
-                                                : Theme.of(context)
-                                                    .buttonColor),
-                                          ),
-                                          Text(
-                                            downvotes.toString(),
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: (downvoted
-                                                  ? Theme.of(context)
-                                                      .accentColor
-                                                  : Theme.of(context)
-                                                      .buttonColor),
-                                            ),
-                                          ),
-                                          IconButton(
-                                            onPressed: () async {
-                                              if (processing) return;
-                                              processing = true;
-                                              await downvote(community, postKey,
-                                                  username, upvoted, downvoted);
-                                              processing = false;
-                                            },
-                                            icon: Icon(Icons.arrow_downward),
-                                            color: (downvoted
-                                                ? Theme.of(context).accentColor
-                                                : Theme.of(context)
-                                                    .buttonColor),
-                                          ),
-                                          Text(
-                                            views.toString(),
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Icon(Icons.remove_red_eye),
-                                          SizedBox(width: 10),
-                                          Text(
-                                            commentCount.toString(),
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Icon(Icons.comment),
-                                          Spacer(),
-                                          (lastModified != time)
-                                              ? Text('Edited  ',
+                                      (largeCard)
+                                          ? Row(
+                                              children: <Widget>[
+                                                Text(
+                                                  upvotes.toString(),
                                                   style: TextStyle(
-                                                      color: Colors.grey))
-                                              : Container()
-                                        ],
-                                      )
+                                                    fontSize: 15,
+                                                    color: (upvoted
+                                                        ? Theme.of(context)
+                                                            .accentColor
+                                                        : Theme.of(context)
+                                                            .buttonColor),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    if (processing) return;
+                                                    processing = true;
+                                                    await upvote(
+                                                        community,
+                                                        postKey,
+                                                        username,
+                                                        upvoted,
+                                                        downvoted);
+                                                    processing = false;
+                                                  },
+                                                  icon:
+                                                      Icon(Icons.arrow_upward),
+                                                  color: (upvoted
+                                                      ? Theme.of(context)
+                                                          .accentColor
+                                                      : Theme.of(context)
+                                                          .buttonColor),
+                                                ),
+                                                Text(
+                                                  downvotes.toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: (downvoted
+                                                        ? Theme.of(context)
+                                                            .accentColor
+                                                        : Theme.of(context)
+                                                            .buttonColor),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    if (processing) return;
+                                                    processing = true;
+                                                    await downvote(
+                                                        community,
+                                                        postKey,
+                                                        username,
+                                                        upvoted,
+                                                        downvoted);
+                                                    processing = false;
+                                                  },
+                                                  icon: Icon(
+                                                      Icons.arrow_downward),
+                                                  color: (downvoted
+                                                      ? Theme.of(context)
+                                                          .accentColor
+                                                      : Theme.of(context)
+                                                          .buttonColor),
+                                                ),
+                                                Text(
+                                                  views.toString(),
+                                                  style:
+                                                      TextStyle(fontSize: 15),
+                                                ),
+                                                SizedBox(width: 10),
+                                                Icon(Icons.remove_red_eye),
+                                                SizedBox(width: 10),
+                                                Text(
+                                                  commentCount.toString(),
+                                                  style:
+                                                      TextStyle(fontSize: 15),
+                                                ),
+                                                SizedBox(width: 10),
+                                                Icon(Icons.comment),
+                                                Spacer(),
+                                                (lastModified != time)
+                                                    ? Text('Edited  ',
+                                                        style: TextStyle(
+                                                            color: Colors.grey))
+                                                    : Container()
+                                              ],
+                                            )
+                                          : Container()
                                     ],
                                   ),
                                 ),

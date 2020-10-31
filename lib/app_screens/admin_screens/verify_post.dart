@@ -55,7 +55,8 @@ class _VerifyPostState extends State<VerifyPost> {
                                 builder: (context) =>
                                     PostUI(community, documentSnapshot.id)));
                       },
-                      child: PostCardView(community, documentSnapshot.id),
+                      child:
+                          PostCardView(community, documentSnapshot.id, false),
                     ),
                     background: slideRightBackground(),
                     secondaryBackground: slideLeftBackground(),

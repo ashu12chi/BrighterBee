@@ -45,10 +45,7 @@ class _ExtraState extends State<Extra> {
             title: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),
             actions: <Widget>[
               IconButton(
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                ),
+                icon: Icon(Icons.search),
                 iconSize: 30.0,
                 onPressed: () {
                   Navigator.push(context,

@@ -2,22 +2,28 @@ import 'dart:io';
 
 import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PostSearch extends StatefulWidget {
+class PostSearchInCommunity extends StatefulWidget {
+  final String _community;
+
+  PostSearchInCommunity(this._community);
+
   @override
-  _PostSearchState createState() => _PostSearchState();
+  _PostSearchInCommunityState createState() =>
+      _PostSearchInCommunityState(_community);
 }
 
-class _PostSearchState extends State<PostSearch> {
+class _PostSearchInCommunityState extends State<PostSearchInCommunity> {
   TextEditingController searchController = TextEditingController();
-  String username;
   List memberOf;
   PostListBloc postListBloc;
   ScrollController controller = ScrollController();
   int previousSnapshotLength;
+  final String community;
+
+  _PostSearchInCommunityState(this.community);
 
   void dispose() {
     // Clean up the controller when the widget is removed from the widget tree.
@@ -32,19 +38,21 @@ class _PostSearchState extends State<PostSearch> {
     }
   }
 
-  searchBarListener() {
-    setState(() {
-      postListBloc =
-          PostListBloc(searchController.text.toLowerCase(), memberOf);
-    });
-    postListBloc.fetchFirstList();
-  }
-
   void initState() {
     super.initState();
     previousSnapshotLength = 0;
-    username = FirebaseAuth.instance.currentUser.displayName;
+    postListBloc = PostListBloc(searchController.text.toLowerCase(), community);
+    postListBloc.fetchFirstList();
+    controller.addListener(scrollListener);
     searchController.addListener(searchBarListener);
+  }
+
+  searchBarListener() {
+    setState(() {
+      postListBloc =
+          PostListBloc(searchController.text.toLowerCase(), community);
+    });
+    postListBloc.fetchFirstList();
   }
 
   @override
@@ -72,53 +80,34 @@ class _PostSearchState extends State<PostSearch> {
             ),
           ),
         ),
-        body: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('users')
-                .doc(username)
-                .get(),
+        body: StreamBuilder<List<DocumentSnapshot>>(
+            stream: postListBloc.postStream,
             builder: (context, snapshot) {
-              if (!snapshot.hasData)
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              else {
-                memberOf = snapshot.data.data()['communityList'];
-                postListBloc =
-                    PostListBloc(searchController.text.toLowerCase(), memberOf);
-                postListBloc.fetchFirstList();
-                controller.addListener(scrollListener);
-                return StreamBuilder<List<DocumentSnapshot>>(
-                    stream: postListBloc.postStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.data != null) {
-                        int presentLength = snapshot.data.length;
-                        return ListView.builder(
-                            controller: controller,
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot documentSnapshot =
-                                  snapshot.data[index];
-                              String id = documentSnapshot.id;
-                              debugPrint('${snapshot.data.length}');
-                              return Column(
-                                children: [
-                                  PostCardView(
-                                    documentSnapshot.data()['community'],
-                                    id,
-                                    false,
-                                  ),
-                                  (index != snapshot.data.length - 1)
-                                      ? Container()
-                                      : buildProgressIndicator(presentLength)
-                                ],
-                              );
-                            });
-                      } else {
-                        return Container();
-                      }
+              if (snapshot.data != null) {
+                int presentLength = snapshot.data.length;
+                return ListView.builder(
+                    controller: controller,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot documentSnapshot = snapshot.data[index];
+                      String id = documentSnapshot.id;
+                      debugPrint('${snapshot.data.length}');
+                      return Column(
+                        children: [
+                          PostCardView(
+                            documentSnapshot.data()['community'],
+                            id,
+                            false,
+                          ),
+                          (index != snapshot.data.length - 1)
+                              ? Container()
+                              : buildProgressIndicator(presentLength)
+                        ],
+                      );
                     });
+              } else {
+                return Container();
               }
             }));
   }
@@ -134,7 +123,7 @@ class _PostSearchState extends State<PostSearch> {
 }
 
 class PostListBloc {
-  List memberOf;
+  String community;
   String searchText;
 
   bool showIndicator = false;
@@ -142,7 +131,7 @@ class PostListBloc {
   BehaviorSubject<bool> showIndicatorController;
   BehaviorSubject<List<DocumentSnapshot>> postController;
 
-  PostListBloc(this.searchText, this.memberOf) {
+  PostListBloc(this.searchText, this.community) {
     showIndicatorController = BehaviorSubject<bool>();
     postController = BehaviorSubject<List<DocumentSnapshot>>();
   }
@@ -206,8 +195,8 @@ class PostListBloc {
     return FirebaseFirestore.instance
         .collectionGroup('posts')
         .where('isVerified', isEqualTo: true)
-        .where('community', whereIn: memberOf)
-        .where('titleSearch', arrayContains: searchText)
+        .where('community', isEqualTo: community)
+        .where('titleSearch', arrayContains: searchText.toLowerCase())
         .orderBy('time', descending: true);
   }
 }

@@ -23,6 +23,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:zefyr/zefyr.dart';
 
+import 'community_screens/community_home.dart';
+
 class PostUI extends StatefulWidget {
   final String _community;
   final String _postKey;
@@ -184,10 +186,21 @@ class _PostState extends State<PostUI> {
                                           },
                                         ),
                                         Icon(Icons.arrow_right),
-                                        Text(community,
-                                            style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold))
+                                        InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          CommunityHome(
+                                                              community)));
+                                            },
+                                            child: Text(community,
+                                                style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold)))
                                       ],
                                     ),
                                     Text(

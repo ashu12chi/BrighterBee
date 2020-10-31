@@ -197,7 +197,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                                         padding: EdgeInsets.only(bottom: 10),
                                         child: PostCardView(
                                             documentSnapshot.get('community'),
-                                            id)),
+                                            id,
+                                            true)),
                                     (index != snapshot.data.length - 1)
                                         ? Container()
                                         : buildProgressIndicator(presentLength)
