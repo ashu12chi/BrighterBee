@@ -62,6 +62,7 @@ class _EditDetailsState extends State<EditDetails> {
       appBar: AppBar(
         title: Text(
           'Edit profile',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: StreamBuilder<DocumentSnapshot>(

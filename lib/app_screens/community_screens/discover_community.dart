@@ -1,4 +1,5 @@
 import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
+import 'package:brighter_bee/app_screens/community_screens/join_community.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,15 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
           'Discover communities',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.person_add), onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        JoinCommunity()));
+          })
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream:
@@ -35,6 +45,8 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
                     DocumentSnapshot documentSnapshot =
                         snapshot.data.docs[index];
                     print(documentSnapshot.id);
+                    if(documentSnapshot['visibility'] == 1)
+                      return Container();
                     return InkWell(
                       onTap: () {
                         Navigator.push(
