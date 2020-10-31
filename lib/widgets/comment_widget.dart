@@ -78,6 +78,7 @@ class _CommentWidget extends State<CommentWidget> {
             int upvotes = snapshot.data['upvotes'];
             bool upvoted = snapshot.data['upvoters'].contains(username);
             bool downvoted = snapshot.data['downvoters'].contains(username);
+            bool reported = snapshot.data['reporters'].contains(username);
             int replyCount;
             if (!isReply) replyCount = snapshot.data['replyCount'];
             String text = snapshot.data['text'];
@@ -168,7 +169,7 @@ class _CommentWidget extends State<CommentWidget> {
                               alignment: Alignment.topRight,
                               onPressed: () {
                                 print(creator);
-                                showOptions(creator, dateLong, text, text);
+                                showOptions(creator, dateLong, text, text,reported,isReply,parentPostKey,parentKey,commKey);
                               },
                             ),
                           ),
@@ -371,7 +372,8 @@ class _CommentWidget extends State<CommentWidget> {
   }
 
   showOptions(
-      String creator, String dateLong, String initialText, String title) {
+      String creator, String dateLong, String initialText, String title,bool reported,bool isReply,String postKey,
+      String commentKey,String replyKey) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
@@ -415,18 +417,47 @@ class _CommentWidget extends State<CommentWidget> {
                               ),
                             ],
                           )
-                        : Column(
+                        : reported?Column(
                             children: <Widget>[
                               IconButton(
                                   icon: Icon(Icons.report,
                                       size: 30,
-                                      color: Theme.of(context).buttonColor)),
+                                      color: Colors.green),
+                                onPressed: () async {
+                                    if(isReply) {
+                                      await undoReplyReport(community, postKey, commentKey, replyKey, username);
+                                    }
+                                    else
+                                      await undoCommentReport(community, postKey, replyKey, username);
+                                    Navigator.pop(context);
+                                },
+                              ),
                               Text(
-                                'Report',
+                                'Remove Report',
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
-                          ),
+                          ):Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.report,
+                                size: 30,
+                                color: Colors.red),
+                            onPressed: () async {
+                              if(isReply) {
+                                await replyReport(community, postKey, commentKey, replyKey, username);
+                              }
+                              else
+                                await commentReport(community, postKey, replyKey, username);
+                              Navigator.pop(context);
+                            }
+                        ),
+                        Text(
+                          'Report',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
                     FirebaseAuth.instance.currentUser.displayName == creator
                         ? Column(
                             children: <Widget>[

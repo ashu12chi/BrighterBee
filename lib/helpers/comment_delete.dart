@@ -41,3 +41,63 @@ deleteComment(String community, String parentPost, String comment, String reply,
     }
   });
 }
+
+undoCommentReport(String community, String postKey,String commentKey,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference postRef = instance
+        .collection('communities')
+        .doc(community)
+        .collection('posts')
+        .doc(postKey).collection('comments').doc(commentKey);
+    transaction.update(postRef, {
+      'reporters': FieldValue.arrayRemove([username]),
+      'reports': FieldValue.increment(-1)
+    });
+  });
+}
+
+undoReplyReport(String community, String postKey,String commentKey,String replyKey,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference postRef = instance
+        .collection('communities')
+        .doc(community)
+        .collection('posts')
+        .doc(postKey).collection('comments').doc(commentKey).collection('replies').doc(replyKey);
+    transaction.update(postRef, {
+      'reporters': FieldValue.arrayRemove([username]),
+      'reports': FieldValue.increment(-1)
+    });
+  });
+}
+
+commentReport(String community, String postKey,String commentKey,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference postRef = instance
+        .collection('communities')
+        .doc(community)
+        .collection('posts')
+        .doc(postKey).collection('comments').doc(commentKey);
+    transaction.update(postRef, {
+      'reporters': FieldValue.arrayUnion([username]),
+      'reports': FieldValue.increment(1)
+    });
+  });
+}
+
+replyReport(String community, String postKey,String commentKey,String replyKey,String username) async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  await instance.runTransaction((transaction) async {
+    DocumentReference postRef = instance
+        .collection('communities')
+        .doc(community)
+        .collection('posts')
+        .doc(postKey).collection('comments').doc(commentKey).collection('replies').doc(replyKey);
+    transaction.update(postRef, {
+      'reporters': FieldValue.arrayUnion([username]),
+      'reports': FieldValue.increment(1)
+    });
+  });
+}
