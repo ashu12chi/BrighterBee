@@ -144,9 +144,16 @@ class _PostState extends State<PostUI> {
                                   Text('Loading data... Please Wait...')
                                 ],
                               ));
-                        String fullName = snapshot.data['name'];
-                        String profilePicUrl = snapshot.data['photoUrl'];
-
+                        String fullName;
+                        String profilePicUrl;
+                        try {
+                          fullName = snapshot.data['name'];
+                          profilePicUrl = snapshot.data['photoUrl'];
+                        } catch (e) {
+                          fullName = '[Deleted]';
+                          profilePicUrl =
+                              'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/appAssets%2Fempty.jpg?alt=media&token=4855c438-87ed-4e93-9f38-557cb9deca9f';
+                        }
                         return SafeArea(
                             child: Column(
                           children: <Widget>[

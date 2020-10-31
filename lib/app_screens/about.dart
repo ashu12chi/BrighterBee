@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,7 +32,7 @@ class _AboutState extends State<About> {
               children: [
                 InkWell(
                   onTap: () async {
-                    const url = 'https://github.com/ashu12chi';
+                    const url = 'https://ashu12chi.github.io/';
                     if (await canLaunch(url)) {
                       await launch(url);
                     }
@@ -41,10 +42,13 @@ class _AboutState extends State<About> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: Image.asset(
-                            'assets/ashutosh.jpeg',
+                          child: CachedNetworkImage(
                             width: 150,
                             height: 150,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            imageUrl:
+                                'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/appAssets%2Fashutosh.jpeg?alt=media&token=84eb7f51-4141-434a-a294-569d95678198',
                           ),
                         ),
                         Text(
@@ -58,7 +62,7 @@ class _AboutState extends State<About> {
                 ),
                 InkWell(
                   onTap: () async {
-                    const url = 'https://github.com/nisiddharth';
+                    const url = 'https://nisiddharth.github.io/';
                     if (await canLaunch(url)) {
                       await launch(url);
                     }
@@ -68,10 +72,13 @@ class _AboutState extends State<About> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: Image.asset(
-                            'assets/nishchal.jpeg',
+                          child: CachedNetworkImage(
                             width: 150,
                             height: 150,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            imageUrl:
+                                'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/appAssets%2Fnishchal.jpeg?alt=media&token=96570a13-857d-4516-bc4f-f40a0f2aae3e',
                           ),
                         ),
                         Text(
@@ -101,10 +108,13 @@ class _AboutState extends State<About> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: Image.asset(
-                            'assets/anushka.jpeg',
+                          child: CachedNetworkImage(
                             width: 150,
                             height: 150,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            imageUrl:
+                                'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/appAssets%2Fanushka.jpeg?alt=media&token=e46ccb39-452d-4048-8650-de173372399b',
                           ),
                         ),
                         Text(

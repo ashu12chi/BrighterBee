@@ -142,9 +142,16 @@ class _PostState extends State<PostCardView> {
                           ),
                         ],
                       );
-                    String fullName = snapshot.data['name'];
-                    String profilePicUrl = snapshot.data['photoUrl'];
-                    //return Text('Loading data.. Please Wait..');
+                    String fullName;
+                    String profilePicUrl;
+                    try {
+                      fullName = snapshot.data['name'];
+                      profilePicUrl = snapshot.data['photoUrl'];
+                    } catch (e) {
+                      fullName = '[Deleted]';
+                      profilePicUrl =
+                          'https://firebasestorage.googleapis.com/v0/b/brighterbee-npdevs.appspot.com/o/appAssets%2Fempty.jpg?alt=media&token=4855c438-87ed-4e93-9f38-557cb9deca9f';
+                    }
                     return Padding(
                       padding: const EdgeInsets.only(
                           top: 8.0, left: 8.0, right: 8.0),
