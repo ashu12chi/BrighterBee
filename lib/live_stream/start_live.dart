@@ -156,29 +156,7 @@ class _StartLiveState extends State<StartLive> {
     );
   }
 
-//  Future<void> onJoin() async {
-//    // await for camera and mic permissions before pushing video page
-//    await _handleCameraAndMic();
-//    // push video page with given channel name
-////    var db = FirebaseFirestore.instance.collection('communities').doc(community).collection('live');
-////    db.add({
-////
-////    });
-//    await Navigator.push(
-//      context,
-//      MaterialPageRoute(
-//        builder: (context) => CallPage(
-//          channelName: name,
-//          role: ClientRole.Broadcaster,
-//          name: _controller.text,
-//        ),
-//      ),
-//    );
-//  }
-
   Future<void> _handleCameraAndMic() async {
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
+    await [Permission.microphone, Permission.camera].request();
   }
 }
