@@ -312,31 +312,37 @@ class _PostState extends State<PostUI> {
                                             itemCount: snapshot.data.length,
                                             shrinkWrap: true,
                                             itemBuilder: (context, index) {
-                                              return ExpansionTile(
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .buttonColor
-                                                        .withOpacity(0.2),
-                                                title: CommentWidget(
-                                                    community,
-                                                    postKey,
-                                                    snapshot.data[index]
-                                                        ['commKey'],
-                                                    postKey,
-                                                    username,
-                                                    false),
-                                                children: [
-                                                  Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 20, bottom: 15),
-                                                      child: RepliesList(
-                                                          community,
-                                                          postKey,
-                                                          snapshot.data[index]
-                                                              ['commKey'],
-                                                          username))
-                                                ],
-                                              );
+                                              try {
+                                                return ExpansionTile(
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .buttonColor
+                                                          .withOpacity(0.2),
+                                                  title: CommentWidget(
+                                                      community,
+                                                      postKey,
+                                                      snapshot.data[index]
+                                                          ['commKey'],
+                                                      postKey,
+                                                      username,
+                                                      false),
+                                                  children: [
+                                                    Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20,
+                                                                bottom: 15),
+                                                        child: RepliesList(
+                                                            community,
+                                                            postKey,
+                                                            snapshot.data[index]
+                                                                ['commKey'],
+                                                            username))
+                                                  ],
+                                                );
+                                              } catch (e) {
+                                                return Container();
+                                              }
                                             },
                                           );
                                         } else {

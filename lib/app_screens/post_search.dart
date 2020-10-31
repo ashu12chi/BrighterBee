@@ -20,8 +20,7 @@ class _PostSearchState extends State<PostSearch> {
   int previousSnapshotLength;
 
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
+    // Clean up the controller when the widget is removed from the widget tree.
     searchController.dispose();
     super.dispose();
   }

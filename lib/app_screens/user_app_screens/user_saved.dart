@@ -34,7 +34,7 @@ class _UserSavedState extends State<UserSaved> {
             // user data
             if (snapshot1.data != null) {
               return ListView.builder(
-                  itemCount: snapshot1.data['communityCount'],
+                  itemCount: snapshot1.data['communityList'].length,
                   itemBuilder: (context, index) {
                     String community = snapshot1.data['communityList'][index];
 

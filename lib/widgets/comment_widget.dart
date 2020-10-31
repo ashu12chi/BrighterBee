@@ -72,252 +72,256 @@ class _CommentWidget extends State<CommentWidget> {
                 Text('Loading data... Please Wait...')
               ],
             );
-          String creator = snapshot.data['creator'];
-          int downvotes = snapshot.data['downvotes'];
-          int upvotes = snapshot.data['upvotes'];
-          bool upvoted = snapshot.data['upvoters'].contains(username);
-          bool downvoted = snapshot.data['downvoters'].contains(username);
-          int replyCount;
-          if (!isReply) replyCount = snapshot.data['replyCount'];
-          String text = snapshot.data['text'];
-          var time = snapshot.data['time'];
-          var lastModified = snapshot.data['lastModified'];
-          String dateLong = formatDate(
-              DateTime.fromMillisecondsSinceEpoch(time),
-              [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn, ' ', am]);
-          return StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(creator)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData)
-                  return Row(
+          try {
+            String creator = snapshot.data['creator'];
+            int downvotes = snapshot.data['downvotes'];
+            int upvotes = snapshot.data['upvotes'];
+            bool upvoted = snapshot.data['upvoters'].contains(username);
+            bool downvoted = snapshot.data['downvoters'].contains(username);
+            int replyCount;
+            if (!isReply) replyCount = snapshot.data['replyCount'];
+            String text = snapshot.data['text'];
+            var time = snapshot.data['time'];
+            var lastModified = snapshot.data['lastModified'];
+            String dateLong = formatDate(
+                DateTime.fromMillisecondsSinceEpoch(time),
+                [yyyy, ' ', M, ' ', dd, ', ', hh, ':', nn, ' ', am]);
+            return StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(creator)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Row(
+                      children: <Widget>[
+                        CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.grey),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.grey),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text('Loading data... Please Wait...')
+                          ],
+                        ),
+                      ],
+                    );
+                  // String fullName = snapshot.data['name'];
+                  String profilePicUrl = snapshot.data['photoUrl'];
+                  return Column(
                     children: <Widget>[
-                      CircularProgressIndicator(
-                        valueColor:
-                            new AlwaysStoppedAnimation<Color>(Colors.grey),
+                      Row(
+                        children: <Widget>[
+                          InkWell(
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  CachedNetworkImageProvider(profilePicUrl),
+                              radius: 10.0,
+                              backgroundColor: Colors.grey,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          Profile(creator)));
+                            },
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  InkWell(
+                                    child: Text(creator,
+                                        // fullName.substring(
+                                        //     0, fullName.indexOf(' ')),
+                                        style: TextStyle(fontSize: 14.0)),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  Profile(creator)));
+                                    },
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    dateLong,
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 14),
+                                  )
+                                ],
+                              )),
+                          Expanded(
+                            child: IconButton(
+                              icon: Icon(Icons.more_horiz),
+                              alignment: Alignment.topRight,
+                              onPressed: () {
+                                print(creator);
+                                showOptions(creator, dateLong, text, text);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: 15,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text.rich(TextSpan(
+                            text: '',
+                            children: text.split(' ').map((w) {
+                              return w.startsWith('@') && w.length > 1
+                                  ? TextSpan(
+                                      text: ' ' + w,
+                                      style: TextStyle(
+                                          color: Theme.of(context).accentColor),
+                                      recognizer: new TapGestureRecognizer()
+                                        ..onTap = () => openProfile(w))
+                                  : TextSpan(
+                                      text: ' ' + w,
+                                      style: TextStyle(fontSize: 14));
+                            }).toList())),
                       ),
                       Row(
                         children: <Widget>[
-                          CircularProgressIndicator(
-                            valueColor:
-                                new AlwaysStoppedAnimation<Color>(Colors.grey),
+                          Text(
+                            upvotes.toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: (upvoted
+                                  ? Theme.of(context).accentColor
+                                  : Theme.of(context).buttonColor),
+                            ),
                           ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text('Loading data... Please Wait...')
-                        ],
-                      ),
-                    ],
-                  );
-                // String fullName = snapshot.data['name'];
-                String profilePicUrl = snapshot.data['photoUrl'];
-                return Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        InkWell(
-                          child: CircleAvatar(
-                            backgroundImage:
-                                CachedNetworkImageProvider(profilePicUrl),
-                            radius: 10.0,
-                            backgroundColor: Colors.grey,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Profile(creator)));
-                          },
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 5.0),
-                            child: Row(
-                              children: <Widget>[
-                                InkWell(
-                                  child: Text(creator,
-                                      // fullName.substring(
-                                      //     0, fullName.indexOf(' ')),
-                                      style: TextStyle(fontSize: 14.0)),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                Profile(creator)));
-                                  },
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  dateLong,
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 14),
-                                )
-                              ],
-                            )),
-                        Expanded(
-                          child: IconButton(
-                            icon: Icon(Icons.more_horiz),
-                            alignment: Alignment.topRight,
-                            onPressed: () {
-                              print(creator);
-                              showOptions(creator, dateLong, text, text);
+                          IconButton(
+                            onPressed: () async {
+                              if (processing) return;
+                              processing = true;
+                              if (isReply) {
+                                await upvote(
+                                    community,
+                                    username,
+                                    upvoted,
+                                    downvoted,
+                                    parentPostKey,
+                                    parentKey,
+                                    commKey,
+                                    isReply);
+                              } else {
+                                await upvote(
+                                    community,
+                                    username,
+                                    upvoted,
+                                    downvoted,
+                                    parentPostKey,
+                                    commKey,
+                                    commKey,
+                                    isReply);
+                              }
+                              processing = false;
                             },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text.rich(TextSpan(
-                          text: '',
-                          children: text.split(' ').map((w) {
-                            return w.startsWith('@') && w.length > 1
-                                ? TextSpan(
-                                    text: ' ' + w,
-                                    style: TextStyle(
-                                        color: Theme.of(context).accentColor),
-                                    recognizer: new TapGestureRecognizer()
-                                      ..onTap = () => openProfile(w))
-                                : TextSpan(
-                                    text: ' ' + w,
-                                    style: TextStyle(fontSize: 14));
-                          }).toList())),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          upvotes.toString(),
-                          style: TextStyle(
-                            fontSize: 14,
+                            icon: Icon(
+                              Icons.arrow_upward,
+                              size: 18,
+                            ),
                             color: (upvoted
                                 ? Theme.of(context).accentColor
                                 : Theme.of(context).buttonColor),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            if (processing) return;
-                            processing = true;
-                            if (isReply) {
-                              await upvote(
-                                  community,
-                                  username,
-                                  upvoted,
-                                  downvoted,
-                                  parentPostKey,
-                                  parentKey,
-                                  commKey,
-                                  isReply);
-                            } else {
-                              await upvote(
-                                  community,
-                                  username,
-                                  upvoted,
-                                  downvoted,
-                                  parentPostKey,
-                                  commKey,
-                                  commKey,
-                                  isReply);
-                            }
-                            processing = false;
-                          },
-                          icon: Icon(
-                            Icons.arrow_upward,
-                            size: 18,
+                          Text(
+                            downvotes.toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: (downvoted
+                                  ? Theme.of(context).accentColor
+                                  : Theme.of(context).buttonColor),
+                            ),
                           ),
-                          color: (upvoted
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).buttonColor),
-                        ),
-                        Text(
-                          downvotes.toString(),
-                          style: TextStyle(
-                            fontSize: 14,
+                          IconButton(
+                            onPressed: () async {
+                              if (processing) return;
+                              processing = true;
+                              if (isReply) {
+                                await downvote(
+                                    community,
+                                    username,
+                                    upvoted,
+                                    downvoted,
+                                    parentPostKey,
+                                    parentKey,
+                                    commKey,
+                                    isReply);
+                              } else {
+                                await downvote(
+                                    community,
+                                    username,
+                                    upvoted,
+                                    downvoted,
+                                    parentPostKey,
+                                    commKey,
+                                    commKey,
+                                    isReply);
+                              }
+                              processing = false;
+                            },
+                            icon: Icon(Icons.arrow_downward, size: 18),
                             color: (downvoted
                                 ? Theme.of(context).accentColor
                                 : Theme.of(context).buttonColor),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () async {
-                            if (processing) return;
-                            processing = true;
-                            if (isReply) {
-                              await downvote(
-                                  community,
-                                  username,
-                                  upvoted,
-                                  downvoted,
-                                  parentPostKey,
-                                  parentKey,
-                                  commKey,
-                                  isReply);
-                            } else {
-                              await downvote(
-                                  community,
-                                  username,
-                                  upvoted,
-                                  downvoted,
-                                  parentPostKey,
-                                  commKey,
-                                  commKey,
-                                  isReply);
-                            }
-                            processing = false;
-                          },
-                          icon: Icon(Icons.arrow_downward, size: 18),
-                          color: (downvoted
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).buttonColor),
-                        ),
-                        isReply
-                            ? new Container()
-                            : Container(
-                                child: Row(children: [
-                                SizedBox(width: 10),
-                                Text(
-                                  replyCount.toString(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(context).buttonColor),
+                          isReply
+                              ? new Container()
+                              : Container(
+                                  child: Row(children: [
+                                  SizedBox(width: 10),
+                                  Text(
+                                    replyCount.toString(),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Theme.of(context).buttonColor),
+                                  ),
+                                  SizedBox(width: 10)
+                                ])),
+                          isReply
+                              ? Container()
+                              : IconButton(
+                                  onPressed: () {
+                                    comment(
+                                        community,
+                                        dateLong,
+                                        commKey,
+                                        parentPostKey,
+                                        username,
+                                        text,
+                                        creator,
+                                        true,
+                                        '@$creator ');
+                                  },
+                                  icon: Icon(Icons.reply, size: 18),
+                                  color: Theme.of(context).buttonColor,
                                 ),
-                                SizedBox(width: 10)
-                              ])),
-                        isReply
-                            ? Container()
-                            : IconButton(
-                                onPressed: () {
-                                  comment(
-                                      community,
-                                      dateLong,
-                                      commKey,
-                                      parentPostKey,
-                                      username,
-                                      text,
-                                      creator,
-                                      true,
-                                      '@$creator ');
-                                },
-                                icon: Icon(Icons.reply, size: 18),
-                                color: Theme.of(context).buttonColor,
-                              ),
-                        Spacer(),
-                        (lastModified != time)
-                            ? Text('Edited  ',
-                                style: TextStyle(color: Colors.grey))
-                            : Container()
-                      ],
-                    )
-                  ],
-                );
-              });
+                          Spacer(),
+                          (lastModified != time)
+                              ? Text('Edited  ',
+                                  style: TextStyle(color: Colors.grey))
+                              : Container()
+                        ],
+                      )
+                    ],
+                  );
+                });
+          } catch (e) {
+            return Container();
+          }
         });
   }
 

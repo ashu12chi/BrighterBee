@@ -355,9 +355,10 @@ class _EditPostState extends State<EditPost> {
     final instance = FirebaseFirestore.instance;
     if (mediaURL == null && mediaType != 0) await uploadMedia(postKey);
     List<String> titleSearchList = List();
+    String titleInLower = titleController.text.toLowerCase();
     String temp = "";
-    for (int i = 0; i < titleController.text.length; i++) {
-      temp = temp + titleController.text[i];
+    for (int i = 0; i < titleInLower.length; i++) {
+      temp = temp + titleInLower[i];
       titleSearchList.add(temp);
     }
     instance.collection('communities/$community/posts').doc(postKey).update({

@@ -376,9 +376,10 @@ class _CreatePostState extends State<CreatePost> {
     mediaURL = null;
     if (mediaType != 0) await uploadMedia(key);
     List<String> titleSearchList = List();
+    String titleInLower = titleController.text.toLowerCase();
     String temp = "";
-    for (int i = 0; i < titleController.text.length; i++) {
-      temp = temp + titleController.text[i];
+    for (int i = 0; i < titleInLower.length; i++) {
+      temp = temp + titleInLower[i];
       titleSearchList.add(temp);
     }
     instance.collection('communities/$community/posts').doc(key).set({
