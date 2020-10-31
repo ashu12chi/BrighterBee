@@ -1,4 +1,5 @@
 import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
+import 'package:brighter_bee/helpers/community_delete.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -100,10 +101,8 @@ class _ViewCommunityReportsState extends State<ViewCommunityReports> {
                                                 Theme.of(context).errorColor),
                                       ),
                                       onPressed: () async {
-                                        //if(processing)
-                                        //return;
-                                        // TODO: Add community deletion
-//                                    //processing = false;
+                                        await deleteCommunity(
+                                            documentSnapshot.id);
                                         Navigator.of(context).pop();
                                       },
                                     ),

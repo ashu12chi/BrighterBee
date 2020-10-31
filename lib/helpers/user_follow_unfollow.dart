@@ -15,18 +15,21 @@ handleFollow(String me, String user) async {
     });
   });
 
-  // TODO user follow notifications
-
-  // String notificationId = (await instance.collection('notification').add({
-  //   'title': "$me started following you!",
-  //   'creator': me,
-  //   'receiver': user,
-  // }))
-  //     .id;
-  // await instance
-  //     .collection('users/$user/notifications')
-  //     .doc(notificationId)
-  //     .set({});
+  int time = DateTime.now().millisecondsSinceEpoch;
+  String notificationId =
+      (await instance.collection('pendingUserNotification').add({
+    'title': "$me started following you!",
+    'creator': me,
+    'receiver': user,
+    'body': 'Tap to open app',
+    'community': 'BrighterBee',
+    'time': time
+  }))
+          .id;
+  await instance
+      .collection('users/$user/notifications')
+      .doc(notificationId)
+      .set({'postRelated': 0, 'time': time});
 }
 
 handleUnfollow(String me, String user) async {

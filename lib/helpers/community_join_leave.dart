@@ -27,6 +27,26 @@ handleJoinRequest(String community, String user) async {
       'pendingMembers': FieldValue.arrayUnion([user])
     });
   });
+  int time = DateTime.now().millisecondsSinceEpoch;
+  DocumentSnapshot communityDoc =
+      await instance.collection('communities').doc(community).get();
+  List admins = communityDoc.get('admin');
+  admins.add(communityDoc.get('creator'));
+  admins.forEach((admin) async {
+    String id = (await instance.collection('pendingUserNotification').add({
+      'title': "$user requests membership in $community",
+      'body': 'Tap to allow',
+      'community': community,
+      'creator': user,
+      'receiver': admin,
+      'time': time
+    }))
+        .id;
+    await instance
+        .collection('users/$admin/notifications')
+        .doc(id)
+        .set({'postRelated': 0, 'time': time});
+  });
 }
 
 handleJoinReject(String community, String user) async {
