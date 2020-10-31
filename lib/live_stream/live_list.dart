@@ -103,10 +103,4 @@ class _LiveListState extends State<LiveList> {
           }),
     );
   }
-
-  Future<void> _handleCameraAndMic() async {
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
-  }
 }
