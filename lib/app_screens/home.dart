@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:rxdart/rxdart.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 12, 2020
+// This will be used for displaying home section
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
