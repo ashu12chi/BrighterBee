@@ -2,7 +2,6 @@ import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 // @author: Ashutosh Chitranshi
 // Oct 20, 2020
 // This is for searching users from extra section
