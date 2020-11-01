@@ -9,6 +9,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 20, 2020
+// This will be used for displaying drafts of a user in extra section
+
 class Drafts extends StatefulWidget {
   @override
   _DraftsState createState() => _DraftsState();

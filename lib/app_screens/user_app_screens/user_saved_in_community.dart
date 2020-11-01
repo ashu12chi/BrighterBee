@@ -3,6 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 20, 2020
+// This will be used for posts of a user saved in community
+
 class UserSavedInCommunity extends StatefulWidget {
   final String _community;
 

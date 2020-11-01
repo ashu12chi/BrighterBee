@@ -5,6 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 20, 2020
+// This will be used for displaying saved posts of a user in extra section
+
 class UserSaved extends StatefulWidget {
   _UserSavedState createState() => _UserSavedState();
 }

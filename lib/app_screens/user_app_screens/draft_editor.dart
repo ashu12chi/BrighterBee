@@ -18,6 +18,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zefyr/zefyr.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 20, 2020
+// This will be used for editing drafts
+
 class DraftEditor extends StatefulWidget {
   final Post _post;
 
