@@ -1,3 +1,7 @@
+// @author: Ashutosh chitranshi
+// Oct 10,2020
+// This is used for sending push notifications using firebase
+
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 admin.initializeApp();
@@ -18,15 +22,15 @@ export const sendToDevice = functions.firestore
        .collection('tokens')
        .get();
 
-    var community = notification.community;
+    let community = notification.community;
     community = community.concat(',');
-    var postId = notification.postId;
+    let postId = notification.postId;
     postId = postId.concat(',');
-    var id = community.concat(postId.toString());
-    var name = notification.creator;
-    var id2 = id.concat(name.toString());
+    let id = community.concat(postId.toString());
+    let name = notification.creator;
+    let id2 = id.concat(name.toString());
 
-     const tokens = querySnapshot.docs.map(snap => snap.id);
+    const tokens = querySnapshot.docs.map(snap => snap.id);
 
     const payload: admin.messaging.MessagingPayload = {
       notification: {
@@ -58,7 +62,7 @@ export const sendToDevicePendingUser = functions.firestore
        .collection('tokens')
        .get();
 
-    var community = notification.community;
+    let community = notification.community;
 
     const tokens = querySnapshot.docs.map(snap => snap.id);
 
