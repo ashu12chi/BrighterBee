@@ -69,6 +69,7 @@ class _FeedState extends State<Feed> with AutomaticKeepAliveClientMixin {
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
+              tooltip: 'Search posts',
               icon: Icon(Icons.search),
               iconSize: 30.0,
               onPressed: () {

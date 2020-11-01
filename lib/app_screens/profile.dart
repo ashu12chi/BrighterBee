@@ -92,6 +92,7 @@ class _ProfileState extends State<Profile> {
                       postListBloc.fetchFirstList();
                       controller.addListener(scrollListener);
                       return ListView(
+                        controller: controller,
                         children: <Widget>[
                           InkWell(
                             onTap: () {
@@ -441,7 +442,6 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           SingleChildScrollView(
-                              controller: controller,
                               padding: EdgeInsets.all(8),
                               scrollDirection: Axis.horizontal,
                               child: Row(

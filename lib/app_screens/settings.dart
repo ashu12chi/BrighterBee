@@ -131,7 +131,7 @@ class _SettingsState extends State<Settings> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.delete),
+                      child: Icon(Icons.warning),
                     ),
                     Text(
                       'Delete your account',

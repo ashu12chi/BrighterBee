@@ -70,6 +70,7 @@ class _CommunitiesState extends State<Communities>
                     actions: <Widget>[
                       IconButton(
                         icon: Icon(Icons.search),
+                        tooltip: 'Search communities',
                         iconSize: 30.0,
                         onPressed: () {
                           Navigator.push(

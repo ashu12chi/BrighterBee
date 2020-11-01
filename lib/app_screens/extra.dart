@@ -46,6 +46,7 @@ class _ExtraState extends State<Extra> {
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.search),
+                tooltip: 'Search users',
                 iconSize: 30.0,
                 onPressed: () {
                   Navigator.push(context,

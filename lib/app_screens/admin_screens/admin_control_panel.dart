@@ -4,6 +4,7 @@ import 'package:brighter_bee/app_screens/admin_screens/view_community_reports.da
 import 'package:brighter_bee/app_screens/admin_screens/view_post_reports.dart';
 import 'package:brighter_bee/app_screens/admin_screens/view_user_reports.dart';
 import 'package:brighter_bee/helpers/community_delete.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -40,18 +41,15 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
             if (snapshot.data != null) {
               return ListView(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Image.network(
-                          snapshot.data['photoUrl'],
-                          fit: BoxFit.fill,
-                          height: 200,
-                        ),
-                      ],
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: snapshot.data['photoUrl'],
+                        height: 200,
+                        fit: BoxFit.fill,
+                      ),
+                    ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

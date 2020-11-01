@@ -69,6 +69,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           IconButton(
             icon: Icon(Icons.ondemand_video,
                 color: Theme.of(context).buttonColor),
+            tooltip: 'Start live stream',
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LiveList(community)));
@@ -76,6 +77,7 @@ class _CommunityHomeState extends State<CommunityHome> {
           ),
           IconButton(
               icon: Icon(Icons.search),
+              tooltip: 'Search posts in $community',
               onPressed: () {
                 Navigator.push(
                     context,
@@ -84,6 +86,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                             PostSearchInCommunity(community)));
               }),
           IconButton(
+            tooltip: 'More options',
             icon: Icon(
               Icons.more_horiz,
               color: Theme.of(context).buttonColor,

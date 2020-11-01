@@ -2,6 +2,7 @@ import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
 import 'package:brighter_bee/app_screens/community_screens/join_community.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -16,6 +17,8 @@ class DiscoverCommunity extends StatefulWidget {
 }
 
 class _DiscoverCommunityState extends State<DiscoverCommunity> {
+  final String username = FirebaseAuth.instance.currentUser.displayName;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +28,13 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.person_add), onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        JoinCommunity()));
-          })
+          IconButton(
+              tooltip: 'Join community',
+              icon: Icon(Icons.group_add),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => JoinCommunity()));
+              })
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -42,60 +45,66 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
               return ListView.builder(
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot documentSnapshot =
+                    DocumentSnapshot communitySnapshot =
                         snapshot.data.docs[index];
-                    print(documentSnapshot.id);
-                    if(documentSnapshot['visibility'] == 1)
-                      return Container();
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CommunityHome(documentSnapshot.id)));
-                      },
-                      child: Card(
+                    bool isHidden = (communitySnapshot.get('privacy') == 1) &&
+                        (communitySnapshot.get('visibility') == 1);
+                    bool isMember =
+                        communitySnapshot.get('members').contains(username) ||
+                            (communitySnapshot.get('creator') == username);
+                    if (isMember || !isHidden) {
+                      return Card(
                         elevation: 8,
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(
-                                  top: 10, bottom: 10, left: 10, right: 20),
-                              width: 100,
-                              height: 100,
-                              child: CachedNetworkImage(
-                                placeholder: (context, url) => Image(
-                                    image: AssetImage('assets/empty.jpg')),
-                                imageUrl: documentSnapshot.data()['photoUrl'],
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    documentSnapshot.id,
-                                    style: TextStyle(fontSize: 20),
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CommunityHome(communitySnapshot.id)));
+                            },
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      top: 10, bottom: 10, left: 10, right: 20),
+                                  width: 100,
+                                  height: 100,
+                                  child: CachedNetworkImage(
+                                    placeholder: (context, url) => Image(
+                                        image: AssetImage('assets/empty.jpg')),
+                                    imageUrl:
+                                        communitySnapshot.data()['photoUrl'],
+                                    fit: BoxFit.fill,
                                   ),
-                                  SizedBox(
-                                    height: 3,
+                                ),
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        communitySnapshot.id,
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      Text(
+                                        communitySnapshot['about'],
+                                        style: TextStyle(
+                                            fontSize: 15, color: Colors.grey),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
                                   ),
-                                  Text(
-                                    documentSnapshot['about'],
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.grey),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
+                                )
+                              ],
+                            )),
+                      );
+                    } else
+                      return Container();
                   });
             return ListView.builder(
                 itemCount: 10,
