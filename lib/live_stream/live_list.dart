@@ -60,7 +60,7 @@ class _LiveListState extends State<LiveList> {
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
-                  print(documentSnapshot['photoUrl']);
+                  if (documentSnapshot['downvotes'] > 8) return Container();
                   return Dismissible(
                     key: Key(documentSnapshot.id),
                     child: Column(
@@ -96,7 +96,7 @@ class _LiveListState extends State<LiveList> {
                                   ),
                                 ),
                                 Text(
-                                  documentSnapshot['title'],
+                                  '${documentSnapshot['title']}\nupvotes: ${documentSnapshot['upvotes']} downvotes: ${documentSnapshot['downvotes']}',
                                   style: TextStyle(fontSize: 20),
                                 )
                               ],
