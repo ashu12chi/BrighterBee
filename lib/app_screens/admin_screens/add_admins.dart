@@ -6,6 +6,10 @@ import 'package:shimmer/shimmer.dart';
 import '../../widgets/user_card.dart';
 import '../profile.dart';
 
+// @author: Ashutosh Chitranshi
+// 20 Oct, 2020
+// This will be used in admin control panel of a community for adding new admins in the app
+
 class AddAdmins extends StatefulWidget {
   final community;
 
@@ -129,6 +133,8 @@ class _AddAdminsState extends State<AddAdmins> {
           }),
     );
   }
+
+  // slide right widget
 
   Widget slideRightBackground() {
     return Container(

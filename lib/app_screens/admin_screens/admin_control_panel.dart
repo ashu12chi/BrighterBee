@@ -8,6 +8,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+// @author: Ashutosh Chitranshi
+// 20 Oct, 2020
+// This will be used for displaying settings in community to the creator
+
 class AdminControlPanel extends StatefulWidget {
   final community;
 
