@@ -95,10 +95,19 @@ class _LiveListState extends State<LiveList> {
                                         fit: BoxFit.fill),
                                   ),
                                 ),
-                                Text(
-                                  '${documentSnapshot['title']}\nupvotes: ${documentSnapshot['upvotes']} downvotes: ${documentSnapshot['downvotes']}',
-                                  style: TextStyle(fontSize: 20),
-                                )
+                                Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${documentSnapshot['title']}',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                          'upvotes: ${documentSnapshot['upvotes']} downvotes: ${documentSnapshot['downvotes']}')
+                                    ])
                               ],
                             ),
                           ),
@@ -128,7 +137,7 @@ class _LiveListState extends State<LiveList> {
                                   ),
                                   FlatButton(
                                     child: Text(
-                                      "Reject",
+                                      "Downvote",
                                       style: TextStyle(
                                           color: Theme.of(context).errorColor),
                                     ),
@@ -164,7 +173,7 @@ class _LiveListState extends State<LiveList> {
                               actions: <Widget>[
                                 FlatButton(
                                   child: Text(
-                                    "Upvote",
+                                    "Cancel",
                                     style: TextStyle(
                                         color: Theme.of(context).buttonColor),
                                   ),
@@ -174,7 +183,7 @@ class _LiveListState extends State<LiveList> {
                                 ),
                                 FlatButton(
                                   child: Text(
-                                    "Accept",
+                                    "Upvote",
                                     style: TextStyle(color: Colors.green),
                                   ),
                                   onPressed: () async {
