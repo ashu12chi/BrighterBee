@@ -137,7 +137,7 @@ class _StartLiveState extends State<StartLive> {
                       .doc(community)
                       .collection('live')
                       .doc(name)
-                      .set({'title': _controller.text, 'photoUrl': url});
+                      .set({'title': _controller.text, 'photoUrl': url,'upvotes':0,'downvotes':0,'upvoters':[],'downvoters':[]});
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
