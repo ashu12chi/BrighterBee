@@ -16,6 +16,10 @@ import 'package:share/share.dart';
 
 import 'community_profile.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 10, 2020
+// This is home page of a community, all it's post is displayed in community home.
+
 class CommunityHome extends StatefulWidget {
   final community;
 

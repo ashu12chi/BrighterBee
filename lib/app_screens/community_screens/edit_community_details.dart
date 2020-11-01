@@ -6,6 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 17, 2020
+// This will be used for editing details of a community
+
 class EditCommunityDetails extends StatefulWidget {
   final community;
 

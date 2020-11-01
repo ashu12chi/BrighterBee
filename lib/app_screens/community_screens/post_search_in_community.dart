@@ -5,6 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 30, 2020
+// This will help in post search in community
+
 class PostSearchInCommunity extends StatefulWidget {
   final String _community;
 

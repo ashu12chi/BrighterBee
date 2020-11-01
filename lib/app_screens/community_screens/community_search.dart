@@ -2,6 +2,11 @@ import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+
+// @author: Nishchal Siddharth Pandey
+// Oct 12, 2020
+// This will be used for searching posts in community
+
 class CommunitySearch extends StatefulWidget {
   @override
   _CommunitySearchState createState() => _CommunitySearchState();

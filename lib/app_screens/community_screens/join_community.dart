@@ -5,6 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 30, 2020
+// This will be used for joining hidden private communities
+
 class JoinCommunity extends StatefulWidget {
   @override
   _JoinCommunityState createState() => _JoinCommunityState();

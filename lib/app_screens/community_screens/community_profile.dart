@@ -6,6 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 10, 2020
+// This is profile of community and will be used to display certain information regarding community
+// E.g. Visibility, privacy, Verification and creator
+
 class CommunityProfile extends StatefulWidget {
   final community;
 
