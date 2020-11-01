@@ -111,10 +111,14 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 8.0),
                                       child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                3.0 /
+                                                4.0,
                                         height: 55.0,
                                         child: FlatButton(
                                           child: Text(
-                                            'Write something here...           ',
+                                            'Write something here...',
                                             style: TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: 18.0),
