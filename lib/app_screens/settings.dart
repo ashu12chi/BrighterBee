@@ -35,64 +35,6 @@ class _SettingsState extends State<Settings> {
       body: ListView(
         physics: BouncingScrollPhysics(),
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.notifications_active),
-                    ),
-                    Text(
-                      'Allow admin notifications',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-                Switch(
-                    value: adminNotification,
-                    activeColor: Theme.of(context).accentColor,
-                    onChanged: (value) {
-                      setState(() {
-                        adminNotification = value;
-                        print(adminNotification);
-                      });
-                    })
-              ],
-            ),
-          ),
-          InkWell(
-            onTap: showOptions,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 8.0, right: 8.0, top: 12.0, bottom: 12.0),
-              child: Container(
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.calendar_today),
-                    ),
-                    Text(
-                      'News Feed Preference',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0, bottom: 4.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
           InkWell(
             onTap: () async {
               await clearCache(context);
