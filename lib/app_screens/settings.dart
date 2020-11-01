@@ -14,6 +14,10 @@ class Settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
+// @author: Ashutosh Chitranshi
+// Oct 12, 2020
+// This will be used for displaying settings in extra section
+
 class _SettingsState extends State<Settings> {
   bool adminNotification = true;
   int feedOrder = 0; // 0 for time,1 for upvotes, 2 for views

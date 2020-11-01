@@ -2,6 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 20, 2020
+// This is just about section of app ;)
+
 class About extends StatefulWidget {
   @override
   _AboutState createState() => _AboutState();

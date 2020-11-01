@@ -13,6 +13,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// @author: Nishchal Siddharth Pandey,Ashutosh Chitranshi
+// Oct 12, 2020
+// This will be used for displaying profile of a user
+
 class Profile extends StatefulWidget {
   final String _username;
 

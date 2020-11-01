@@ -25,6 +25,10 @@ import 'package:zefyr/zefyr.dart';
 
 import 'community_screens/community_home.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 12, 2020
+// This will be used for displaying full view of a post
+
 class PostUI extends StatefulWidget {
   final String _community;
   final String _postKey;

@@ -16,6 +16,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 12, 2020
+// This will be used for displaying extra section
+
 class Extra extends StatefulWidget {
   @override
   _ExtraState createState() => _ExtraState();
