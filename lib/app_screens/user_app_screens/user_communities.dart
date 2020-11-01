@@ -45,6 +45,7 @@ class _UserCommunitiesState extends State<UserCommunities> {
             builder: (context, snapshot) {
               if (snapshot.data != null) {
                 return ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     itemCount: snapshot.data['communityCount'],
                     itemBuilder: (context, index) {
                       return Dismissible(

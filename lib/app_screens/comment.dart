@@ -198,8 +198,8 @@ class _Comment extends State<Comment> {
         'downvotes': 0,
         'downvoters': [],
         'commKey': commKey,
-        'reporters':[],
-        'reports':0
+        'reporters': [],
+        'reports': 0
       });
       await instance.runTransaction((transaction) async {
         DocumentReference postRef = instance
@@ -242,8 +242,8 @@ class _Comment extends State<Comment> {
         'downvoters': [],
         'commKey': commKey,
         'replyCount': 0,
-        'reporters':[],
-        'reports':0
+        'reporters': [],
+        'reports': 0
       });
       await instance.runTransaction((transaction) async {
         DocumentReference postRef = instance

@@ -32,6 +32,7 @@ class _DraftsState extends State<Drafts> {
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               return ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
                     Post post =

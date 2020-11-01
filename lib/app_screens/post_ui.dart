@@ -277,6 +277,7 @@ class _PostState extends State<PostUI> {
                             ),
                             Expanded(
                                 child: SingleChildScrollView(
+                                    physics: BouncingScrollPhysics(),
                                     controller: controller,
                                     child: Column(children: <Widget>[
                                       Padding(

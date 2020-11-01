@@ -31,8 +31,9 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        body:
-            SafeArea(child: SingleChildScrollView(child: withEmailPassword())));
+        body: SafeArea(
+            child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(), child: withEmailPassword())));
   }
 
   Widget withEmailPassword() {

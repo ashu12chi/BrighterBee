@@ -67,6 +67,7 @@ class _CommunitySearchState extends State<CommunitySearch> {
                       child: Container(),
                     )
                   : ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (context, index) {

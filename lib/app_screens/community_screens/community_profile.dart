@@ -53,6 +53,7 @@ class _CommunityProfileState extends State<CommunityProfile> {
               verification = snapshot.data['verification'];
               creator = snapshot.data['creator'];
               return ListView(
+                physics: BouncingScrollPhysics(),
                 children: <Widget>[
                   Text('About',
                       style:

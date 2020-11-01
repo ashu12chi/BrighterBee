@@ -40,6 +40,7 @@ class _ExtraState extends State<Extra> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           AppBar(
             title: Text('Menu', style: TextStyle(fontWeight: FontWeight.bold)),

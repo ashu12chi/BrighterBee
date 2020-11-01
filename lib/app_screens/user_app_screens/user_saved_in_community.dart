@@ -39,6 +39,7 @@ class _UserSavedInCommunity extends State<UserSavedInCommunity> {
             builder: (context, snapshot) {
               if (snapshot.data != null)
                 return ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
                       return PostCardView(

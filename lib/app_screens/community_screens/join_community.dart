@@ -16,25 +16,28 @@ class _JoinCommunityState extends State<JoinCommunity> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Join Hidden Community',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(
+          'Join Hidden Community',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Column(
           children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Enter joining code',
-              focusedBorder: OutlineInputBorder(
-                borderSide:
-                BorderSide(color: Theme.of(context).buttonColor),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter joining code',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).buttonColor),
+                  ),
+                ),
               ),
             ),
-        ),
-          ),
             Container(
               padding: const EdgeInsets.only(top: 16.0),
               alignment: Alignment.center,
@@ -45,30 +48,44 @@ class _JoinCommunityState extends State<JoinCommunity> {
                       side: BorderSide(color: Colors.grey)),
                   onPressed: () async {
                     String community = _controller.text.trim();
-                    final snapShot = await FirebaseFirestore.instance.collection('communities').doc(community).get();
-                    if(snapShot != null && snapShot.exists) {
+                    final snapShot = await FirebaseFirestore.instance
+                        .collection('communities')
+                        .doc(community)
+                        .get();
+                    if (snapShot != null && snapShot.exists) {
                       print(snapShot['visibility']);
-                      if(snapShot['visibility'] == 0) {
-                        Fluttertoast.showToast(msg: 'Enter valid community name');
-                      }
-                      else {
-                        bool member = snapShot['members'].contains(FirebaseAuth.instance.currentUser.displayName);
-                        if(snapShot['creator'] == FirebaseAuth.instance.currentUser.displayName)
+                      if (snapShot['visibility'] == 0) {
+                        Fluttertoast.showToast(
+                            msg: 'Enter valid community name');
+                      } else {
+                        bool member = snapShot['members'].contains(
+                            FirebaseAuth.instance.currentUser.displayName);
+                        if (snapShot['creator'] ==
+                            FirebaseAuth.instance.currentUser.displayName)
                           member = true;
-                        if(member) {
+                        if (member) {
                           Fluttertoast.showToast(msg: 'Already a member');
                           Navigator.pop(context);
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => CommunityHome(community)));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CommunityHome(community)));
                           return;
                         }
-                        await handleJoinRequest(community, FirebaseAuth.instance.currentUser.displayName);
-                        await handleJoinAccept(community,FirebaseAuth.instance.currentUser.displayName);
+                        await handleJoinRequest(community,
+                            FirebaseAuth.instance.currentUser.displayName);
+                        await handleJoinAccept(community,
+                            FirebaseAuth.instance.currentUser.displayName);
                         Fluttertoast.showToast(msg: 'Community Joining done');
                         Navigator.pop(context);
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => CommunityHome(community)));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CommunityHome(community)));
                       }
-                    }
-                    else {
+                    } else {
                       Fluttertoast.showToast(msg: 'Enter valid community name');
                     }
                   }),

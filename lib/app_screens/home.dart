@@ -62,7 +62,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 onRefresh: postListBloc.fetchFirstList,
                 child: SingleChildScrollView(
                     controller: controller,
-                    physics: ScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     child: Column(children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -111,6 +111,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                         ),
                       ),
                       SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
                           padding: EdgeInsets.all(8),
                           scrollDirection: Axis.horizontal,
                           child: Row(

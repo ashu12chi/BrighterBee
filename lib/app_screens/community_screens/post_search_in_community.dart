@@ -86,6 +86,7 @@ class _PostSearchInCommunityState extends State<PostSearchInCommunity> {
               if (snapshot.data != null) {
                 int presentLength = snapshot.data.length;
                 return ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     controller: controller,
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,

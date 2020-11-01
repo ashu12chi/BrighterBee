@@ -65,6 +65,7 @@ class _UserSearchState extends State<UserSearch> {
                       child: Container(),
                     )
                   : ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (context, index) {

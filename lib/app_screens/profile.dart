@@ -92,6 +92,7 @@ class _ProfileState extends State<Profile> {
                       postListBloc.fetchFirstList();
                       controller.addListener(scrollListener);
                       return ListView(
+                        physics: BouncingScrollPhysics(),
                         controller: controller,
                         children: <Widget>[
                           InkWell(
@@ -442,6 +443,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           SingleChildScrollView(
+                              physics: BouncingScrollPhysics(),
                               padding: EdgeInsets.all(8),
                               scrollDirection: Axis.horizontal,
                               child: Row(

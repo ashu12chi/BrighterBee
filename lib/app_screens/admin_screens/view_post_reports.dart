@@ -35,6 +35,7 @@ class _ViewPostReportsState extends State<ViewPostReports> {
               return CircularProgressIndicator();
             } else {
               return ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot documentSnapshot = snapshot.data.docs[index];

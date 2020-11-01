@@ -36,9 +36,8 @@ class _ViewAdminsState extends State<ViewAdmins> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
               return CircularProgressIndicator();
-            print('28: ashu12_chi');
-            print(snapshot.data['admin'].length);
             return ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemCount: snapshot.data['admin'].length,
               itemBuilder: (context, index) {
                 print(snapshot.data['admin'][index]);

@@ -78,6 +78,7 @@ class _RegisterState extends State<Register> {
             style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Form(
           key: _formKey,
           child: Padding(

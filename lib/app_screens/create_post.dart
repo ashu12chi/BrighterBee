@@ -296,6 +296,7 @@ class _CreatePostState extends State<CreatePost> {
                 builder: (BuildContext context, StateSetter state) {
               return LimitedBox(
                   child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return RadioListTile(

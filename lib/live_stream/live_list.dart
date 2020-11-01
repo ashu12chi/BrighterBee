@@ -53,6 +53,7 @@ class _LiveListState extends State<LiveList> {
             if (snapshot.connectionState == ConnectionState.waiting)
               return CircularProgressIndicator();
             return ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot documentSnapshot = snapshot.data.docs[index];

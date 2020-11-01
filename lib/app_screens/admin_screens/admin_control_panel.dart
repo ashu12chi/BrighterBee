@@ -40,6 +40,7 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               return ListView(
+                physics: BouncingScrollPhysics(),
                 children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

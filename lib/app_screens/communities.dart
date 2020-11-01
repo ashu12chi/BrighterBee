@@ -62,7 +62,7 @@ class _CommunitiesState extends State<Communities>
             onRefresh: postListBloc.fetchFirstList,
             child: SingleChildScrollView(
                 controller: controller,
-                physics: ScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 child: Column(children: [
                   AppBar(
                     title: Text('Communities',
@@ -153,6 +153,7 @@ class _CommunitiesState extends State<Communities>
                   ),
                   SingleChildScrollView(
                       padding: EdgeInsets.all(8),
+                      physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

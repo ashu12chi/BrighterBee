@@ -39,6 +39,7 @@ class _AddAdminsState extends State<AddAdmins> {
               print('28: ashu12_chi');
               print(snapshot.data['members'].length);
               return ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data['members'].length,
                 itemBuilder: (context, index) {
                   print(snapshot.data['members'][index]);

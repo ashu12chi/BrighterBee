@@ -127,7 +127,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                 onRefresh: postListBloc.fetchFirstList,
                 child: SingleChildScrollView(
                   controller: controller,
-                  physics: ScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     children: <Widget>[
                       Column(

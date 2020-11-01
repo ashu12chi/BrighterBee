@@ -43,6 +43,7 @@ class _DiscoverCommunityState extends State<DiscoverCommunity> {
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data.docs.isNotEmpty)
               return ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot communitySnapshot =

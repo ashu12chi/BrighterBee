@@ -49,6 +49,7 @@ class _UserFollowingState extends State<UserFollowing> {
             builder: (context, snapshot) {
               if (snapshot.data != null) {
                 return ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     itemCount: snapshot.data['followingCount'],
                     itemBuilder: (context, index) {
                       return Dismissible(

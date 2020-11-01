@@ -45,6 +45,7 @@ class _VerifyUserState extends State<VerifyUser> {
             print('28: ashu12_chi');
             print(snapshot.data['pendingMembers'].length);
             return ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemCount: snapshot.data['pendingMembers'].length,
               itemBuilder: (context, index) {
                 print(snapshot.data['pendingMembers'][index]);

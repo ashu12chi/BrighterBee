@@ -29,6 +29,7 @@ class _SettingsState extends State<Settings> {
         style: TextStyle(fontWeight: FontWeight.bold),
       )),
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),

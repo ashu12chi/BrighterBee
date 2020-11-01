@@ -29,7 +29,7 @@ class _NotificationsState extends State<Notifications>
             setState(() {});
           },
           child: SingleChildScrollView(
-              physics: ScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(children: [
                 AppBar(
                   title: Text('Notifications',
