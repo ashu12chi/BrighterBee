@@ -6,6 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 12, 2020
+// This will be used for searching posts
+
 class PostSearch extends StatefulWidget {
   @override
   _PostSearchState createState() => _PostSearchState();

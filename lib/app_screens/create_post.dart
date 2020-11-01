@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zefyr/zefyr.dart';
 
 /*
-* @author: Nishchal Siddharth Pandey
+* @author: Nishchal Siddharth Pandey, Ashutosh Chitranshi
 * 1 October, 2020
 * This file has UI and code for creating a new post.
 */

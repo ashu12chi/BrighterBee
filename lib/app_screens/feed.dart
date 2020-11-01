@@ -11,6 +11,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 12, 2020
+// This will be used for displaying feed section
+
 class Feed extends StatefulWidget {
   final User _user;
 
