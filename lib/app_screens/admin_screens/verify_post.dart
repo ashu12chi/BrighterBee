@@ -5,6 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+
+// @author: Ashutosh Chitranshi
+// 21 Oct, 2020
+// This will be used for verifying posts.
+
 class VerifyPost extends StatefulWidget {
   final commuinty;
 
