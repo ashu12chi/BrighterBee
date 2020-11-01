@@ -31,12 +31,13 @@ class _CommunityHomeState extends State<CommunityHome> {
   String about;
   String creator;
   int privacy;
-  int members;
+  int memberCount;
   int visibility;
   int posts;
   int verification;
   bool processing;
   bool reported;
+  List members;
   PostListBloc postListBloc;
   ScrollController controller = ScrollController();
   int selectedSort;
@@ -110,13 +111,17 @@ class _CommunityHomeState extends State<CommunityHome> {
             privacy = snapshot.data['privacy'];
             posts = snapshot.data['posts'];
             visibility = snapshot.data['visibility'];
-            members = snapshot.data['memberCount'];
+            memberCount = snapshot.data['memberCount'];
+            members = snapshot.data['members'];
             verification = snapshot.data['verification'];
             creator = snapshot.data['creator'];
             reported = snapshot.data['reporters'].contains(username);
             postListBloc = PostListBloc(selectedSort, community);
             postListBloc.fetchFirstList();
             controller.addListener(scrollListener);
+
+            bool isPrivate = privacy == 1;
+            bool isMember = members.contains(username) || (creator == username);
 
             return RefreshIndicator(
                 onRefresh: postListBloc.fetchFirstList,
@@ -168,7 +173,7 @@ class _CommunityHomeState extends State<CommunityHome> {
                                         color: Colors.grey, fontSize: 15),
                                   ),
                                   Text(
-                                    '$members Members',
+                                    '$memberCount Members',
                                     style: TextStyle(
                                         color: Colors.grey, fontSize: 15),
                                   )
@@ -280,90 +285,110 @@ class _CommunityHomeState extends State<CommunityHome> {
                           color: Colors.black12,
                         ),
                       ),
-                      SingleChildScrollView(
-                          padding: EdgeInsets.all(8),
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 0;
-                                  });
+                      (!isPrivate || isMember)
+                          ? Column(children: [
+                              SingleChildScrollView(
+                                  padding: EdgeInsets.all(8),
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ChoiceChip(
+                                        selectedColor:
+                                            Theme.of(context).accentColor,
+                                        elevation: 10,
+                                        onSelected: (value) {
+                                          setState(() {
+                                            selectedSort = 0;
+                                          });
+                                        },
+                                        label: Text('Latest',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .buttonColor)),
+                                        selected: selectedSort == 0,
+                                      ),
+                                      SizedBox(width: 5),
+                                      ChoiceChip(
+                                        selectedColor:
+                                            Theme.of(context).accentColor,
+                                        elevation: 10,
+                                        onSelected: (value) {
+                                          setState(() {
+                                            selectedSort = 1;
+                                          });
+                                        },
+                                        label: Text('Hot',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .buttonColor)),
+                                        selected: selectedSort == 1,
+                                      ),
+                                      SizedBox(width: 5),
+                                      ChoiceChip(
+                                        selectedColor:
+                                            Theme.of(context).accentColor,
+                                        elevation: 10,
+                                        onSelected: (value) {
+                                          setState(() {
+                                            selectedSort = 2;
+                                          });
+                                        },
+                                        label: Text('Most upvoted',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .buttonColor)),
+                                        selected: selectedSort == 2,
+                                      ),
+                                      SizedBox(width: 5),
+                                      ChoiceChip(
+                                        selectedColor:
+                                            Theme.of(context).accentColor,
+                                        elevation: 10,
+                                        onSelected: (value) {
+                                          setState(() {
+                                            selectedSort = 3;
+                                          });
+                                        },
+                                        label: Text('Most viewed',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .buttonColor)),
+                                        selected: selectedSort == 3,
+                                      ),
+                                    ],
+                                  )),
+                              StreamBuilder<List<DocumentSnapshot>>(
+                                stream: postListBloc.postStream,
+                                builder: (context, snapshot) {
+                                  return snapshot.connectionState ==
+                                          ConnectionState.waiting
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: snapshot.data.length,
+                                          itemBuilder: (context, index) {
+                                            DocumentSnapshot documentSnapshot =
+                                                snapshot.data[index];
+                                            return PostCardView(community,
+                                                documentSnapshot.id, true);
+                                          },
+                                        );
                                 },
-                                label: Text('Latest',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 0,
-                              ),
-                              SizedBox(width: 5),
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 1;
-                                  });
-                                },
-                                label: Text('Hot',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 1,
-                              ),
-                              SizedBox(width: 5),
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 2;
-                                  });
-                                },
-                                label: Text('Most upvoted',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 2,
-                              ),
-                              SizedBox(width: 5),
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 3;
-                                  });
-                                },
-                                label: Text('Most viewed',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 3,
-                              ),
-                            ],
-                          )),
-                      StreamBuilder<List<DocumentSnapshot>>(
-                        stream: postListBloc.postStream,
-                        builder: (context, snapshot) {
-                          return snapshot.connectionState ==
-                                  ConnectionState.waiting
-                              ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.length,
-                                  itemBuilder: (context, index) {
-                                    DocumentSnapshot documentSnapshot =
-                                        snapshot.data[index];
-                                    return PostCardView(
-                                        community, documentSnapshot.id, true);
-                                  },
-                                );
-                        },
-                      )
+                              )
+                            ])
+                          : Center(
+                              child: Text(
+                                  'Community is private, join to view posts',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                            )
                     ],
                   ),
                 ));
