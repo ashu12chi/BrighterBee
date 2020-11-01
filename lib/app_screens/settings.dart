@@ -274,6 +274,22 @@ class _SettingsState extends State<Settings> {
                           style: TextStyle(fontSize: 14),
                         )
                       ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(
+                          Icons.whatshot,
+                          size: 30,
+                          color: feedOrder == 2
+                              ? Theme.of(context).accentColor
+                              : Colors.grey,
+                        )),
+                        Text(
+                          'Hot',
+                          style: TextStyle(fontSize: 14),
+                        )
+                      ],
                     )
                   ],
                 ),

@@ -80,6 +80,7 @@ class _FeedState extends State<Feed> with AutomaticKeepAliveClientMixin {
             ),
           ],
           bottom: TabBar(
+            physics: BouncingScrollPhysics(),
             indicator: UnderlineTabIndicator(
                 borderSide:
                     BorderSide(width: 3, color: Theme.of(context).accentColor)),
@@ -99,6 +100,7 @@ class _FeedState extends State<Feed> with AutomaticKeepAliveClientMixin {
           ),
         ),
         body: TabBarView(
+          physics: BouncingScrollPhysics(),
           children: [Home(), Communities(), Notifications(), Extra()],
         ),
       ),

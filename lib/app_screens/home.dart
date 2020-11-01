@@ -20,6 +20,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   User user;
   int selectedSort;
   List memberOf;
+  List following;
   PostListBloc postListBloc;
   ScrollController controller = ScrollController();
   int previousSnapshotLength;
@@ -43,174 +44,201 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.displayName)
-          .get(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        memberOf = snapshot.data.data()['communityList'];
-        postListBloc = PostListBloc(selectedSort, memberOf);
-        postListBloc.fetchFirstList();
-        controller.addListener(scrollListener);
-        return Scaffold(
-            body: RefreshIndicator(
-                onRefresh: postListBloc.fetchFirstList,
-                child: SingleChildScrollView(
-                    controller: controller,
-                    physics: BouncingScrollPhysics(),
-                    child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: <Widget>[
-                            InkWell(
-                              child: CircleAvatar(
-                                backgroundImage:
-                                    CachedNetworkImageProvider(user.photoURL),
-                                radius: 25.0,
-                                backgroundColor: Colors.grey,
+    return FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance.collection('communities').get(),
+        builder: (context, snapshot) {
+          if (snapshot.data == null) return CircularProgressIndicator();
+          List publicCommunities = [];
+          List<QueryDocumentSnapshot> docs = snapshot.data.docs;
+          docs.forEach((doc) {
+            if (doc.get('privacy') == 0) publicCommunities.add(doc.id);
+          });
+          return FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.displayName)
+                .get(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData)
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              memberOf = snapshot.data.data()['communityList'];
+              following = snapshot.data.data()['following'];
+              postListBloc = PostListBloc(
+                  selectedSort, memberOf, following, publicCommunities);
+              postListBloc.fetchFirstList();
+              controller.addListener(scrollListener);
+              return Scaffold(
+                  body: RefreshIndicator(
+                      onRefresh: postListBloc.fetchFirstList,
+                      child: SingleChildScrollView(
+                          controller: controller,
+                          physics: BouncingScrollPhysics(),
+                          child: Column(children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: <Widget>[
+                                  InkWell(
+                                    child: CircleAvatar(
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              user.photoURL),
+                                      radius: 25.0,
+                                      backgroundColor: Colors.grey,
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  Profile(user.displayName)));
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: SizedBox(
+                                      height: 55.0,
+                                      child: FlatButton(
+                                        child: Text(
+                                          'Write something here...           ',
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 18.0),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CreatePost()));
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          side: BorderSide(color: Colors.grey),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Profile(user.displayName)));
+                            ),
+                            SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
+                                padding: EdgeInsets.all(8),
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ChoiceChip(
+                                      selectedColor:
+                                          Theme.of(context).accentColor,
+                                      elevation: 10,
+                                      onSelected: (value) {
+                                        setState(() {
+                                          selectedSort = 0;
+                                        });
+                                      },
+                                      label: Text('Latest',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .buttonColor)),
+                                      selected: selectedSort == 0,
+                                    ),
+                                    SizedBox(width: 5),
+                                    ChoiceChip(
+                                      selectedColor:
+                                          Theme.of(context).accentColor,
+                                      elevation: 10,
+                                      onSelected: (value) {
+                                        setState(() {
+                                          selectedSort = 1;
+                                        });
+                                      },
+                                      label: Text('Hot',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .buttonColor)),
+                                      selected: selectedSort == 1,
+                                    ),
+                                    SizedBox(width: 5),
+                                    ChoiceChip(
+                                      selectedColor:
+                                          Theme.of(context).accentColor,
+                                      elevation: 10,
+                                      onSelected: (value) {
+                                        setState(() {
+                                          selectedSort = 2;
+                                        });
+                                      },
+                                      label: Text('Most upvoted',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .buttonColor)),
+                                      selected: selectedSort == 2,
+                                    ),
+                                    SizedBox(width: 5),
+                                    ChoiceChip(
+                                      selectedColor:
+                                          Theme.of(context).accentColor,
+                                      elevation: 10,
+                                      onSelected: (value) {
+                                        setState(() {
+                                          selectedSort = 3;
+                                        });
+                                      },
+                                      label: Text('Most viewed',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .buttonColor)),
+                                      selected: selectedSort == 3,
+                                    ),
+                                  ],
+                                )),
+                            StreamBuilder<List<DocumentSnapshot>>(
+                              stream: postListBloc.postStream,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting)
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                else {
+                                  int presentLength = snapshot.data.length;
+                                  return ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data.length,
+                                      itemBuilder: (context, index) {
+                                        DocumentSnapshot documentSnapshot =
+                                            snapshot.data[index];
+                                        String id = documentSnapshot.id;
+                                        debugPrint('${snapshot.data.length}');
+                                        return Column(children: [
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(bottom: 10),
+                                              child: PostCardView(
+                                                  documentSnapshot
+                                                      .get('community'),
+                                                  id,
+                                                  true)),
+                                          (index != snapshot.data.length - 1)
+                                              ? Container()
+                                              : buildProgressIndicator(
+                                                  presentLength)
+                                        ]);
+                                      });
+                                }
                               },
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: SizedBox(
-                                height: 55.0,
-                                child: FlatButton(
-                                  child: Text(
-                                    'Write something here...           ',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 18.0),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CreatePost()));
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                    side: BorderSide(color: Colors.grey),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          padding: EdgeInsets.all(8),
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 0;
-                                  });
-                                },
-                                label: Text('Latest',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 0,
-                              ),
-                              SizedBox(width: 5),
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 1;
-                                  });
-                                },
-                                label: Text('Hot',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 1,
-                              ),
-                              SizedBox(width: 5),
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 2;
-                                  });
-                                },
-                                label: Text('Most upvoted',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 2,
-                              ),
-                              SizedBox(width: 5),
-                              ChoiceChip(
-                                selectedColor: Theme.of(context).accentColor,
-                                elevation: 10,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedSort = 3;
-                                  });
-                                },
-                                label: Text('Most viewed',
-                                    style: TextStyle(
-                                        color: Theme.of(context).buttonColor)),
-                                selected: selectedSort == 3,
-                              ),
-                            ],
-                          )),
-                      StreamBuilder<List<DocumentSnapshot>>(
-                        stream: postListBloc.postStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          else {
-                            int presentLength = snapshot.data.length;
-                            return ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: snapshot.data.length,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data[index];
-                                  String id = documentSnapshot.id;
-                                  debugPrint('${snapshot.data.length}');
-                                  return Column(children: [
-                                    Padding(
-                                        padding: EdgeInsets.only(bottom: 10),
-                                        child: PostCardView(
-                                            documentSnapshot.get('community'),
-                                            id,
-                                            true)),
-                                    (index != snapshot.data.length - 1)
-                                        ? Container()
-                                        : buildProgressIndicator(presentLength)
-                                  ]);
-                                });
-                          }
-                        },
-                      ),
-                    ]))));
-      },
-    );
+                          ]))));
+            },
+          );
+        });
   }
 
   buildProgressIndicator(int presentLength) {
@@ -229,13 +257,17 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 class PostListBloc {
   int selectedSort;
   List memberOf;
+  List following;
+  List publicCommunities;
 
   bool showIndicator = false;
-  List<DocumentSnapshot> documentList;
+  List<DocumentSnapshot> memberDocumentList;
+  List<DocumentSnapshot> followingDocumentList;
   BehaviorSubject<bool> showIndicatorController;
   BehaviorSubject<List<DocumentSnapshot>> postController;
 
-  PostListBloc(this.selectedSort, this.memberOf) {
+  PostListBloc(this.selectedSort, this.memberOf, this.following,
+      this.publicCommunities) {
     showIndicatorController = BehaviorSubject<bool>();
     postController = BehaviorSubject<List<DocumentSnapshot>>();
   }
@@ -249,8 +281,10 @@ class PostListBloc {
     if (!showIndicator) {
       try {
         updateIndicator(true);
-        documentList = (await getQuery().limit(5).get()).docs;
-        postController.sink.add(documentList);
+        memberDocumentList = (await getQuery().limit(5).get()).docs;
+        followingDocumentList = (await getFollowingQuery().limit(2).get()).docs;
+        postController.sink.add(memberDocumentList);
+        postController.sink.add(followingDocumentList);
         updateIndicator(false);
       } on SocketException {
         updateIndicator(false);
@@ -268,13 +302,23 @@ class PostListBloc {
     if (!showIndicator) {
       try {
         updateIndicator(true);
-        List<DocumentSnapshot> newDocumentList = (await getQuery()
-                .startAfterDocument(documentList[documentList.length - 1])
+        List<DocumentSnapshot> newMemberDocumentList = (await getQuery()
+                .startAfterDocument(
+                    memberDocumentList[memberDocumentList.length - 1])
                 .limit(5)
                 .get())
             .docs;
-        documentList.addAll(newDocumentList);
-        postController.sink.add(documentList);
+        List<DocumentSnapshot> newFollowingDocumentList =
+            (await getFollowingQuery()
+                    .startAfterDocument(
+                        followingDocumentList[followingDocumentList.length - 1])
+                    .limit(2)
+                    .get())
+                .docs;
+        memberDocumentList.addAll(newMemberDocumentList);
+        followingDocumentList.addAll(newFollowingDocumentList);
+        postController.sink.add(memberDocumentList);
+        postController.sink.add(followingDocumentList);
         updateIndicator(false);
       } on SocketException {
         postController.sink.addError(SocketException("No Internet Connection"));
@@ -330,6 +374,45 @@ class PostListBloc {
             .collectionGroup('posts')
             .where('isVerified', isEqualTo: true)
             .where('community', whereIn: memberOf)
+            .orderBy('views', descending: true);
+        break;
+    }
+    debugPrint('Unexpected sorting selected');
+    return null;
+  }
+
+  Query getFollowingQuery() {
+    switch (selectedSort) {
+      case 0:
+        return FirebaseFirestore.instance
+            .collectionGroup('posts')
+            .where('isVerified', isEqualTo: true)
+            .where('community', whereIn: publicCommunities)
+            .where('creator', whereIn: following)
+            .orderBy('time', descending: true);
+        break;
+      case 1:
+        return FirebaseFirestore.instance
+            .collectionGroup('posts')
+            .where('isVerified', isEqualTo: true)
+            .where('community', whereIn: publicCommunities)
+            .where('creator', whereIn: following)
+            .orderBy('weight', descending: true);
+        break;
+      case 2:
+        return FirebaseFirestore.instance
+            .collectionGroup('posts')
+            .where('isVerified', isEqualTo: true)
+            .where('community', whereIn: publicCommunities)
+            .where('creator', whereIn: following)
+            .orderBy('upvotes', descending: true);
+        break;
+      case 3:
+        return FirebaseFirestore.instance
+            .collectionGroup('posts')
+            .where('isVerified', isEqualTo: true)
+            .where('community', whereIn: publicCommunities)
+            .where('creator', whereIn: following)
             .orderBy('views', descending: true);
         break;
     }
