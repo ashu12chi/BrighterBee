@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:brighter_bee/app_screens/admin_screens/verify_user.dart';
 import 'package:brighter_bee/app_screens/communities.dart';
 import 'package:brighter_bee/app_screens/extra.dart';
 import 'package:brighter_bee/app_screens/home.dart';
@@ -154,20 +155,31 @@ class MessageBean {
     final String routeName = '/detail/$itemId';
     print('oct 15');
     print(routeName);
-    String community = itemId.substring(0, itemId.indexOf(','));
-    String temp = routeName.substring(routeName.indexOf(',') + 1);
-    String postID = temp.substring(0, temp.indexOf(','));
-    temp = temp.substring(temp.indexOf(',') + 1);
-    String creator = temp;
-    print(community);
-    print(postID);
-    print(creator);
-    return routes.putIfAbsent(
-      routeName,
-      () => MaterialPageRoute<void>(
-        settings: RouteSettings(name: routeName),
-        builder: (BuildContext context) => PostUI(community, postID),
-      ),
-    );
+    if(itemId.contains(',')) {
+      String community = itemId.substring(0, itemId.indexOf(','));
+      String temp = routeName.substring(routeName.indexOf(',') + 1);
+      String postID = temp.substring(0, temp.indexOf(','));
+      temp = temp.substring(temp.indexOf(',') + 1);
+      String creator = temp;
+      print(community);
+      print(postID);
+      print(creator);
+      return routes.putIfAbsent(
+        routeName,
+            () => MaterialPageRoute<void>(
+          settings: RouteSettings(name: routeName),
+          builder: (BuildContext context) => PostUI(community, postID),
+        ),
+      );
+    }
+    else {
+      return routes.putIfAbsent(
+        routeName,
+            () => MaterialPageRoute<void>(
+          settings: RouteSettings(name: routeName),
+          builder: (BuildContext context) => VerifyUser(itemId),
+        ),
+      );
+    }
   }
 }
