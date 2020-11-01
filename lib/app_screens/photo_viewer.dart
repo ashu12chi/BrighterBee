@@ -2,6 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
+// @author: Nishchal Siddharth Pandey
+// Oct 16, 2020
+// This will be used for viewing photo in full size
+
 class PhotoViewer extends StatefulWidget {
   final String _url;
 
