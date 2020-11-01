@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../widgets/user_card.dart';
 import '../profile.dart';
 
-
 // @author: Ashutosh Chitranshi
 // 21 Oct, 2020
 // This will be used for viewing admins from the control.

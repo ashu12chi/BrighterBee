@@ -50,6 +50,7 @@ class _LiveListState extends State<LiveList> {
               .collection('communities')
               .doc(community)
               .collection('live')
+              .orderBy('upvotes', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting)
@@ -113,7 +114,7 @@ class _LiveListState extends State<LiveList> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 content:
-                                Text("Are you sure you want to downvote ?"),
+                                    Text("Are you sure you want to downvote ?"),
                                 actions: <Widget>[
                                   FlatButton(
                                     child: Text(
@@ -134,7 +135,17 @@ class _LiveListState extends State<LiveList> {
                                     onPressed: () async {
                                       //if(processing)
                                       //return;
-                                      await downVote(community,documentSnapshot.id,FirebaseAuth.instance.currentUser.displayName,documentSnapshot['upvoters'].contains(FirebaseAuth.instance.currentUser.displayName),documentSnapshot['downvoters'].contains(FirebaseAuth.instance.currentUser.displayName));
+                                      await downVote(
+                                          community,
+                                          documentSnapshot.id,
+                                          FirebaseAuth
+                                              .instance.currentUser.displayName,
+                                          documentSnapshot['upvoters'].contains(
+                                              FirebaseAuth.instance.currentUser
+                                                  .displayName),
+                                          documentSnapshot['downvoters']
+                                              .contains(FirebaseAuth.instance
+                                                  .currentUser.displayName));
 //                                    //processing = false;
                                       Navigator.of(context).pop();
                                     },
@@ -149,7 +160,7 @@ class _LiveListState extends State<LiveList> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               content:
-                              Text("Are you sure you want to upvote ?"),
+                                  Text("Are you sure you want to upvote ?"),
                               actions: <Widget>[
                                 FlatButton(
                                   child: Text(
@@ -167,7 +178,17 @@ class _LiveListState extends State<LiveList> {
                                     style: TextStyle(color: Colors.green),
                                   ),
                                   onPressed: () async {
-                                    await upVote(community,documentSnapshot.id,FirebaseAuth.instance.currentUser.displayName,documentSnapshot['upvoters'].contains(FirebaseAuth.instance.currentUser.displayName),documentSnapshot['downvoters'].contains(FirebaseAuth.instance.currentUser.displayName));
+                                    await upVote(
+                                        community,
+                                        documentSnapshot.id,
+                                        FirebaseAuth
+                                            .instance.currentUser.displayName,
+                                        documentSnapshot['upvoters'].contains(
+                                            FirebaseAuth.instance.currentUser
+                                                .displayName),
+                                        documentSnapshot['downvoters'].contains(
+                                            FirebaseAuth.instance.currentUser
+                                                .displayName));
 //                                    //processing = false;
                                     Navigator.of(context).pop();
                                   },
@@ -182,6 +203,7 @@ class _LiveListState extends State<LiveList> {
           }),
     );
   }
+
   Widget slideRightBackground() {
     return Container(
       color: Colors.green,

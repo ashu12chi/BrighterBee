@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 // 21 Oct, 2020
 // This will be used for viewing reports of other communities in BrighterBee community.
 
-
 class ViewCommunityReports extends StatefulWidget {
   @override
   _ViewCommunityReportsState createState() => _ViewCommunityReportsState();

@@ -157,7 +157,7 @@ class MessageBean {
     final String routeName = '/detail/$itemId';
     print('oct 15');
     print(routeName);
-    if(itemId.contains(',')) {
+    if (itemId.contains(',')) {
       String community = itemId.substring(0, itemId.indexOf(','));
       String temp = routeName.substring(routeName.indexOf(',') + 1);
       String postID = temp.substring(0, temp.indexOf(','));
@@ -168,16 +168,15 @@ class MessageBean {
       print(creator);
       return routes.putIfAbsent(
         routeName,
-            () => MaterialPageRoute<void>(
+        () => MaterialPageRoute<void>(
           settings: RouteSettings(name: routeName),
           builder: (BuildContext context) => PostUI(community, postID),
         ),
       );
-    }
-    else {
+    } else {
       return routes.putIfAbsent(
         routeName,
-            () => MaterialPageRoute<void>(
+        () => MaterialPageRoute<void>(
           settings: RouteSettings(name: routeName),
           builder: (BuildContext context) => VerifyUser(itemId),
         ),

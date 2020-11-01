@@ -58,7 +58,7 @@ class _PostSearchState extends State<PostSearch> {
               child: TextFormField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search',
+                  hintText: 'Search posts',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25)),
                   focusedBorder: OutlineInputBorder(

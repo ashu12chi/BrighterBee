@@ -3,7 +3,6 @@ import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 // @author: Ashutosh Chitranshi
 // 21 Oct, 2020
 // This will be used for viewing reports of posts in any community.

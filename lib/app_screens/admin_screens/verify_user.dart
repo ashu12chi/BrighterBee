@@ -5,11 +5,9 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/user_card.dart';
 
-
 // @author: Ashutosh Chitranshi
 // 21 Oct, 2020
 // This will be used for verifying users.
-
 
 class VerifyUser extends StatefulWidget {
   final community;

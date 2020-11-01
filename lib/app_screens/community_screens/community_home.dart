@@ -420,14 +420,13 @@ class _CommunityHomeState extends State<CommunityHome> {
                       children: <Widget>[
                         IconButton(
                             icon: Icon(Icons.share,
-                                size: 30,
-                                color: Theme.of(context).buttonColor),
+                                size: 30, color: Theme.of(context).buttonColor),
                             onPressed: () async {
-                              String msg = 'Check out this community I found on BrighterBee: $community . BrighterBee is an app to share your ideas among a community of people of your type, download the app here: https://bit.ly/35uR0uy';
+                              String msg =
+                                  'Check out this community I found on BrighterBee: $community . BrighterBee is an app to share your ideas among a community of people of your type, download the app here: https://bit.ly/35uR0uy';
                               await Share.share(msg);
                               Navigator.pop(context);
-                            }
-                        ),
+                            }),
                         Text(
                           'Share',
                           style: TextStyle(fontSize: 14),

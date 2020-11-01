@@ -2,7 +2,6 @@ import 'package:brighter_bee/app_screens/community_screens/community_home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
 // @author: Nishchal Siddharth Pandey
 // Oct 12, 2020
 // This will be used for searching posts in community
@@ -41,7 +40,7 @@ class _CommunitySearchState extends State<CommunitySearch> {
               child: TextFormField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search',
+                  hintText: 'Search communities',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25)),
                   focusedBorder: OutlineInputBorder(

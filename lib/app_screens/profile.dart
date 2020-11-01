@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_details.dart';
+import 'package:brighter_bee/app_screens/user_app_screens/user_posts_search.dart';
 import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -53,6 +54,13 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
         appBar: AppBar(
           title: FlatButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          UserPostSearch(username)));
+            },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
                 side: BorderSide(color: Colors.grey)),

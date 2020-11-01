@@ -178,7 +178,7 @@ class _CreateGroupState extends State<CreateGroup> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Privacy',
+              'Is the community public or private?',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -236,7 +236,7 @@ class _CreateGroupState extends State<CreateGroup> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Visibility',
+              'Visibility (doesn\'t matter for public communities)',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -294,7 +294,7 @@ class _CreateGroupState extends State<CreateGroup> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Posts',
+              'Posts can be verified by?',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -352,7 +352,7 @@ class _CreateGroupState extends State<CreateGroup> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Verification',
+              'User can be verified by?',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
