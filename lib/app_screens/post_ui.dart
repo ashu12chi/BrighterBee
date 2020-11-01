@@ -453,6 +453,13 @@ class _PostState extends State<PostUI> {
                                     SizedBox(width: 10),
                                     Icon(Icons.remove_red_eye),
                                     Spacer(),
+                                    (verified)
+                                        ? Container()
+                                        : Text('Unverified',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .errorColor)),
+                                    Spacer(),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 8.0, right: 8),

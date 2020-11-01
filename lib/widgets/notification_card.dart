@@ -1,4 +1,6 @@
+import 'package:brighter_bee/app_screens/admin_screens/verify_user.dart';
 import 'package:brighter_bee/app_screens/post_ui.dart';
+import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +39,7 @@ class _NotificationCardState extends State<NotificationCard> {
               children: [
                 Shimmer.fromColors(
                   child: Card(
-                    child: Text('Pihu posted in Mathematics'),
+                    child: Text('User posted in Community'),
                     shape: RoundedRectangleBorder(),
                   ),
                   baseColor: Colors.grey,
@@ -70,7 +72,11 @@ class _NotificationCardState extends State<NotificationCard> {
                           builder: (context) => (postRelated == 1)
                               ? PostUI(snapshot.data.data()['community'],
                                   snapshot.data.data()['postId'])
-                              : getProfileObject()));
+                              : (snapshot.data.get('community') ==
+                                      'BrighterBee')
+                                  ? Profile(snapshot.data.get('creator'))
+                                  : VerifyUser(
+                                      snapshot.data.data()['community'])));
                 },
                 child: Row(
                   children: <Widget>[
