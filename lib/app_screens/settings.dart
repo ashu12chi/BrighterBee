@@ -159,6 +159,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  // Show options in the bottom sheet
   showOptions() {
     showModalBottomSheet(
         context: context,
@@ -245,6 +246,7 @@ class _SettingsState extends State<Settings> {
         });
   }
 
+  // This will clear cache
   clearCache(BuildContext context) async {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -281,6 +283,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  // This will show deletion confirmation
   showDeletionConfirmation() async {
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),

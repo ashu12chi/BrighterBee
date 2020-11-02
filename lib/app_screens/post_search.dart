@@ -29,6 +29,7 @@ class _PostSearchState extends State<PostSearch> {
     super.dispose();
   }
 
+  // This is a scroll listener
   void scrollListener() {
     if (controller.position.extentAfter < 400) {
       debugPrint('At bottom!');
@@ -36,6 +37,7 @@ class _PostSearchState extends State<PostSearch> {
     }
   }
 
+  // This is a search bar listener
   searchBarListener() {
     setState(() {
       postListBloc =
@@ -128,6 +130,7 @@ class _PostSearchState extends State<PostSearch> {
             }));
   }
 
+  // This will return progress indicator
   buildProgressIndicator(int presentLength) {
     if (presentLength != previousSnapshotLength) {
       previousSnapshotLength = presentLength;

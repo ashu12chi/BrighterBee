@@ -11,6 +11,11 @@ import 'package:rxdart/rxdart.dart';
 import 'community_screens/community_search.dart';
 import 'community_screens/discover_community.dart';
 
+
+// @author : Ashutosh Chitranshi, Nishchal Siddharth Pandey
+// Oct 6, 2020
+// This is community tab of the app
+
 class Communities extends StatefulWidget {
   @override
   _CommunitiesState createState() => _CommunitiesState();

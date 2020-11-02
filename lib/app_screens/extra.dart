@@ -296,18 +296,21 @@ class _ExtraState extends State<Extra> {
     );
   }
 
+  // This will help in getting name from shared preference
   getNameFromSharedPreference() async {
     SharedPreferences.getInstance().then((value) => {
           setDisplayName(value.getString('fullName')),
         });
   }
 
+  // This will help in setting display name
   setDisplayName(String str) {
     setState(() {
       displayName = str;
     });
   }
 
+  // This will sign out the user
   Future _signOut() async {
     Fluttertoast.showToast(msg: 'Signing out...');
     String deviceId = await FirebaseMessaging().getToken();

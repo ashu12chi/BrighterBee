@@ -265,6 +265,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
         });
   }
 
+  // This will help in building progress indicator
   buildProgressIndicator(int presentLength) {
     if (presentLength != previousSnapshotLength) {
       previousSnapshotLength = presentLength;

@@ -136,6 +136,7 @@ class _FeedState extends State<Feed> with AutomaticKeepAliveClientMixin {
   bool get wantKeepAlive => true;
 }
 
+// This is helpful in opening a certain page while clicking on notifications
 class MessageBean {
   MessageBean({this.itemId});
 

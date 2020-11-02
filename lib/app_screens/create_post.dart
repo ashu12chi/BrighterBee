@@ -266,6 +266,7 @@ class _CreatePostState extends State<CreatePost> {
     }
   }
 
+  // This will fetch and display list of communities user is member in
   showCommunities() {
     if (radioButtonDataList.length == 0) {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -319,11 +320,13 @@ class _CreatePostState extends State<CreatePost> {
     }
   }
 
+  // This will load Notus Document
   NotusDocument _loadDocument() {
     final Delta delta = Delta()..insert("\n");
     return NotusDocument.fromDelta(delta);
   }
 
+  // This will check if post is created correctly and then will post it
   checkPostableAndPost() {
     if (community == null || community.length == 0) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
@@ -370,6 +373,7 @@ class _CreatePostState extends State<CreatePost> {
     return true;
   }
 
+  // This will add post to database
   addToDatabase() async {
     var time = DateTime.now().millisecondsSinceEpoch;
     String key = time.toString();
@@ -425,6 +429,7 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
+  // This will upload media to the firebase storage
   uploadMedia(String key) async {
     StorageUploadTask uploadTask;
     fileName = getFileName(media);
@@ -444,6 +449,7 @@ class _CreatePostState extends State<CreatePost> {
     return mediaURL;
   }
 
+  // This will show image picker
   _showImagePicker(context) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -476,6 +482,7 @@ class _CreatePostState extends State<CreatePost> {
         });
   }
 
+  // This will help in selecting image from gallery
   _imageFromGallery() async {
     final file = await ImagePicker().getImage(source: ImageSource.gallery);
     if (file == null) return null;
@@ -487,6 +494,7 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
+  // This will help in selecting image from camera
   _imageFromCamera() async {
     final file = await ImagePicker().getImage(
         source: ImageSource.camera,
@@ -502,6 +510,7 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
+  // This will show video picker
   _showVideoPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -531,6 +540,7 @@ class _CreatePostState extends State<CreatePost> {
         });
   }
 
+  // This will help in uploading video from gallery
   _videoFromGallery() async {
     final file = await ImagePicker().getVideo(
       source: ImageSource.gallery,
@@ -544,6 +554,7 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
+  // This will help in uploading video from camera
   _videoFromCamera() async {
     final file = await ImagePicker().getVideo(
       source: ImageSource.camera,
@@ -557,18 +568,21 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
+  // This will help in getting name from shared preference
   getNameFromSharedPreference() async {
     SharedPreferences.getInstance().then((value) => {
           setDisplayName(value.getString('fullName')),
         });
   }
 
+  // This will help in setting display name
   setDisplayName(String str) {
     setState(() {
       displayName = str;
     });
   }
 
+  // This will give option for saving draft on pressing back button
   Future<bool> _handleOnWillPop() {
     debugPrint('Popped');
     return showDialog(
