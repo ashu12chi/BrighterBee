@@ -32,28 +32,29 @@ class _CreateGroupState extends State<CreateGroup> {
   int mediaType = 0; // 0 for none, 1 for image, 2 for video
   File media;
 
-  void _handleRadioValueChange1(int value) {
+  // This will handle radio value changes
+  void _handleRadioValueChangePrivacy(int value) {
     setState(() {
       _radioPrivacy = value;
       debugPrint('value 1: $_radioPrivacy');
     });
   }
 
-  void _handleRadioValueChange2(int value) {
+  void _handleRadioValueChangeVisibility(int value) {
     setState(() {
       _radioVisibility = value;
       debugPrint('value 2: $_radioVisibility');
     });
   }
 
-  void _handleRadioValueChange3(int value) {
+  void _handleRadioValueChangePosts(int value) {
     setState(() {
       _radioPosts = value;
       debugPrint('value 3: $_radioPosts');
     });
   }
 
-  void _handleRadioValueChange4(int value) {
+  void _handleRadioValueChangeVerification(int value) {
     setState(() {
       _radioVerification = value;
       debugPrint('value 4: $_radioVerification');
@@ -188,7 +189,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 0,
                 groupValue: _radioPrivacy,
-                onChanged: _handleRadioValueChange1,
+                onChanged: _handleRadioValueChangePrivacy,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -206,7 +207,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 1,
                 groupValue: _radioPrivacy,
-                onChanged: _handleRadioValueChange1,
+                onChanged: _handleRadioValueChangePrivacy,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -246,7 +247,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 0,
                 groupValue: _radioVisibility,
-                onChanged: _handleRadioValueChange2,
+                onChanged: _handleRadioValueChangeVisibility,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -264,7 +265,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 1,
                 groupValue: _radioVisibility,
-                onChanged: _handleRadioValueChange2,
+                onChanged: _handleRadioValueChangeVisibility,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -304,7 +305,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 0,
                 groupValue: _radioPosts,
-                onChanged: _handleRadioValueChange3,
+                onChanged: _handleRadioValueChangePosts,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -322,7 +323,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 1,
                 groupValue: _radioPosts,
-                onChanged: _handleRadioValueChange3,
+                onChanged: _handleRadioValueChangePosts,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -362,7 +363,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 0,
                 groupValue: _radioVerification,
-                onChanged: _handleRadioValueChange4,
+                onChanged: _handleRadioValueChangeVerification,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -380,7 +381,7 @@ class _CreateGroupState extends State<CreateGroup> {
               new Radio(
                 value: 1,
                 groupValue: _radioVerification,
-                onChanged: _handleRadioValueChange4,
+                onChanged: _handleRadioValueChangeVerification,
                 activeColor: Theme.of(context).accentColor,
               ),
               Row(
@@ -424,6 +425,7 @@ class _CreateGroupState extends State<CreateGroup> {
     );
   }
 
+  // This will create community
   createCommunity() async {
     String commName = nameController.text;
     if (commName.isEmpty ||
@@ -511,6 +513,7 @@ class _CreateGroupState extends State<CreateGroup> {
     Navigator.pop(context);
   }
 
+  // This will help in showing image picker
   _showImagePicker(context) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -543,6 +546,7 @@ class _CreateGroupState extends State<CreateGroup> {
         });
   }
 
+  // This will help in selecting image from gallery
   _imageFromGallery() async {
     final file = await ImagePicker().getImage(
         source: ImageSource.gallery,
@@ -557,6 +561,7 @@ class _CreateGroupState extends State<CreateGroup> {
     });
   }
 
+  // This will help in selecting image from camera
   _imageFromCamera() async {
     final file = await ImagePicker().getImage(
         source: ImageSource.camera,
@@ -571,6 +576,7 @@ class _CreateGroupState extends State<CreateGroup> {
     });
   }
 
+  // This will upload image to firebase storage
   uploadMedia(String key) async {
     StorageUploadTask uploadTask;
     if (mediaType == 1)
@@ -584,6 +590,7 @@ class _CreateGroupState extends State<CreateGroup> {
     return photoUrl;
   }
 
+  // This will show alert dialogue in case of error
   showAlertDialog(BuildContext context) async {
     Widget okButton = FlatButton(
       child: Text("OK"),
