@@ -100,6 +100,7 @@ class _ViewAdminsState extends State<ViewAdmins> {
     );
   }
 
+  // This will show slide right background
   Widget slideRightBackground() {
     return Container(
       color: Theme.of(context).errorColor,

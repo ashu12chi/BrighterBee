@@ -296,6 +296,7 @@ class _AdminControlPanelState extends State<AdminControlPanel> {
     );
   }
 
+  // This will show community deletion confirmation
   showCommunityDeletionConfirmation() async {
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),

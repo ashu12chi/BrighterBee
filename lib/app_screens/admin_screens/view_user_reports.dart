@@ -156,6 +156,7 @@ class _ViewUserReportsState extends State<ViewUserReports> {
     );
   }
 
+  // This will show slide right background
   Widget slideRightBackground() {
     return Container(
       color: Colors.green,
@@ -185,6 +186,7 @@ class _ViewUserReportsState extends State<ViewUserReports> {
     );
   }
 
+  // This will show slide left background
   Widget slideLeftBackground() {
     return Container(
       color: Theme.of(context).errorColor,
