@@ -8,6 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'forgot_password.dart';
 
+/*
+* @author: Anushka Srivastava
+* 19 October, 2020
+* This file has code for sign-in user
+*/
+
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();

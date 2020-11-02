@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:brighter_bee/app_screens/photo_viewer.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_details.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/user_posts_search.dart';
-import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
+import 'package:brighter_bee/helpers/user_follow_unfollow_report.dart';
 import 'package:brighter_bee/widgets/post_card_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

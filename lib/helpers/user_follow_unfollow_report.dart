@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey,Ashutosh Chitranshi
+* 19 October, 2020
+* This file has code for follow/unfollow and report/undo report of a user
+*/
+
 handleFollow(String me, String user) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {

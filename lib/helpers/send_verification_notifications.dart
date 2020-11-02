@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 19 October, 2020
+* This file has code for sending verification notifications
+*/
+
 Future<void> sendVerificationNotifications(
     String community, String postKey, String creator) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;

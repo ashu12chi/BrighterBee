@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 15, 2020
+// This is firebase messaging provider can be used for notifications
+
 class MessagingWidget extends StatefulWidget {
   @override
   _MessagingWidgetState createState() => _MessagingWidgetState();

@@ -3,6 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+// @author: Ashutosh Chitranshi
+// Oct 21, 2020
+// This is UserCard can be used at various places according to the need for displaying user
 class UserCard extends StatefulWidget {
   final _username;
 

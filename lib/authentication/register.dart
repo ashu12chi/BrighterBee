@@ -8,6 +8,12 @@ import 'package:image_picker/image_picker.dart';
 
 import 'upload_user_database.dart';
 
+/*
+* @author: Anushka Srivastava
+* 19 October, 2020
+* This file has code for registering user
+*/
+
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();

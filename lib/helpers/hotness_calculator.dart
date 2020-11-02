@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 /*
 * @author: Ashutosh Chitranshi
+* Oct 28,2020
+* This is helpful in calculating formula for hotness for displaying posts in feed/profile
  */
 
 double calculateHotness(

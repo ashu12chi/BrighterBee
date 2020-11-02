@@ -5,7 +5,7 @@
 * This file shows list of users provided user is following.
  */
 
-import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
+import 'package:brighter_bee/helpers/user_follow_unfollow_report.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

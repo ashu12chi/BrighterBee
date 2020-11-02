@@ -7,6 +7,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:zefyr/zefyr.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 19 October, 2020
+* This file has code for sharing post in html format to any app like whatsapp / gmail
+*/
+
 Future<void> postShareWeb(String community, String postKey, String title,
     int mediaType, String mediaUrl, String content) async {
   NotusDocument document = NotusDocument.fromJson(jsonDecode(content));

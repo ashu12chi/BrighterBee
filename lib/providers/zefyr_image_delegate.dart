@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:zefyr/zefyr.dart';
 
 /*
-* @author: Nishchal Siddharth Pandey
+* @author: Ashutosh Chitranshi,Nishchal Siddharth Pandey
 * 1 October, 2020
 * This file has implementations of ZefyrImageDelegate interface for image handling in ZefyrField and ZefyrView.
 */

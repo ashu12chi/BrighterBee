@@ -1,4 +1,4 @@
-import 'package:brighter_bee/helpers/comment_delete.dart';
+import 'package:brighter_bee/helpers/comment_delete_and_report.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

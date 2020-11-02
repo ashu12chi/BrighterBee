@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/*
+* @author: Nishchal Siddharth Pandey
+* 18 October, 2020
+* This file has code for getting saving post / removing saved post.
+*/
+
 Future<bool> savePost(String username, String community, String postKey) async {
   if (await doesSaveExist(username, community, postKey)) {
     undoSavePost(username, community, postKey);

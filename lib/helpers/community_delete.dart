@@ -1,6 +1,10 @@
-import 'package:brighter_bee/helpers/community_join_leave.dart';
+import 'package:brighter_bee/helpers/community_join_leave_report_admin.dart';
 import 'package:brighter_bee/helpers/delete_post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+// @author: Nishchal Siddharth Pandey
+// Oct 27, 2020
+// This will help in deleting community, option provided in community home
 
 deleteCommunity(final String community) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;

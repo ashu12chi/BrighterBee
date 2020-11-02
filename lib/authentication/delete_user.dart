@@ -1,8 +1,14 @@
-import 'package:brighter_bee/helpers/community_join_leave.dart';
-import 'package:brighter_bee/helpers/user_follow_unfollow.dart';
+import 'package:brighter_bee/helpers/community_join_leave_report_admin.dart';
+import 'package:brighter_bee/helpers/user_follow_unfollow_report.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
+/*
+* @author: Nishchal Siddharth Pandey
+* 19 October, 2020
+* This file has code for deleting a user
+*/
 
 deleteUser(String username) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;

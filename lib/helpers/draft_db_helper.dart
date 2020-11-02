@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
+// @author: Nishchal Siddharth Pandey
+// Oct 17, 2020
+// This is helpful in inserting/updating/deleting post in db
+
 insertPostInDb(PostEntry post) async {
   WidgetsFlutterBinding.ensureInitialized();
 

@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// @author: Nishchal Siddharth Pandey, Ashutosh Chitranshi
+// This helper will be useful in place where we want to delete a comment or report and remove report
+// from a comment or reply
+
 deleteComment(String community, String parentPost, String comment, String reply,
     bool isReply, String creator) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;

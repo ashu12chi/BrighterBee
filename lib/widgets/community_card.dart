@@ -4,6 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+// @author: Ashutosh Chitranshi
+// 25 Oct,2020
+// This is community card can be used in various places according to the requirement while
+// displaying a list
+
 class CommunityCard extends StatefulWidget {
   final _community;
 

@@ -6,6 +6,10 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+// @author: Nishchal Sidddharth Pandey
+// Oct 24, 2020
+// This is notification card, will be used in displaying notification in list
+
 class NotificationCard extends StatefulWidget {
   final String _key;
   final int _postRelated;

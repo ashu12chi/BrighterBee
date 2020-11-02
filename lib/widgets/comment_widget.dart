@@ -1,7 +1,7 @@
 import 'package:brighter_bee/app_screens/comment.dart';
 import 'package:brighter_bee/app_screens/profile.dart';
 import 'package:brighter_bee/app_screens/user_app_screens/edit_comment.dart';
-import 'package:brighter_bee/helpers/comment_delete.dart';
+import 'package:brighter_bee/helpers/comment_delete_and_report.dart';
 import 'package:brighter_bee/helpers/upvote_downvote_comment.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

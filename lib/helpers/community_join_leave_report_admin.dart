@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
+// @author: Ashutosh Chitranshi
+// Oct 15, 2020
+// This helper is useful in making a join request in a community by any user, accepting/rejecting join
+// request by admin, also useful in making new admins/ removing admins from control panel
+
 handleJoinAccept(String community, String user) async {
   FirebaseFirestore instance = FirebaseFirestore.instance;
   await instance.runTransaction((transaction) async {
