@@ -61,7 +61,7 @@ class _ExtraState extends State<Extra> {
             ],
           ),
           Padding(
-              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+              padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
               child: Card(
                 elevation: 4,
                 child: InkWell(
@@ -73,12 +73,14 @@ class _ExtraState extends State<Extra> {
                   },
                   child: Row(
                     children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage:
-                            CachedNetworkImageProvider(user.photoURL),
-                        radius: 30.0,
-                        backgroundColor: Colors.grey,
-                      ),
+                      Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            backgroundImage:
+                                CachedNetworkImageProvider(user.photoURL),
+                            radius: 26.0,
+                            backgroundColor: Colors.grey,
+                          )),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Column(

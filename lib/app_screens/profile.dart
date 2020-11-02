@@ -74,7 +74,7 @@ class _ProfileState extends State<Profile> {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    'Search',
+                    'Search posts by $username',
                     style: TextStyle(color: Colors.grey, fontSize: 18),
                   ),
                 )
