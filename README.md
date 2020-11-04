@@ -2,7 +2,7 @@
 
 Developing a community for learners. Made for Droidrush: Avishkar MNNIT 2k20.
 
-<b> This app won 1st place in Droidrush.</b>
+<b> This app won 1<sup>st</sup> place in Droidrush.</b>
 
 ## Process flow of the app
 
@@ -63,6 +63,8 @@ Developing a community for learners. Made for Droidrush: Avishkar MNNIT 2k20.
 2. [Nishchal Siddharth Pandey](https://github.com/nisiddharth)
 3. [Anushka Srivastava](https://github.com/Anushkaa-Srivastava)
 
+<b> Get the project presentation [here](https://raw.githubusercontent.com/NPDevs/BrighterBee/master/BrighterBee-Final.pptx).</b>
+
 ## To try your hands on the project
 
 Either get the latest APK from releases: [https://bit.ly/35uR0uy](https://github.com/NPDevs/BrighterBee/releases/),
@@ -97,3 +99,5 @@ Or;
 <hr>
 
 ### Thank you! PRs are always welcomed!
+
+Stay safe!
